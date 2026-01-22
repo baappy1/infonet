@@ -145,13 +145,13 @@ export default function TopHeader( { setActive, activeMenu } ){
                                 </button>
 
 
-                                <div className='absolute z-[91] w-[265px] hidden group-hover:block top-[20px] left-[-76px]'>
-                                    <div className='w-full mt-[42px] rounded-[8px] bg-[#08090D1A] backdrop-blur-[30px] p-[20px] flex flex-col gap-2'>
-                                        <Link className='text-white uppercase hover:bg-[#08090D1A] rounded-[8px] mb-[4px] w-full block transition-colors duration-200 p-[10px]' href="/who-we-are">Who We Are</Link>
-                                        <Link className='text-white uppercase hover:bg-[#08090D1A] rounded-[8px] mb-[4px] w-full block transition-colors duration-200 p-[10px]' href="/industries">Convenience Stores</Link>
-                                        <Link className='text-white uppercase hover:bg-[#08090D1A] rounded-[8px] mb-[4px] w-full block transition-colors duration-200 p-[10px]' href="/industries">Unattended Fuel Sites</Link>
-                                        <Link className='text-white uppercase hover:bg-[#08090D1A] rounded-[8px] mb-[4px] w-full block transition-colors duration-200 p-[10px]' href="/industries">Fleet Fueling</Link>
-                                        <Link className='text-white uppercase hover:bg-[#08090D1A] rounded-[8px] mb-[4px] w-full block transition-colors duration-200 p-[10px]' href="/industries">First Nations Retail</Link>
+                                <div className='absolute z-91 w-66.25 hidden group-hover:block top-5 -left-19'>
+                                    <div className='w-full mt-10.5 rounded-lg bg-[#08090D1A] backdrop-blur-[30px] p-5 flex flex-col gap-2'>
+                                        <Link className='text-white uppercase hover:bg-[#08090D1A] rounded-lg mb-1 w-full block transition-colors duration-200 p-2.5' href="/who-we-are">Who We Are</Link>
+                                        <Link className='text-white uppercase hover:bg-[#08090D1A] rounded-lg mb-1 w-full block transition-colors duration-200 p-2.5' href="/affiliations-partners">Affiliations & Partners</Link>
+                                        <Link className='text-white uppercase hover:bg-[#08090D1A] rounded-lg mb-1 w-full block transition-colors duration-200 p-2.5' href="/career">Career</Link>
+                                        <Link className='text-white uppercase hover:bg-[#08090D1A] rounded-lg mb-1 w-full block transition-colors duration-200 p-2.5' href="/industries">Fleet Fueling</Link>
+                                        <Link className='text-white uppercase hover:bg-[#08090D1A] rounded-lg mb-1 w-full block transition-colors duration-200 p-2.5' href="/industries">First Nations Retail</Link>
                                     </div>
                                 </div>
                             </div>
