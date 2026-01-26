@@ -1,5 +1,8 @@
 import Banner from "@/components/Banner";
 import WhyWork from "@/components/Career/WhyWork";
+import Value from "@/components/Career/Value";
+import LifeInfoNet from "@/components/Career/LifeInfoNet";
+import CareerList from "@/components/Career/CareerList";
 
 export default function Career() {
     return (
@@ -13,6 +16,9 @@ export default function Career() {
                 bannerButtonURL="#"
             />
             <WhyWork />
+            <Value />
+            <LifeInfoNet />
+            <CareerList />
         </div>
     )
 }
