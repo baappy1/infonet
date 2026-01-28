@@ -1,9 +1,12 @@
+import Testimonial from "@/components/About/Testimonial";
 import Banner from "@/components/Banner";
 import About from "@/components/Home/About";
 import InfiniteSlider from "@/components/Home/LogoSlider";
+import CoreBenefits from "@/components/industries/CoreBenefits";
 import MoreIndustries from "@/components/industries/MoreIndustries";
 import Reason from "@/components/industries/Reason";
 import RetailAbout from "@/components/industries/RetailAbout";
+import OurImpactSolutions from "@/components/solutions/OurImpactSolutions";
 import UseCases from "@/components/solutions/UseCases";
 import React from "react";
 
@@ -21,6 +24,9 @@ const IndustryWeServe = () => {
       <About />
       <InfiniteSlider />
       <Reason />
+      <CoreBenefits />
+      <OurImpactSolutions />
+      <Testimonial />
       <MoreIndustries />
     </>
   );

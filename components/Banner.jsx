@@ -35,7 +35,7 @@ export default function Banner( {bannerTopTitle,bannerImage,bannerTitle,bannerDe
 
     return(
         <>
-            <div className="banner pt-[10px] pl-[10px] pr-[10px] h-screen">
+            <div className="banner pt-[10px] pl-[10px] pr-[10px] h-screen lg:min-h-[720px]">
                 <div className='h-full rounded-[8px]'  style={{backgroundImage: `url(${bannerImage})`, backgroundSize: 'cover', backgroundPosition: 'center'}}>
                     <div className="container h-full mx-auto pb-[10px] lg:pb-[120px] pl-[10px] pr-[10px] 2xl:pl-[0] 2xl:pr-[0]">
                         <div className="flex flex-wrap items-end h-full">

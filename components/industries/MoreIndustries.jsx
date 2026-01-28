@@ -46,7 +46,7 @@ const MoreIndustries = () => {
         </p>
 
         {/*  */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 mt-10 lg:mt-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-2 mt-10 lg:mt-20">
           {industriesData.map((item) => (
             <IndustryCard key={item.id} item={item} />
           ))}
