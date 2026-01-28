@@ -205,8 +205,32 @@ body {
   opacity: 0;
 }
 
+.accordion-arrow-remove svg.lucide.lucide-chevron-down {
+    display: none;
+}
+
+.accordion-arrow-remove h3 button{
+  padding: 0 !important;
+}
+
+.accordion-arrow-remove h3{
+  padding-right: 40px !important;
+}
+
+svg.plus-arrow-accordion,svg.minus-arrow-accordion {
+    position: absolute;
+    top: 24px;
+    right: 19px;
+}
+
+
 @media (max-width: 600px) {
 
+  svg.plus-arrow-accordion,svg.minus-arrow-accordion {
+    top: 30px;
+  }
+
+  
   .life-info-net,
   .infonet-left {
     left: 0 !important;

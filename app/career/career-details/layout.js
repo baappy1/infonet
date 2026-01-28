@@ -1,12 +1,10 @@
-import CareerDetailsHeader from "./CareerDetailsHeader";
-import Footer from "../../layout/Footer";
+import HeaderSecound from "@/app/layout/HeaderSecound";
 
 export default function CareerDetailsLayout({ children }) {
   return (
     <>
-      <CareerDetailsHeader />
+      <HeaderSecound />
       {children}
-      <Footer/>
     </>
   );
 }
