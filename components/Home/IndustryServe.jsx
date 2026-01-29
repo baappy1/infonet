@@ -3,6 +3,51 @@
 import { motion, useReducedMotion } from "motion/react";
 import ServeCard from "./ServeCard";
 
+const Services = [
+  {
+    id: 1,
+    image: "/assets/service/01.png",
+    title: "Retail Gas Stations",
+    description:
+      "Optimize every pump and every transaction with InfoNet’s integrated solutions. Reduce transaction times, increase pricing accuracy, and simplify inventory tracking.",
+  },
+  {
+    id: 2,
+    image: "/assets/service/02.png",
+    title: "Convenience Stores",
+    description:
+      "Take control of your store operations from inventory to checkout. Enhance sales, reduce shrink, streamline staff workflows, and deliver a faster, smoother experience.",
+  },
+  {
+    id: 3,
+    image: "/assets/service/03.png",
+    title: "Unattended Retail Fuel Sites",
+    description:
+      "Manage self-serve fueling operations reliably and securely 24/7. Monitor transactions in real-time, ensure EMV compliance, and handle unattended sites with ease.",
+  },
+  {
+    id: 4,
+    image: "/assets/service/04.png",
+    title: "Fleet Fueling",
+    description:
+      "Seamlessly manage fleet card transactions for your company or customers. Accept all major fleet cards, track fuel usage, control spending, and generate accurate reporting.",
+  },
+  {
+    id: 5,
+    image: "/assets/service/05.png",
+    title: "Private Fleet",
+    description:
+      "Seamlessly manage fleet card transactions for your company or customers. Accept all major fleet cards, track fuel usage, control spending, and generate accurate reporting.",
+  },
+  {
+    id: 6,
+    image: "/assets/service/06.png",
+    title: "First Nations Retail",
+    description:
+      "Simplify the management of First Nation tax-exempt sales for fuel and tobacco. Track exemptions accurately, ensure compliance, and generate reports effortlessly.",
+  },
+];
+
 const containerVariants = {
   hidden: {},
   visible: (isMobile) => ({
@@ -24,7 +69,6 @@ const itemVariants = {
 export default function IndustryServe() {
   const shouldReduce = useReducedMotion();
 
-
   return (
     <div className="2xl:pt-[24.15vh] 2xl:pb-[24vh] lg:pt-[120px] lg:pb-[120px] pt-[90px] pb-[90px] bg-white">
       <div className="container lg:pr-[0] lg:pl-[0] pr-[20px] pl-[20px]">
@@ -37,11 +81,12 @@ export default function IndustryServe() {
             </div>
           </div>
           <div className="w-full lg:w-[41.7%] font-manrope font-medium text-[14px] leading-[20px] lg:text-[16px] lg:leading-[22px] opacity-80">
-            Custom software and systems built to meet the unique needs of fuel, retail, and fleet businesses across North America.
+            Custom software and systems built to meet the unique needs of fuel,
+            retail, and fleet businesses across North America.
           </div>
         </div>
 
-        {/* Desktop Grid */}
+        {/* Desktop Grid - FIXED: Pass all props from Services array */}
         <motion.div
           className="hidden lg:flex flex-wrap gap-x-[44px] gap-y-[78px] mt-[40px] lg:mt-[120px]"
           variants={shouldReduce ? {} : containerVariants}
@@ -50,18 +95,22 @@ export default function IndustryServe() {
           custom={false} // desktop = not mobile
           viewport={{ once: true, amount: 0.4 }}
         >
-          {Array.from({ length: 6 }).map((_, i) => (
+          {Services.map((item, i) => (
             <motion.div
-              key={i}
+              key={item.id}
               variants={shouldReduce ? {} : itemVariants}
               className="w-[calc((100%-132px)/3)] flex flex-col"
             >
-              <ServeCard />
+              <ServeCard
+                FeatureImage={item.image}
+                title={item.title}
+                description={item.description}
+              />
             </motion.div>
           ))}
         </motion.div>
 
-        {/* Mobile Grid */}
+        {/* Mobile Grid - FIXED: Pass all props from Services array */}
         <motion.div
           className="flex lg:hidden flex-wrap gap-x-[44px] gap-y-[40px] mt-[40px]"
           variants={shouldReduce ? {} : containerVariants}
@@ -70,13 +119,17 @@ export default function IndustryServe() {
           custom={true} // mobile
           viewport={{ once: true, amount: 0.05 }} // triggers early
         >
-          {Array.from({ length: 6 }).map((_, i) => (
+          {Services.map((item) => (
             <motion.div
-              key={i}
+              key={item.id}
               variants={shouldReduce ? {} : itemVariants}
               className="w-full sm:w-[calc((100%-88px)/2)] flex flex-col"
             >
-              <ServeCard />
+              <ServeCard
+                image={item.image}
+                title={item.title}
+                description={item.description}
+              />
             </motion.div>
           ))}
         </motion.div>

@@ -7,12 +7,12 @@ const TeamCard = ({ team }) => {
   return (
     <div className="flex flex-col">
       {/* <Image src={imageSrc} alt={title} fill /> */}
-      <div className="relative w-full h-109 ">
+      <div className="relative w-full  aspect-3/4 ">
         <Image
           src={image}
           alt={name}
           fill
-          className="object-cover rounded-lg"
+          className="object-cover   rounded-lg"
         />
       </div>
       <p className="mt-8 font-bold text-base uppercase font-jetbrains-mono leading-snug text-[#08090D] ">

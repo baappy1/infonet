@@ -50,9 +50,9 @@ export const teamMembers = [
 const OurExperts = () => {
   return (
     <section className="bg-[#F8F8F3]">
-      <div className="container mx-auto pt-20 md:pt-55  px-5">
+      <div className="container mx-auto pt-20  lg:pt-55  px-5">
         <div className="top-title mb-5">[ Meet Our Experts ]</div>
-        <h2 className="font-manrope text-[28px] max-w-195.75 leading-7.5 lg:text-[40px] lg:leading-12.5 mb-25">
+        <h2 className="font-manrope text-[28px] max-w-195.75 leading-7.5 lg:text-[40px] lg:leading-12.5 mb-10 lg:mb-25">
           Our Diverse Team Works Across Departments.
         </h2>
 
@@ -76,8 +76,8 @@ const OurExperts = () => {
               ))}
             </CarouselContent>
             <div className="flex justify-end gap-1 mt-25">
-              <CarouselPrevious className="static w-12 h-10 translate-y-0 rounded-sm border-none px-3 py-4 bg-white " />
-              <CarouselNext className="static w-12 h-10 translate-y-0 rounded-sm border-none px-3 py-4 bg-[#EBFF3A] hover:bg-[#EBFF3A] text-black" />
+              <CarouselPrevious className="static w-12 h-10 translate-y-0 rounded-sm border-none px-3 py-4 bg-white hover:bg-[#EBFF3A] " />
+              <CarouselNext className="static w-12 h-10 translate-y-0 rounded-sm border-none px-3 py-4 bg-white hover:bg-[#EBFF3A] text-black" />
             </div>
           </Carousel>
         </div>

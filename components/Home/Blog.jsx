@@ -51,13 +51,31 @@ export default function Blog() {
         {/* Desktop Grid */}
         <div className="hidden lg:flex flex-wrap gap-x-[22px] gap-y-[22px] mt-[40px] lg:mt-[100px]">
           <div className="w-[calc((100%-66px)/3)] flex flex-col">
-            <BlogCard />
+            <BlogCard 
+                Title="Infonet Technology launches next-gen EMV Pay-at-the-Pump module"
+                FeatureImage="/assets/blog/04.png"
+                Date="Nov 03, 2025"
+                Category="News & Blog"
+                ReadMoreLink="/blog/amid-macro-pressures-c-stores-have-an-opportunity-to-innovate"
+              />
           </div>
           <div className="w-[calc((100%-66px)/3)] flex flex-col">
-            <BlogCard />
+            <BlogCard 
+                Title="Amid Macro Pressures, C‑Stores Have an Opportunity to Innovate"
+                FeatureImage="/assets/blog/01.png"
+                Date="July 15, 2023"
+                Category="News & Blog"
+                ReadMoreLink="/blog/amid-macro-pressures-c-stores-have-an-opportunity-to-innovate"
+              />
           </div>
           <div className="w-[calc((100%-66px)/3)] flex flex-col">
-            <BlogCard />
+            <BlogCard 
+                Title="Nawgati Partners with Seed Group to Modernise the UAE’s Fuel Retail"
+                FeatureImage="/assets/blog/02.png"
+                Date="December 1, 2022"
+                Category="event"
+                ReadMoreLink="/blog/amid-macro-pressures-c-stores-have-an-opportunity-to-innovate"
+              />
           </div>
         </div>
 
@@ -74,7 +92,27 @@ export default function Blog() {
                   key={index}
                   className="flex-[0_0_100%]" // 100% width per slide on mobile
                 >
-                  <BlogCard />
+                  <BlogCard 
+                      Title="Amid Macro Pressures, C‑Stores Have an Opportunity to Innovate"
+                      FeatureImage="/assets/blog/01.png"
+                      Date="July 15, 2023"
+                      Category="News & Blog"
+                      ReadMoreLink="/blog/amid-macro-pressures-c-stores-have-an-opportunity-to-innovate"
+                    />
+                    <BlogCard 
+                      Title="Nawgati Partners with Seed Group to Modernise the UAE’s Fuel Retail"
+                      FeatureImage="/assets/blog/02.png"
+                      Date="December 1, 2022"
+                      Category="event"
+                      ReadMoreLink="/blog/amid-macro-pressures-c-stores-have-an-opportunity-to-innovate"
+                    />
+                    <BlogCard 
+                      Title="Infonet Technology launches next-gen EMV Pay-at-the-Pump module"
+                      FeatureImage="/assets/blog/03.png"
+                      Date="Nov 03, 2025"
+                      Category="News & Blog"
+                      ReadMoreLink="/blog/amid-macro-pressures-c-stores-have-an-opportunity-to-innovate"
+                    />
                 </CarouselItem>
               ))}
             </CarouselContent>
@@ -99,7 +137,7 @@ export default function Blog() {
         {/* View All Button */}
         <div className="flex justify-center mt-[60px]">
           <Link
-            href=""
+            href="/blog"
             className="flex font-medium justify-between box-border rounded-[4px] bg-[#F8F8F3] border-[1px] hover:border-[#EBFF3A] transition duration-150 hover:bg-[#EBFF3A] uppercase gap-[10px] px-[16px] py-[12px]"
           >
             <span className="text-[14px] leading-[18px]">view all insights</span>

@@ -1,20 +1,28 @@
 import Image from "next/image"
 import Link from "next/link"
 
-export default function ServeCard(){
+export default function ServeCard( { FeatureImage,title,description } ){
     return(
         <>
             <div className="w-full">
+                    { FeatureImage &&
                     <Image
                         width={202}
                         height={202}
                         className="rounded-[999999px] h-[130px] w-[130px] md:h-[202px] md:w-[202px] mb-[20px] overflow-hidden relative" 
-                        src="https://staging.hellonotionhive.com/wordpress/infonet/wp-content/uploads/2026/01/b30381a3d7111f37f3ad553294591e662765962c.webp"
-                        alt="Service icon" />
-                        <h3 className="mb-[10px] text-[20px] leading-[24px] md:text-[24px] md:leading-[30px] font-manrope">Retail Gas Stations</h3>
-                        <p className="font-manrope font-medium text-[14px] leading-[20px]">Optimize every pump and every transaction with InfoNet’s integrated solutions. Reduce transaction times, increase pricing accuracy, and simplify inventory tracking.</p>
+                        src={FeatureImage}
+                        alt={title} /> }
+
+                        { title &&
+                        <h3 className="mb-[10px] text-[20px] leading-[24px] md:text-[24px] md:leading-[30px] font-manrope">{title}</h3> }
+
+                        { description &&
+                            <p className="font-manrope font-medium text-[14px] leading-[20px]">
+                                {description}
+                            </p>
+                        }
                         <Link
-                            href=""
+                            href="/service/service-details"
                             className="inline-flex font-medium box-border rounded-[4px] bg-[#EBFF3A] transition duration-150 hover:bg-white hover:border border-1 border-[#EBFF3A] hover:border-[#08090D] hover:text-[#08090D] uppercase gap-[10px] px-[15px] py-[11px] mt-[20px]"
                             >
                             <span className="text-[14px] leading-[18px]">learn more</span>

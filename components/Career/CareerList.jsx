@@ -3,7 +3,7 @@ import CareerListCard from "./CareerListCard"
 export default function CareerList(){
     return(
         <>
-            <div className="pt-20 sm:pt-27.5 lg:pt-55 pb-20 sm:pb-27.5 lg:pb-55">
+            <div className="pt-20 sm:pt-27.5 lg:pt-55 pb-20 sm:pb-27.5 lg:pb-55 bg-white">
                 <div className="container lg:pr-0 lg:pl-0 pr-5 pl-5">
                     <div className="w-full sm:w-164.75 sm:mb-0 mb-10">
                         <h2 className="heading-h2 mb-5">

@@ -58,9 +58,9 @@ CustomAccordionTrigger.displayName = "CustomAccordionTrigger";
 const CultureAndValues = () => {
   return (
     <section className="bg-[#FFFFFF] ">
-      <div className="container mx-auto py-25 md:py-55 px-5">
+      <div className="container mx-auto py-22.5 lg:py-55 px-5">
         <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-12.5">
-          <div className="relative w-full max-w-167.75  h-100 md:h-134 ">
+          <div className="relative w-full  lg:max-w-167.75  h-100 md:h-134 ">
             <Image
               src="/assets/about/culture-2.jpg"
               alt="image"
@@ -69,13 +69,13 @@ const CultureAndValues = () => {
             />
           </div>
 
-          <div className="flex flex-col max-w-134.25">
-            <div className="top-title mb-5">[ Meet Our Experts ]</div>
+          <div className="flex flex-col w-full lg:max-w-134.25">
+            <div className="top-title mb-5">[ Culture & Values ]</div>
             <h2 className="font-manrope text-[28px]  leading-7.5 lg:text-[40px] lg:leading-12.5 ">
               Driven by Collaboration and Innovation
             </h2>
             {/* accordion */}
-            <div className="mt-7.5">
+            <div className="mt-7.5 ">
               <Accordion type="single" collapsible className="w-full">
                 {accordionData.map((item) => (
                   <AccordionItem

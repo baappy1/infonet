@@ -36,7 +36,7 @@ export default function Testimonial() {
           </div>
           <div className="w-full flex justify-end lg:w-[41.7%]">
             <Link
-              href=""
+              href="/contact"
               className="hidden lg:inline-flex lg:px-[16px] px-[16px] py-[12px] lg:py-[12px] text-[14px] leading-[18px] font-medium box-border rounded-[4px] bg-[#EBFF3A] transition duration-150 hover:bg-white hover:text-[#08090D] uppercase gap-[10px]"
             >
               <span>get in touch</span>

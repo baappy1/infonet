@@ -16,11 +16,11 @@ export default function Home() {
     <>
       <Banner 
           bannerTopTitle="[ infonet solution ]"
-          bannerImage="/assets/banner.webp" 
+          bannerVideo="/assets/banner.mp4" 
           bannerTitle="Powering the Future of Fuel & Retail Technology"
           bannerDescription="From gas stations to convenience stores, InfoNet delivers integrated POS and fuel management systems that keep your business running smarter, faster, and more profitably."
           bannerButtonTitle="book a demo"
-          bannerButtonURL="#"
+          bannerButtonURL="/contact"
       />
       <InfiniteSlider/>
       <About/>

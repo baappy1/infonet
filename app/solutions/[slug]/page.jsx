@@ -24,6 +24,7 @@ const SolutionDetails = () => {
       <UseCases />
       <Features />
       <OurImpactSolutions />
+      {/* <OurImpact /> */}
       <Testimonial />
       <MoreSolutions />
     </>

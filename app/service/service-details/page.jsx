@@ -6,6 +6,7 @@ import OurImpactSolutions from "@/components/solutions/OurImpactSolutions";
 import LifeInfoNet from "@/components/service-details/LifeInfoNet";
 import Testimonial from "@/components/About/Testimonial";
 import MoreServices from "@/components/service-details/MoreServices"
+import Benefits from "@/components/service-details/Benefits";
 
 export default function ServiceDetails() {
     return (
@@ -20,6 +21,7 @@ export default function ServiceDetails() {
             />
             <Include />
             <InfiniteSlider />
+            <Benefits/>
             <ProcessDefault />
             <LifeInfoNet />
             <OurImpactSolutions />

@@ -19,10 +19,10 @@ export default function Sustainability() {
   // Variants for each element
   const itemVariants = {
     hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      transition: { duration: 0.6, ease: "easeOut" } 
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
     },
   };
 
@@ -36,11 +36,10 @@ export default function Sustainability() {
           backgroundPosition: "center",
         }}
       >
-        <div className="container h-full mx-auto pt-[10px] lg:pt-[120px] pb-[10px] lg:pb-[120px] pl-[10px] pr-[10px] lg:pl-[0] lg:pr-[0]">
+        <div className="container h-full mx-auto py-2.5 sm:py-20 lg:pt-[120px] lg:pb-[120px] pl-[10px] pr-[10px] lg:pl-[0] lg:pr-[0]">
           <div className="flex flex-wrap justify-end">
             <div className="w-full flex flex-row justify-end">
-              <div className='p-[20px] lg:p-[30px] rounded-[8px] bg-[#08090D]/10 backdrop-blur-[30px] w-full xl:w-[536px]'>
-                
+              <div className="p-[20px] lg:p-[30px] rounded-[8px] bg-[#08090D]/10 backdrop-blur-[30px] w-full xl:w-[536px]">
                 {/* Parent Motion container for stagger */}
                 <motion.div
                   initial="hidden"
@@ -49,27 +48,29 @@ export default function Sustainability() {
                   viewport={{ once: true, amount: 0.3 }}
                 >
                   {/* Title */}
-                  <motion.div 
-                    variants={shouldReduce ? {} : itemVariants} 
+                  <motion.div
+                    variants={shouldReduce ? {} : itemVariants}
                     className="top-title text-white mb-[20px]"
                   >
                     [ Sustainability ]
                   </motion.div>
 
                   {/* Heading */}
-                  <motion.div 
-                    variants={shouldReduce ? {} : itemVariants} 
+                  <motion.div
+                    variants={shouldReduce ? {} : itemVariants}
                     className="heading-h1 text-white font-normal mb-[20px] text-[36px] leading-[40px] xl:text-[50px] xl:leading-[60px] font-manrope"
                   >
                     Smarter Systems for a Greener Future
                   </motion.div>
 
                   {/* Paragraph */}
-                  <motion.p 
-                    variants={shouldReduce ? {} : itemVariants} 
+                  <motion.p
+                    variants={shouldReduce ? {} : itemVariants}
                     className="text-white font-medium font-manrope mb-[20px] text-[14px] lg:text-[16px] leading-[20px] lg:leading-[22px]"
                   >
-                    From energy-efficient fuel management to reduced paper and resource use, our solutions make sustainability simple for your business.
+                    From energy-efficient fuel management to reduced paper and
+                    resource use, our solutions make sustainability simple for
+                    your business.
                   </motion.p>
 
                   {/* Button */}
@@ -109,7 +110,6 @@ export default function Sustainability() {
                     </Link>
                   </motion.div>
                 </motion.div>
-
               </div>
             </div>
           </div>

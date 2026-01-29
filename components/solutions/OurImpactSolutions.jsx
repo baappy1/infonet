@@ -31,7 +31,7 @@ export default function OurImpactSolutions() {
 
   return (
     <div className="bg-[#F8F8F3]">
-      <div className="container mx-auto pt-55">
+      <div className="container lg:pr-[0] lg:pl-[0] pr-[20px] pl-[20px] pt-22.5 lg:pt-55">
         {/* Header Section */}
         <motion.div
           className="text-center"
@@ -43,21 +43,21 @@ export default function OurImpactSolutions() {
         >
           <motion.div
             variants={shouldReduce ? {} : itemVariants}
-            className="top-title mb-5"
+            className="top-title mb-[20px]"
           >
             [ Our Impact ]
           </motion.div>
 
           <motion.div
             variants={shouldReduce ? {} : itemVariants}
-            className="font-manrope lg:mb-0 text-[28px] mx-auto max-w-162.25 leading-7.5 lg:text-[40px] lg:leading-12.5"
+            className="font-manrope lg:mb-[0px] text-[28px] mx-auto max-w-[649px] leading-[30px] lg:text-[40px] lg:leading-[50px]"
           >
             Powering Retail & Fuel Operations Across North America
           </motion.div>
 
           <motion.div
             variants={shouldReduce ? {} : itemVariants}
-            className="mt-5 font-manrope font-medium text-[14px] mx-auto max-w-162.25 leading-5 lg:text-[16px] lg:leading-5.5 opacity-80"
+            className="mt-[20px] font-manrope font-medium text-[14px] mx-auto max-w-[649px] leading-[20px] lg:text-[16px] lg:leading-[22px] opacity-80"
           >
             A snapshot of how Infonet Technology keeps businesses running
             smoothly, efficiently, and reliably — every single day.
@@ -65,7 +65,7 @@ export default function OurImpactSolutions() {
         </motion.div>
 
         <motion.div
-          className="flex flex-wrap gap-4 mt-15 mx-auto px-5"
+          className="flex flex-wrap gap-4 mt-15 mx-auto max-w-[990px]"
           variants={shouldReduce ? {} : containerVariants}
           initial="hidden"
           whileInView={shouldReduce ? {} : "visible"}
@@ -115,10 +115,10 @@ export default function OurImpactSolutions() {
 
         <div className="flex justify-center mt-12 sm:mt-17.5">
           <Link
-            className="inline-flex lg:px-4 px-4 py-3 lg:py-3 text-[14px] leading-4.5 font-medium box-border rounded-sm bg-[#EBFF3A] transition duration-150 hover:bg-white hover:text-[#08090D] uppercase gap-2.5"
+            className="inline-flex lg:px-[16px] px-[16px] py-[12px] lg:py-[12px] text-[14px] leading-[18px] font-medium box-border rounded-[4px] bg-[#EBFF3A] transition duration-150 hover:bg-white hover:text-[#08090D] uppercase gap-[10px]"
             href="/contact"
           >
-            <span className="font-medium  sm:leading-4.5 text-[14px]">
+            <span className="font-medium sm:leading-[18px] text-[14px]">
               explore our solutions
             </span>
             <svg

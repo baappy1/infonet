@@ -35,7 +35,7 @@ const useCasesData = [
 const UseCases = () => {
   return (
     <section className="bg-[#F8F8F3]">
-      <div className="container mx-auto py-25 lg:pt-35 lg:pb-55 px-5">
+      <div className="container mx-auto py-25 lg:pt-5 lg:pb-55 px-5">
         <div className="top-title mb-5 text-center">[ Use Cases ]</div>
         <h2 className="font-manrope text-[28px] leading-7.5 lg:text-[40px] lg:leading-12.5 text-[#08090D] text-center max-w-134.25 mx-auto">
           How Retailers Leverage C-Store Commander

@@ -97,9 +97,9 @@ const featuresData = [
 
 const Features = () => {
   return (
-    <section className="px-2.5">
-      <div className="w-full relative rounded-lg overflow-hidden">
-        <div className="w-full py-55 flex justify-center items-center px-2.5 ">
+    <section className="px-2.5 ">
+      <div className="w-full relative rounded-lg overflow-hidden ">
+        <div className="w-full py-55  flex justify-center items-center px-2.5 ">
           <div className="mx-auto">
             <div className="top-title mb-5 text-center text-white">
               [ Features ]
