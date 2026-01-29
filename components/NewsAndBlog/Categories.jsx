@@ -35,7 +35,7 @@ export default function Categories() {
         {/* Header Section */}
 
         <motion.div
-          className="flex flex-wrap gap-4 mt-15 mx-auto "
+          className="categories flex flex-wrap gap-4 mt-15 mx-auto "
           variants={shouldReduce ? {} : containerVariants}
           initial="hidden"
           whileInView={shouldReduce ? {} : "visible"}

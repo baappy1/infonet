@@ -21,25 +21,25 @@ const blogDetail = {
     {
       id: 2,
       name: "Medium",
-      icon: "/assets/newsandblog/twitter.svg",
+      icon: "/assets/newsandblog/medium.svg",
       url: "#",
     },
     {
       id: 3,
       name: "Facebook",
-      icon: "/assets/newsandblog/twitter.svg",
+      icon: "/assets/newsandblog/facebook-circle-fill.svg",
       url: "#",
     },
     {
       id: 4,
       name: "LinkedIn",
-      icon: "/assets/newsandblog/twitter.svg",
+      icon: "/assets/newsandblog/linkedin-box-fill.svg",
       url: "#",
     },
     {
       id: 5,
       name: "Telegram",
-      icon: "/assets/newsandblog/twitter.svg",
+      icon: "/assets/newsandblog/send-plane-line.svg",
       url: "#",
     },
   ],
@@ -47,7 +47,7 @@ const blogDetail = {
 
 const BlogDetails = () => {
   return (
-    <section className="pt-41.5 pb-8.5 bg-[#f8f8f3]">
+    <section className="pt-15 lg:pt-41.5 pb-8.5 bg-[#f8f8f3]">
       <div className="max-w-247.5 mx-auto px-2.5">
         <button className="flex  items-center px-3 py-1.5 justify-center border border-[#08090d]/10 gap-2 rounded-[999px]">
           <Image
@@ -65,7 +65,7 @@ const BlogDetails = () => {
         <div className="mt-7.5 flex flex-col gap-5 md:flex-row md:gap-8  w-full border-b border-[#08090d]/20 border-dashed pb-[34px]">
           {/* left */}
           <div className="max-w-119.75 w-full">
-            <div className="flex items-center gap-2 font-jetbrains text-base leading-5.5 uppercase tracking-[0px] bg-[#EBFF3A] px-3 py-1.5 max-w-66.5">
+            <div className="flex items-center rounded-[999px] gap-2 font-jetbrains text-base leading-5.5 uppercase tracking-[0px] bg-[#EBFF3A] px-3 py-1.5 max-w-66.5">
               <span>{blogDetail.category}</span>
               <Image
                 src="/assets/newsandblog/eclipse.svg"
@@ -81,7 +81,7 @@ const BlogDetails = () => {
             </h2>
 
             {/*socail links  */}
-            <div className="flex items-center gap-2 mt-38.25">
+            <div className="flex items-center gap-2 mt-15 sm:mt-38.25">
               <p className="font-manrope font-medium text-base leading-5.5 text-[#08090D]">
                 {blogDetail.shareText}
               </p>

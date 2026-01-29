@@ -47,7 +47,7 @@ export default function LifeInfoNet() {
 
     return (
         <>
-            <div className="pt-20 lg:pt-25 pb-25 lg:pb-55 bg-[#F8F8F3]">
+            <div className="pt-20 lg:pt-25 bg-[#F8F8F3]">
                 <div className="container lg:pr-0 lg:pl-0 pr-5 pl-5" ref={containerRef}>
                     <div className="w-full">
                         <div className="w-full lg:w-[49.7%]">

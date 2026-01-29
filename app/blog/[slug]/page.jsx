@@ -8,6 +8,7 @@ const BlogDetailsPage = () => {
     <>
       <BlogDetails />
       <BlogContent />
+      <SimilarInsights />
     </>
   );
 };

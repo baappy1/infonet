@@ -1,128 +1,36 @@
-"use client";
+import BlogCard from "../Home/BlogCard"
 
-import * as React from "react";
-import BlogCard from "./BlogCard";
-import Link from "next/link";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel";
-
-export default function SimilarInsights() {
-  const [api, setApi] = React.useState(null); // carousel API
-  const [selectedIndex, setSelectedIndex] = React.useState(0); // current slide
-
-  const slides = Array.from({ length: 3 }); // ensure this matches CarouselItem count
-
-  // Update selectedIndex when carousel changes
-  const onSelect = () => {
-    if (!api) return;
-    setSelectedIndex(api.selectedScrollSnap());
-  };
-
-  React.useEffect(() => {
-    if (!api) return;
-    api.on("select", onSelect);
-    api.on("reInit", onSelect);
-    onSelect(); // initial selection
-    return () => {
-      api.off("select", onSelect);
-      api.off("reInit", onSelect);
-    };
-  }, [api]);
-
+export default function () {
   return (
-    <div className="bg-[#F8F8F3] pt-[0] lg:pt-[12vh] pb-[130px] lg:pb-[28.8vh]">
-      <div className="container lg:pr-[0] lg:pl-[0] pr-[20px] pl-[20px]">
-        {/* Desktop Grid */}
-        <div className="hidden lg:flex flex-wrap gap-x-[22px] gap-y-[22px] mt-[40px] lg:mt-[100px]">
-          <div className="w-[calc((100%-66px)/3)] flex flex-col">
-            <BlogCard />
-          </div>
-          <div className="w-[calc((100%-66px)/3)] flex flex-col">
-            <BlogCard />
-          </div>
-          <div className="w-[calc((100%-66px)/3)] flex flex-col">
-            <BlogCard />
-          </div>
-        </div>
-
-        {/* Mobile Carousel */}
-        <div className="lg:hidden w-full mt-[40px]">
-          <Carousel
-            className="w-full"
-            setApi={setApi}
-            opts={{ align: "start", containScroll: "trimSnaps" }}
-          >
-            <CarouselContent className="flex gap-4">
-              {slides.map((_, index) => (
-                <CarouselItem
-                  key={index}
-                  className="flex-[0_0_100%]" // 100% width per slide on mobile
-                >
-                  <BlogCard />
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-          </Carousel>
-
-          {/* Pagination */}
-          <div className="flex justify-center mt-[20px] gap-[4px]">
-            {slides.map((_, index) => (
-              <button
-                key={index}
-                className={`h-[6px] rounded-[4px] transition-all duration-200 ${
-                  selectedIndex === index
-                    ? "w-[16px] bg-[#08090D]" // active: width 16px
-                    : "w-[10px] bg-[#08090D1A]" // inactive: width 10px
-                }`}
-                onClick={() => api?.scrollTo(index)}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* View All Button */}
-        <div className="flex justify-center mt-[60px]">
-          <Link
-            href=""
-            className="flex font-medium justify-between box-border rounded-[4px] bg-[#F8F8F3] border-[1px] hover:border-[#EBFF3A] transition duration-150 hover:bg-[#EBFF3A] uppercase gap-[10px] px-[16px] py-[12px]"
-          >
-            <span className="text-[14px] leading-[18px]">
-              view all insights
-            </span>
-            <svg
-              width={16}
-              height={16}
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g clipPath="url(#clip0_505_137)">
-                <path
-                  d="M2.5 8H13.5"
-                  stroke="#08090D"
-                  strokeWidth="1.5"
-                  strokeLinecap="square"
-                  strokeLinejoin="round"
+    <>
+        <section className="bg-[#f8f8f3] pt-12 lg:pt-28.5 pb-25 lg:pb-55">
+          <div className="container lg:pr-0 lg:pl-0 pr-5 pl-5">
+            <h2 className="heading-h2 mb-15">Similar Insights</h2>
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+              <BlogCard 
+                  Title="Amid Macro Pressures, C‑Stores Have an Opportunity to Innovate"
+                  FeatureImage="/assets/blog/01.png"
+                  Date="July 15, 2023"
+                  Category="News & Blog"
+                  ReadMoreLink="/blog/amid-macro-pressures-c-stores-have-an-opportunity-to-innovate"
                 />
-                <path
-                  d="M9.79999 3.5L14.3 8L9.79999 12.5"
-                  stroke="#08090D"
-                  strokeWidth="1.5"
-                  strokeLinecap="square"
+                <BlogCard 
+                  Title="Nawgati Partners with Seed Group to Modernise the UAE’s Fuel Retail"
+                  FeatureImage="/assets/blog/02.png"
+                  Date="December 1, 2022"
+                  Category="event"
+                  ReadMoreLink="/blog/amid-macro-pressures-c-stores-have-an-opportunity-to-innovate"
                 />
-              </g>
-              <defs>
-                <clipPath id="clip0_505_137">
-                  <rect width={16} height={16} fill="white" />
-                </clipPath>
-              </defs>
-            </svg>
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
+                <BlogCard 
+                  Title="Infonet Technology launches next-gen EMV Pay-at-the-Pump module"
+                  FeatureImage="/assets/blog/03.png"
+                  Date="Nov 03, 2025"
+                  Category="News & Blog"
+                  ReadMoreLink="/blog/amid-macro-pressures-c-stores-have-an-opportunity-to-innovate"
+                />
+            </div>
+          </div>
+        </section>
+    </>
+  )
 }

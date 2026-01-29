@@ -12,32 +12,32 @@ const socialLinks = [
   {
     id: 2,
     name: "Medium",
-    icon: "/assets/newsandblog/twitter.svg",
+    icon: "/assets/newsandblog/medium.svg",
     url: "#",
   },
   {
     id: 3,
     name: "Facebook",
-    icon: "/assets/newsandblog/twitter.svg",
+    icon: "/assets/newsandblog/facebook-circle-fill.svg",
     url: "#",
   },
   {
     id: 4,
     name: "LinkedIn",
-    icon: "/assets/newsandblog/twitter.svg",
+    icon: "/assets/newsandblog/linkedin-box-fill.svg",
     url: "#",
   },
   {
     id: 5,
     name: "Telegram",
-    icon: "/assets/newsandblog/twitter.svg",
+    icon: "/assets/newsandblog/send-plane-line.svg",
     url: "#",
   },
 ];
 
 const SocialShare = ({ shareText = "Share this article on :" }) => {
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items- justify-end gap-2">
       <p className="font-manrope font-medium text-base leading-5.5 text-[#08090D]">
         {shareText}
       </p>

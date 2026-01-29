@@ -2,8 +2,10 @@ import Banner from "@/components/Banner";
 import ProcessDefault from "@/components/service-details/process";
 import Include from "@/components/service-details/Include";
 import InfiniteSlider from "@/components/Home/LogoSlider";
-import Benefits from "@/components/service-details/Benefits";
+import OurImpactSolutions from "@/components/solutions/OurImpactSolutions";
 import LifeInfoNet from "@/components/service-details/LifeInfoNet";
+import Testimonial from "@/components/About/Testimonial";
+import MoreServices from "@/components/service-details/MoreServices"
 
 export default function ServiceDetails() {
     return (
@@ -16,11 +18,13 @@ export default function ServiceDetails() {
                 bannerButtonTitle="Request a Demo"
                 bannerButtonURL="#"
             />
-            <ProcessDefault />
             <Include />
             <InfiniteSlider />
-            <Benefits />
+            <ProcessDefault />
             <LifeInfoNet />
+            <OurImpactSolutions />
+            <Testimonial />
+            <MoreServices/>
         </>
     )
 }

@@ -6,7 +6,7 @@ import SocialShare from "./SocialLinks";
 const BlogContent = () => {
   return (
     <section className="bg-[#f8f8f3]">
-      <div className="max-w-247.5 mx-auto px-2.5">
+      <div className="generic-description max-w-247.5 mx-auto px-2.5 mb-0">
         <p>
           As the electric vehicle (EV) market accelerates globally, EV charging
           networks are scaling at an unprecedented pace. But with rapid growth
@@ -16,8 +16,6 @@ const BlogContent = () => {
           continuous improvement. The real question is: How do EV companies turn
           that feedback into measurable growth?
         </p>
-
-        <br />
 
         <p>
           EV users interact with a charging network through apps, kiosks,
@@ -29,11 +27,7 @@ const BlogContent = () => {
           instantly.
         </p>
 
-        <br />
-
         <h3>Categorize Insights for Faster Decisions</h3>
-
-        <br />
 
         <p>
           Once collected, insights must be grouped and interpreted in a
@@ -45,8 +39,6 @@ const BlogContent = () => {
           for example, demand faster action than cosmetic improvements.
         </p>
 
-        <br />
-
         <p>
           Measuring growth is equally important. After applying improvements,
           companies track outcomes through specific performance indicators, such
@@ -54,19 +46,13 @@ const BlogContent = () => {
           increase in completed charging sessions or higher station utilization.
         </p>
 
-        <br />
-
         <h3>Measure the Impact With Real Metrics</h3>
-
-        <br />
 
         <p>
           These metrics verify whether the changes are truly making an impact.
           When the numbers move in the right direction, operators know they’re
           on a path that supports both users and business goals.
         </p>
-
-        <br />
 
         <p>
           Ultimately, the EV charging industry thrives on a cycle of continuous
@@ -77,36 +63,20 @@ const BlogContent = () => {
           growth is not just an advantage—it’s essential.
         </p>
 
-        <div className="bg-white px-6 mt-8.5">
-          <Image
-            src="/assets/newsandblog/double-quotes.svg"
-            alt="quote"
-            width={80}
-            height={80}
-            className="object-cover"
-          />
-
           <blockquote>
-            "Working with Infonet has transformed the way we operate our EV
-            charging network"
+            <h2>"Working with Infonet has transformed the way we operate our EV
+            charging network"</h2>
+            <p>— Daniel Morgan, Operations Director, ChargePoint Energy Solutions</p>
           </blockquote>
-          <br />
-          <p>
-            — Daniel Morgan, Operations Director, ChargePoint Energy Solutions
-          </p>
-        </div>
-
-        <br />
 
         <h3>Build a Continuous Feedback Culture</h3>
-        <br />
+
         <p>
           As EV adoption rises, charger reliability has become a defining factor
           in user satisfaction. Many operators still rely on manual inspections
           or user complaints to identify problems, leading to long downtimes and
           inconsistent service.
         </p>
-        <br />
         <p>
           A more effective approach is predictive maintenance powered by
           real-time data. By monitoring patterns such as temperature
@@ -114,16 +84,10 @@ const BlogContent = () => {
           consumption, operators can detect issues before they cause a
           breakdown.
         </p>
-        <br />
 
-        <div className="relative h-100 lg:h-137.5">
-          <Image src="/assets/newsandblog/feedback.png" fill alt="feedback" />
-        </div>
+       <Image src="/assets/newsandblog/feedback.png" width={990} height={550} alt="feedback" />
 
-        <br />
         <h3>Categorize Insights for Faster Decisions</h3>
-
-        <br />
 
         <p>
           This shift from reactive to predictive maintenance not only reduces
@@ -131,15 +95,9 @@ const BlogContent = () => {
           strengthening user trust in the charging network.
         </p>
 
-        <br />
-
         <Categories />
 
-        <br />
-
         <h3>Enhancing User Experience Through Seamless Payment Systems</h3>
-
-        <br />
 
         <p>
           Payment experience is often overlooked, yet it plays a crucial role in
@@ -147,7 +105,6 @@ const BlogContent = () => {
           authorization or complicated account setups can frustrate users even
           if the charger itself performs well. T
         </p>
-        <br />
 
         <p>
           Today’s EV companies are addressing this by integrating faster, more
@@ -159,9 +116,10 @@ const BlogContent = () => {
           usage.
         </p>
 
-        <br />
 
-        <SocialShare />
+        <div className="mt-20.5">
+          <SocialShare />
+        </div>
       </div>
     </section>
   );
