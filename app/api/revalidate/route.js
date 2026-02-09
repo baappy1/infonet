@@ -17,13 +17,26 @@ async function handler(request) {
     // Clear the specific tag used in tagged fetches
     revalidateTag(tag, "max");
 
-    // Revalidate the path (default to the layout tree from root)
+    // Revalidate the specific path
     revalidatePath(path, "layout");
+    
+    // Also revalidate common paths that might be affected
+    const commonPaths = ["/", "/blog", "/industries", "/service"];
+    commonPaths.forEach(p => {
+      if (p !== path) {
+        try {
+          revalidatePath(p, "layout");
+        } catch (e) {
+          // Ignore errors for paths that don't exist
+        }
+      }
+    });
 
     return NextResponse.json({
       revalidated: true,
       tag,
       path,
+      commonPathsRevalidated: commonPaths,
       now: Date.now(),
     });
   } catch (err) {
