@@ -1,23 +1,26 @@
-import CareerDetailsContent from "@/components/Career/CareerDetails";
-import CareerDetailsSidebar from "@/components/Career/CareerDetailsSidebar";
-import CareerHeader from "@/components/Career/CareerHeader";
+import { client } from "@/lib/graphql/client";
+import { GET_CAREER_BY_ID } from "@/lib/graphql/queries";
+import { redirect } from "next/navigation";
 
-export default function CareerDetails() {
-    return (
-        <>
-            <div className="pt-[68px] pb-[80px] sm:pb-[150px] lg:pb-[350px] bg-[#F8F8F3]">
-                <div className="container lg:pr-0 lg:pl-0 pr-5 pl-5">
-                    <div className="flex flex-wrap lg:gap-0 gap-10">
-                        <div className="w-full lg:w-[60%]">
-                            <CareerHeader />
-                            <CareerDetailsContent />
-                        </div>
-                        <div className="w-full lg:w-[40%]">
-                            <CareerDetailsSidebar />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </>
-    )
+export default async function CareerDetailsPage({ searchParams }) {
+  const params = await searchParams;
+  const id = params?.id;
+
+  if (id) {
+    try {
+      const { data } = await client.query({
+        query: GET_CAREER_BY_ID,
+        variables: { careerId: Number(id) },
+        fetchPolicy: "no-cache",
+      });
+      const career = data?.careerBy;
+      if (career?.slug) {
+        redirect(`/career/career-details/${career.slug}`);
+      }
+    } catch {
+      // fall through to redirect
+    }
+  }
+
+  redirect("/career");
 }

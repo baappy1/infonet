@@ -1,14 +1,60 @@
 "use client";
 
-import Logo from "../assets/logothree.png";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import Logo from "../assets/logothree.png";
 
-export default function TopHeader({ setActive, activeMenu }) {
-  const handleClick = () => {
-    setActive(!activeMenu);
-  };
+const ChevronIcon = ({ isOpen }) => (
+  <svg
+    width={16}
+    height={16}
+    viewBox="0 0 16 16"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={`transition-transform duration-300 shrink-0 ${isOpen ? "rotate-180" : ""}`}
+    aria-hidden
+  >
+    <path
+      d="M12.6667 8L8.00004 12.6667L3.33337 8"
+      stroke="white"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+
+export default function TopHeader({ setActive, activeMenu, themeOptions = {}, menuItems = [] }) {
+  const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
+  const dropdownRef = useRef(null);
+
+  const logo = themeOptions?.companyLogo || Logo;
+  const letsTalkTitle = themeOptions?.letstalkTitle || "get in touch";
+  const letsTalkUrl = themeOptions?.letstalkUrl || "/contact";
+
+  const handleMobileMenuClick = () => setActive(!activeMenu);
+
+  // Close dropdown on Escape
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") setOpenDropdownIndex(null);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, []);
+
+  // Close dropdown on click outside
+  useEffect(() => {
+    const onClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setOpenDropdownIndex(null);
+      }
+    };
+    document.addEventListener("click", onClickOutside);
+    return () => document.removeEventListener("click", onClickOutside);
+  }, []);
+
+  const getItemKey = (item, i) => item?.label ?? item?.url ?? i;
 
   return (
     <>
@@ -17,235 +63,108 @@ export default function TopHeader({ setActive, activeMenu }) {
           <div className="flex flex-wrap justify-between items-center">
             <div className="w-[94px] lg:w-[133px]">
               <Link href="/">
-                <Image src={Logo} alt="Infonet Logo" loading="eager" />
+                <Image
+                  src={logo}
+                  alt="Infonet Logo"
+                  loading="eager"
+                  width={133}
+                  height={40}
+                  className="w-full h-auto"
+                />
               </Link>
             </div>
 
-            <div className="flex gap-[20px] tablet-hidden">
-              <div className="relative group">
-                <Link
-                  href="/"
-                  className="text-white uppercase font-medium leading-5.5 relative transition-colors duration-200"
-                >
-                  Home
-                  <span className="absolute bottom-[-3px] left-0 w-0 h-[2px] bg-[#EBFF3A] group-hover:w-full transition-all duration-300"></span>
-                </Link>
-              </div>
-
-              <div className="relative group">
-                <button className="relative cursor-pointer flex text-white items-center gap-[4px] uppercase border-transparent group transition-colors duration-200">
-                  <span className="font-medium leading-5.5">Industries</span>
-                  <svg
-                    className="transition-transform duration-300 group-hover:rotate-180"
-                    width={16}
-                    height={16}
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M8 3.33333V12.6667"
-                      stroke="white"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M12.6667 8L8.00004 12.6667L3.33337 8"
-                      stroke="white"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-
-                  <span className="absolute bottom-[-3px] left-0 w-0 h-[2px] bg-[#EBFF3A] group-hover:w-full transition-all duration-300"></span>
-                </button>
-
-                <div className="absolute w-[265px] z-[91] hidden group-hover:block top-[20px] left-[-76px]">
-                  <div className="w-full mt-[42px] rounded-[8px] bg-[#08090D1A] backdrop-blur-[30px] p-[20px] flex flex-col gap-2">
-                    <Link
-                      className="text-white uppercase hover:bg-[#08090D1A] rounded-lg mb-1 w-full block transition-colors duration-200 p-2.5 leading-5.5 font-medium"
-                      href="/industries"
+            <div className="flex gap-[20px] tablet-hidden" ref={dropdownRef}>
+              {menuItems.length > 0 ? (
+                menuItems.map((item, i) =>
+                  item.children?.length > 0 ? (
+                    <div
+                      key={getItemKey(item, i)}
+                      className="relative group"
+                      onMouseEnter={() => setOpenDropdownIndex(i)}
+                      onMouseLeave={() => setOpenDropdownIndex(null)}
                     >
-                      Retail Gas Stations
-                    </Link>
-                    <Link
-                      className="text-white uppercase hover:bg-[#08090D1A] rounded-lg mb-1 w-full block transition-colors duration-200 p-2.5 leading-5.5 font-medium"
-                      href="/industries"
-                    >
-                      Convenience Stores
-                    </Link>
-                    <Link
-                      className="text-white uppercase hover:bg-[#08090D1A] rounded-lg mb-1 w-full block transition-colors duration-200 p-2.5 leading-5.5 font-medium"
-                      href="/industries"
-                    >
-                      Unattended Fuel Sites
-                    </Link>
-                    <Link
-                      className="text-white uppercase hover:bg-[#08090D1A] rounded-lg mb-1 w-full block transition-colors duration-200 p-2.5 leading-5.5 font-medium"
-                      href="/industries"
-                    >
-                      Fleet Fueling
-                    </Link>
-                    <Link
-                      className="text-white uppercase hover:bg-[#08090D1A] rounded-lg mb-1 w-full block transition-colors duration-200 p-2.5 leading-5.5 font-medium"
-                      href="/industries"
-                    >
-                      First Nations Retail
+                      <button
+                        type="button"
+                        aria-expanded={openDropdownIndex === i}
+                        aria-haspopup="true"
+                        aria-controls={`menu-dropdown-${i}`}
+                        id={`menu-trigger-${i}`}
+                        className="relative cursor-pointer flex text-white items-center gap-[4px] uppercase border-transparent group transition-colors duration-200 font-medium leading-5.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EBFF3A] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent rounded"
+                        onClick={() => setOpenDropdownIndex(openDropdownIndex === i ? null : i)}
+                      >
+                        <span>{item.label}</span>
+                        <ChevronIcon isOpen={openDropdownIndex === i} />
+                        <span className="absolute bottom-[-3px] left-0 w-0 h-[2px] bg-[#EBFF3A] transition-all duration-300 group-hover:w-full group-focus-within:w-full" style={{ width: openDropdownIndex === i ? "100%" : undefined }}></span>
+                      </button>
+                      <div
+                        id={`menu-dropdown-${i}`}
+                        role="menu"
+                        aria-labelledby={`menu-trigger-${i}`}
+                        className={`absolute w-[265px] z-[91] top-[20px] left-[-76px] ${openDropdownIndex === i ? "block" : "hidden"}`}
+                      >
+                        <div className="w-full mt-[42px] rounded-[8px] bg-[#08090D1A] backdrop-blur-[30px] p-[20px] flex flex-col gap-2">
+                          {item.children.map((child, j) => (
+                            <Link
+                              key={child?.label ?? child?.url ?? j}
+                              role="menuitem"
+                              className="text-white uppercase hover:bg-[#08090D1A] rounded-lg mb-1 w-full block transition-colors duration-200 p-2.5 leading-5.5 font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EBFF3A] focus-visible:ring-inset"
+                              href={child?.url ?? "#"}
+                              onClick={() => setOpenDropdownIndex(null)}
+                            >
+                              {child.label}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div key={getItemKey(item, i)} className="relative group">
+                      <Link
+                        href={item?.url ?? "#"}
+                        className="text-white uppercase font-medium leading-5.5 relative transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EBFF3A] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent rounded"
+                      >
+                        {item.label}
+                        <span className="absolute bottom-[-3px] left-0 w-0 h-[2px] bg-[#EBFF3A] group-hover:w-full transition-all duration-300"></span>
+                      </Link>
+                    </div>
+                  )
+                )
+              ) : (
+                <>
+                  <div className="relative group">
+                    <Link href="/" className="text-white uppercase font-medium leading-5.5 relative transition-colors duration-200">
+                      Home
+                      <span className="absolute bottom-[-3px] left-0 w-0 h-[2px] bg-[#EBFF3A] group-hover:w-full transition-all duration-300"></span>
                     </Link>
                   </div>
-                </div>
-              </div>
-
-              <div className="relative group">
-                <button className="relative cursor-pointer flex text-white items-center gap-1 font-medium leading-5.5 uppercase border-transparent group transition-colors duration-200">
-                  <span>Solutions</span>
-                  <svg
-                    className="transition-transform duration-300 group-hover:rotate-180"
-                    width={16}
-                    height={16}
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M8 3.33333V12.6667"
-                      stroke="white"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M12.6667 8L8.00004 12.6667L3.33337 8"
-                      stroke="white"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-
-                  <span className="absolute bottom-[-3px] left-0 w-0 h-[2px] bg-[#EBFF3A] group-hover:w-full transition-all duration-300"></span>
-                </button>
-
-                <div className="absolute z-[91] w-[265px] hidden group-hover:block top-[20px] left-[-76px]">
-                  <div className="w-full mt-[42px] rounded-[8px] bg-[#08090D1A] backdrop-blur-[30px] p-[20px] flex flex-col gap-2">
-                    <Link
-                      className="text-white uppercase hover:bg-[#08090D1A] rounded-lg mb-1 w-full block transition-colors duration-200 p-2.5 font-medium leading-5.5"
-                      href="/solutions/store "
-                    >
-                      Retail Gas Stations
-                    </Link>
-                    <Link
-                      className="text-white uppercase hover:bg-[#08090D1A] rounded-lg mb-1 w-full block transition-colors duration-200 p-2.5 font-medium leading-5.5"
-                      href="/solutions/store"
-                    >
-                      Convenience Stores
-                    </Link>
-                    <Link
-                      className="text-white uppercase hover:bg-[#08090D1A] rounded-lg mb-1 w-full block transition-colors duration-200 p-2.5 font-medium leading-5.5"
-                      href="/solutions/store"
-                    >
-                      Unattended Fuel Sites
-                    </Link>
-                    <Link
-                      className="text-white uppercase hover:bg-[#08090D1A] rounded-lg mb-1 w-full block transition-colors duration-200 p-2.5 font-medium leading-5.5"
-                      href="/solutions/store"
-                    >
-                      Fleet Fueling
-                    </Link>
-                    <Link
-                      className="text-white uppercase hover:bg-[#08090D1A] rounded-lg mb-1 w-full block transition-colors duration-200 p-2.5 font-medium leading-5.5"
-                      href="/solutions/store"
-                    >
-                      First Nations Retail
+                  <div className="relative group">
+                    <Link href="/Industries" className="text-white uppercase font-medium leading-5.5 relative transition-colors duration-200">
+                      Industries
+                      <span className="absolute bottom-[-3px] left-0 w-0 h-[2px] bg-[#EBFF3A] group-hover:w-full transition-all duration-300"></span>
                     </Link>
                   </div>
-                </div>
-              </div>
-
-              <div className="relative group">
-                <Link
-                  href="/service/service-details"
-                  className="text-white uppercase font-medium leading-5.5 relative transition-colors duration-200"
-                >
-                  Services
-                  <span className="absolute bottom-[-3px] left-0 w-0 h-[2px] bg-[#EBFF3A] group-hover:w-full transition-all duration-300"></span>
-                </Link>
-              </div>
-
-              <div className="relative group">
-                <button className="relative cursor-pointer flex text-white items-center gap-1 uppercase border-transparent group transition-colors duration-200 font-medium leading-5.5">
-                  <span>Company</span>
-                  <svg
-                    className="transition-transform duration-300 group-hover:rotate-180"
-                    width={16}
-                    height={16}
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M8 3.33333V12.6667"
-                      stroke="white"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M12.6667 8L8.00004 12.6667L3.33337 8"
-                      stroke="white"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-
-                  <span className="absolute bottom-[-3px] left-0 w-0 h-[2px] bg-[#EBFF3A] group-hover:w-full transition-all duration-300"></span>
-                </button>
-
-                <div className="absolute z-91 w-66.25 hidden group-hover:block top-5 -left-19">
-                  <div className="w-full mt-10.5 rounded-lg bg-[#08090D1A] backdrop-blur-[30px] p-5 flex flex-col gap-2">
-                    <Link
-                      className="text-white uppercase hover:bg-[#08090D1A] rounded-lg mb-1 w-full block transition-colors duration-200 p-2.5 font-medium leading-5.5"
-                      href="/who-we-are"
-                    >
-                      Who We Are
-                    </Link>
-                    <Link
-                      className="text-white uppercase hover:bg-[#08090D1A] rounded-lg mb-1 w-full block transition-colors duration-200 p-2.5 font-medium leading-5.5"
-                      href="/leadership"
-                    >
-                      Leadership
-                    </Link>
-                    <Link
-                      className="text-white uppercase hover:bg-[#08090D1A] rounded-lg mb-1 w-full block transition-colors duration-200 p-2.5 font-medium leading-5.5"
-                      href="/affiliations-partners"
-                    >
-                      Affiliations & Partners
-                    </Link>
-                    <Link
-                      className="text-white uppercase hover:bg-[#08090D1A] rounded-lg mb-1 w-full block transition-colors duration-200 p-2.5 font-medium leading-5.5"
-                      href="/career"
-                    >
-                      Career
-                    </Link>
-                    <Link
-                      className="text-white uppercase hover:bg-[#08090D1A] rounded-lg mb-1 w-full block transition-colors duration-200 p-2.5 font-medium leading-5.5"
-                      href="/blog"
-                    >
-                      Blog 
-                    </Link>
-                    <Link
-                      className="text-white uppercase hover:bg-[#08090D1A] rounded-lg mb-1 w-full block transition-colors duration-200 p-2.5 font-medium leading-5.5"
-                      href="/contact"
-                    >
-                      Contact 
+                  <div className="relative group">
+                    <Link href="/solutions" className="text-white uppercase font-medium leading-5.5 relative transition-colors duration-200">
+                      Solutions
+                      <span className="absolute bottom-[-3px] left-0 w-0 h-[2px] bg-[#EBFF3A] group-hover:w-full transition-all duration-300"></span>
                     </Link>
                   </div>
-                </div>
-              </div>
+                  <div className="relative group">
+                    <Link href="/service" className="text-white uppercase font-medium leading-5.5 relative transition-colors duration-200">
+                      Services
+                      <span className="absolute bottom-[-3px] left-0 w-0 h-[2px] bg-[#EBFF3A] group-hover:w-full transition-all duration-300"></span>
+                    </Link>
+                  </div>
+                </>
+              )}
             </div>
 
             <Link
               className="primary-button tablet-hidden max-h-12.5"
-              href="/contact"
+              href={letsTalkUrl}
             >
-              <span className="font-medium leading-5.5">get in touch</span>
+              <span className="font-medium leading-5.5">{letsTalkTitle}</span>
               <svg
                 width={20}
                 height={20}
@@ -278,7 +197,11 @@ export default function TopHeader({ setActive, activeMenu }) {
 
             <div
               className="mobile-menu-expand tablet-show"
-              onClick={() => handleClick()}
+              onClick={handleMobileMenuClick}
+              onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), handleMobileMenuClick())}
+              role="button"
+              tabIndex={0}
+              aria-label="Open menu"
             >
               <svg
                 width={40}

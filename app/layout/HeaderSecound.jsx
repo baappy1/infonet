@@ -1,15 +1,12 @@
-'use client';
+"use client";
 import Image from "next/image";
-import Link from 'next/link';
-import { useState } from "react";
+import Link from "next/link";
 import MobileHeaderPopup from "./MobileHeaderPopup";
 
-export default function HeaderSecound(){
-    const [activeMenu, setActive] = useState(false);
-
-    const handleClick = () => {
-        setActive(!activeMenu); 
-    };
+export default function HeaderSecound({ setActive, activeMenu, themeOptions = {}, menuItems = [] }) {
+  const handleClick = () => {
+    setActive(!activeMenu);
+  };
 
     return(
         <>
@@ -197,7 +194,7 @@ export default function HeaderSecound(){
                     </div>
                 </div>
             </header>
-            <MobileHeaderPopup setActive={setActive} activeMenu={activeMenu} />
+            <MobileHeaderPopup setActive={setActive} activeMenu={activeMenu} themeOptions={themeOptions} menuItems={menuItems} />
         </>
     )
 }

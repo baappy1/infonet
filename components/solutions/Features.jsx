@@ -1,8 +1,7 @@
 import Image from "next/image";
-import React from "react";
 import FeatureCard from "./FeatureCard";
 
-const featuresData = [
+const DEFAULT_FEATURES = [
   {
     id: 1,
     title: "Easy, User-Friendly Interface",
@@ -95,31 +94,41 @@ const featuresData = [
   },
 ];
 
-const Features = () => {
+const Features = ({
+  topTitle = "[ Features ]",
+  title = "Everything You Need to Run a Smarter Store",
+  shortDescription = "C-Store Commander delivers the essential features retailers rely on every day: fast transactions, accurate reporting, secure payments, and complete control over forecourt and in-store operations.",
+  features = DEFAULT_FEATURES,
+}) => {
+  const list =
+    Array.isArray(features) && features.length > 0
+      ? features
+      : DEFAULT_FEATURES;
+
   return (
     <section className="px-2.5 ">
       <div className="w-full relative rounded-lg overflow-hidden ">
-        <div className="w-full py-55  flex justify-center items-center px-2.5 ">
+        <div className="w-full py-55 flex justify-center items-center px-2.5 ">
           <div className="mx-auto">
             <div className="top-title mb-5 text-center text-white">
-              [ Features ]
+              {topTitle}
             </div>
             <h2 className="font-manrope text-[28px] leading-7.5 lg:text-[40px] lg:leading-12.5 text-white text-center mx-auto max-w-162.25 ">
-              Everything You Need to Run a Smarter Store
+              {title}
             </h2>
 
             <p className="text-white mx-auto text-center max-w-162.25 font-manrope font-medium text-base leading-5.5 mt-5 px-5">
-              C-Store Commander delivers the essential features retailers rely
-              on every day: fast transactions, accurate reporting, secure
-              payments, and complete control over forecourt and in-store
-              operations.
+              {shortDescription}
             </p>
 
             <div className="container mx-auto px-5">
-              {/* cards */}
-              <div className="grid grid-cols-2 sm:grid-cols-3  md:grid-cols-4 xl:grid-cols-6 mt-20 gap-2">
-                {featuresData.map((item) => (
-                  <FeatureCard key={item.id} item={item} />
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 mt-20 gap-2">
+                {list.map((item, i) => (
+                  <FeatureCard
+                    key={item.id ?? item._id ?? i}
+                    item={item}
+                    i={i}
+                  />
                 ))}
               </div>
             </div>

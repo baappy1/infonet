@@ -1,6 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
 import MenuLink from "./MenuList";
-import Image from "next/image";
 
 import {
   Accordion,
@@ -46,7 +46,70 @@ const AccordionArrow = () => (
   </svg>
 );
 
-export default function Footer() {
+const FOOTER_FALLBACKS = {
+  industries: [
+    { label: "Retail Gas Stations", url: "#" },
+    { label: "Convenience Stores", url: "#" },
+    { label: "Unattended Fuel Sites", url: "#" },
+    { label: "Fleet Fueling", url: "#" },
+    { label: "First Nations Retail", url: "#" },
+  ],
+  solutions: [
+    { label: "C-Store Commander", url: "#" },
+    { label: "Fuel Commander", url: "#" },
+    { label: "Custom Software", url: "#" },
+  ],
+  services: [
+    { label: "Installation & Training", url: "#" },
+    { label: "Hardware Sourcing", url: "#" },
+  ],
+  insights: [
+    { label: "News & Blog", url: "#" },
+    { label: "Events", url: "#" },
+    { label: "Resources", url: "#" },
+  ],
+  company: [
+    { label: "About Us", url: "#" },
+    { label: "Leadership Team", url: "#" },
+    { label: "Affiliations & Partners", url: "#" },
+    { label: "Careers", url: "#" },
+  ],
+  contact: [
+    { label: "Contact", url: "#" },
+    { label: "Book a Demo", url: "#" },
+    { label: "Faq", url: "#" },
+  ],
+  social: [
+    { label: "X (Twitter)", url: "#" },
+    { label: "LinkedIn", url: "#" },
+    { label: "Facebook", url: "#" },
+    { label: "Instagram", url: "#" },
+    { label: "YouTube", url: "#" },
+  ],
+};
+
+function useItems(items, key) {
+  return items?.length > 0 ? items : FOOTER_FALLBACKS[key] || [];
+}
+
+export default function Footer({ footerMenus = {}, themeOptions = {} }) {
+  const footerLogo = themeOptions?.footerLogo || "/assets/infonetLogo.svg";
+  const copyrightText = themeOptions?.copyrightText || "InfoNet Technology Corporation. All rights reserved.";
+  const footerTitle = themeOptions?.footerTitle || "Ready to Transform Your Business?";
+  const footerShortDescription = themeOptions?.footerShortDescription || "Whether you're managing fuel stations, convenience stores, or fleet operations, InfoNet provides the technology solutions that simplify operations";
+  const footerButtonTitle = themeOptions?.footerButtonTitle || "Request a Demo";
+  const footerButtonUrl = themeOptions?.footerButtonUrl || "/contact";
+  const footerButtonTitleTwo = themeOptions?.footerButtonTitleTwo || "get in touch";
+  const footerButtonUrlTwo = themeOptions?.footerButtonUrlTwo || "/contact";
+
+  const industriesItems = useItems(footerMenus.industries, "industries");
+  const solutionsItems = useItems(footerMenus.solutions, "solutions");
+  const servicesItems = useItems(footerMenus.services, "services");
+  const insightsItems = useItems(footerMenus.insights, "insights");
+  const companyItems = useItems(footerMenus.company, "company");
+  const contactItems = useItems(footerMenus.contact, "contact");
+  const socialItems = useItems(footerMenus.social, "social");
+
   return (
     <>
       <div className="p-[10px] pt-[0] sm:bg-white bg-[#F8F8F3]">
@@ -58,17 +121,15 @@ export default function Footer() {
         >
           <div className="pl-[10px] pr-[10px] sm:pl-[0] sm:pr-[0]">
             <div className="font-manrope text-center mb-[20px] text-[28px] leading-[30px] lg:text-[40px] lg:leading-[50px]">
-              Ready to Transform Your Business?
+              {footerTitle}
             </div>
             <div className="mx-auto pb-[30px] text-center max-w-[649px] font-manrope font-medium text-[14px] leading-[20px] lg:text-[16px] lg:leading-[22px] opacity-80">
-              Whether you’re managing fuel stations, convenience stores, or
-              fleet operations, InfoNet provides the technology solutions that
-              simplify operations
+              {footerShortDescription}
             </div>
             <div className="flex flex-col sm:flex-row justify-center gap-[8px]">
-              <Link className="primary-button justify-center" href="/contact">
+              <Link className="primary-button justify-center" href={footerButtonUrl}>
                 <span className="font-medium leading-[22px]">
-                  Request a Demo
+                  {footerButtonTitle}
                 </span>
                 <svg
                   width={20}
@@ -101,9 +162,9 @@ export default function Footer() {
               </Link>
               <Link
                 className="inline-flex w-auto justify-center items-center gap-[10px] px-6 py-[15px] uppercase rounded-[4px] transition-colors duration-200 bg-white hover:bg-[#ebff3a]"
-                href="/contact"
+                href={footerButtonUrlTwo}
               >
-                <span className="font-medium leading-[22px]">get in touch</span>
+                <span className="font-medium leading-[22px]">{footerButtonTitleTwo}</span>
                 <svg
                   width={20}
                   height={20}
@@ -143,67 +204,63 @@ export default function Footer() {
                   <h4 className="mb-[30px] leading-[22px] uppercase">
                     Industries
                   </h4>
-                  <MenuLink MenuLink="#" MenuTitle="Retail Gas Stations" />
-                  <MenuLink MenuLink="#" MenuTitle="Convenience Stores" />
-                  <MenuLink MenuLink="#" MenuTitle="Unattended Fuel Sites" />
-                  <MenuLink MenuLink="#" MenuTitle="Fleet Fueling" />
-                  <MenuLink MenuLink="#" MenuTitle="First Nations Retail" />
+                  {industriesItems.map((item, i) => (
+                    <MenuLink key={i} MenuLink={item.url} MenuTitle={item.label} />
+                  ))}
                 </div>
 
                 <div className="flex flex-col hidden sm:flex">
                   <h4 className="mb-[30px] leading-[22px] uppercase">
                     Solutions
                   </h4>
-                  <MenuLink MenuLink="#" MenuTitle="C-Store Commander" />
-                  <MenuLink MenuLink="#" MenuTitle="Fuel Commander" />
-                  <MenuLink MenuLink="#" MenuTitle="Custom Software" />
+                  {solutionsItems.map((item, i) => (
+                    <MenuLink key={i} MenuLink={item.url} MenuTitle={item.label} />
+                  ))}
                 </div>
 
                 <div className="flex flex-col hidden sm:flex">
                   <h4 className="mb-[30px] leading-[22px] uppercase">
                     Services
                   </h4>
-                  <MenuLink MenuLink="#" MenuTitle="Installation & Training" />
-                  <MenuLink MenuLink="#" MenuTitle="Hardware Sourcing" />
+                  {servicesItems.map((item, i) => (
+                    <MenuLink key={i} MenuLink={item.url} MenuTitle={item.label} />
+                  ))}
                 </div>
 
                 <div className="flex flex-col  hidden sm:flex">
                   <h4 className="mb-[30px] leading-[22px] uppercase">
                     Insights
                   </h4>
-                  <MenuLink MenuLink="#" MenuTitle="News & Blog" />
-                  <MenuLink MenuLink="#" MenuTitle="Events" />
-                  <MenuLink MenuLink="#" MenuTitle="Resources" />
+                  {insightsItems.map((item, i) => (
+                    <MenuLink key={i} MenuLink={item.url} MenuTitle={item.label} />
+                  ))}
                 </div>
 
                 <div className="flex flex-col  hidden sm:flex">
                   <h4 className="mb-[30px] leading-[22px] uppercase">
                     Company
                   </h4>
-                  <MenuLink MenuLink="#" MenuTitle="About Us" />
-                  <MenuLink MenuLink="#" MenuTitle="Leadership Team" />
-                  <MenuLink MenuLink="#" MenuTitle="Affiliations & Partners" />
-                  <MenuLink MenuLink="#" MenuTitle="Careers" />
+                  {companyItems.map((item, i) => (
+                    <MenuLink key={i} MenuLink={item.url} MenuTitle={item.label} />
+                  ))}
                 </div>
 
                 <div className="flex flex-col  hidden sm:flex">
                   <h4 className="mb-[30px] leading-[22px] uppercase">
                     contact us
                   </h4>
-                  <MenuLink MenuLink="#" MenuTitle="Contact" />
-                  <MenuLink MenuLink="#" MenuTitle="Book a Demo" />
-                  <MenuLink MenuLink="#" MenuTitle="Faq" />
+                  {contactItems.map((item, i) => (
+                    <MenuLink key={i} MenuLink={item.url} MenuTitle={item.label} />
+                  ))}
                 </div>
 
                 <div className="flex flex-col  hidden sm:flex">
                   <h4 className="mb-[30px] leading-[22px] uppercase">
                     Socials
                   </h4>
-                  <MenuLink MenuLink="#" MenuTitle="X (Twitter)" />
-                  <MenuLink MenuLink="#" MenuTitle="LinkedIn" />
-                  <MenuLink MenuLink="#" MenuTitle="Facebook" />
-                  <MenuLink MenuLink="#" MenuTitle="Instagram" />
-                  <MenuLink MenuLink="#" MenuTitle="YouTube" />
+                  {socialItems.map((item, i) => (
+                    <MenuLink key={i} MenuLink={item.url} MenuTitle={item.label} />
+                  ))}
                 </div>
 
                 <Accordion
@@ -212,26 +269,35 @@ export default function Footer() {
                 >
                   <AccordionItem value="industries">
                     <AccordionTrigger className="flex hide-default-arrow justify-between uppercase p-[0]">
+                      <span>Industries</span>
+                      <AccordionArrow />
+                    </AccordionTrigger>
+
+                    <AccordionContent className="pb-[0]">
+                      <div className="flex flex-col pt-[20px] pb-[0]">
+                        {industriesItems.map((item, i) => (
+                          <MenuLink key={i} MenuLink={item.url} MenuTitle={item.label} />
+                        ))}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+
+                <Accordion
+                  type="multiple"
+                  className="w-full sm:hidden py-[20px] border-b-[1px] border-dashed border-[#08090D33]"
+                >
+                  <AccordionItem value="Solutions">
+                    <AccordionTrigger className="flex hide-default-arrow justify-between uppercase p-[0]">
                       <span>Solutions</span>
                       <AccordionArrow />
                     </AccordionTrigger>
 
                     <AccordionContent className="pb-[0]">
                       <div className="flex flex-col pt-[20px] pb-[0]">
-                        <MenuLink
-                          MenuLink="#"
-                          MenuTitle="Retail Gas Stations"
-                        />
-                        <MenuLink MenuLink="#" MenuTitle="Convenience Stores" />
-                        <MenuLink
-                          MenuLink="#"
-                          MenuTitle="Unattended Fuel Sites"
-                        />
-                        <MenuLink MenuLink="#" MenuTitle="Fleet Fueling" />
-                        <MenuLink
-                          MenuLink="#"
-                          MenuTitle="First Nations Retail"
-                        />
+                        {solutionsItems.map((item, i) => (
+                          <MenuLink key={i} MenuLink={item.url} MenuTitle={item.label} />
+                        ))}
                       </div>
                     </AccordionContent>
                   </AccordionItem>
@@ -249,20 +315,9 @@ export default function Footer() {
 
                     <AccordionContent className="pb-[0]">
                       <div className="flex flex-col pt-[20px] pb-[0]">
-                        <MenuLink
-                          MenuLink="#"
-                          MenuTitle="Retail Gas Stations"
-                        />
-                        <MenuLink MenuLink="#" MenuTitle="Convenience Stores" />
-                        <MenuLink
-                          MenuLink="#"
-                          MenuTitle="Unattended Fuel Sites"
-                        />
-                        <MenuLink MenuLink="#" MenuTitle="Fleet Fueling" />
-                        <MenuLink
-                          MenuLink="#"
-                          MenuTitle="First Nations Retail"
-                        />
+                        {servicesItems.map((item, i) => (
+                          <MenuLink key={i} MenuLink={item.url} MenuTitle={item.label} />
+                        ))}
                       </div>
                     </AccordionContent>
                   </AccordionItem>
@@ -280,20 +335,9 @@ export default function Footer() {
 
                     <AccordionContent className="pb-[0]">
                       <div className="flex flex-col pt-[20px] pb-[0]">
-                        <MenuLink
-                          MenuLink="#"
-                          MenuTitle="Retail Gas Stations"
-                        />
-                        <MenuLink MenuLink="#" MenuTitle="Convenience Stores" />
-                        <MenuLink
-                          MenuLink="#"
-                          MenuTitle="Unattended Fuel Sites"
-                        />
-                        <MenuLink MenuLink="#" MenuTitle="Fleet Fueling" />
-                        <MenuLink
-                          MenuLink="#"
-                          MenuTitle="First Nations Retail"
-                        />
+                        {insightsItems.map((item, i) => (
+                          <MenuLink key={i} MenuLink={item.url} MenuTitle={item.label} />
+                        ))}
                       </div>
                     </AccordionContent>
                   </AccordionItem>
@@ -311,20 +355,9 @@ export default function Footer() {
 
                     <AccordionContent className="pb-[0]">
                       <div className="flex flex-col pt-[20px] pb-[0]">
-                        <MenuLink
-                          MenuLink="#"
-                          MenuTitle="Retail Gas Stations"
-                        />
-                        <MenuLink MenuLink="#" MenuTitle="Convenience Stores" />
-                        <MenuLink
-                          MenuLink="#"
-                          MenuTitle="Unattended Fuel Sites"
-                        />
-                        <MenuLink MenuLink="#" MenuTitle="Fleet Fueling" />
-                        <MenuLink
-                          MenuLink="#"
-                          MenuTitle="First Nations Retail"
-                        />
+                        {companyItems.map((item, i) => (
+                          <MenuLink key={i} MenuLink={item.url} MenuTitle={item.label} />
+                        ))}
                       </div>
                     </AccordionContent>
                   </AccordionItem>
@@ -342,20 +375,9 @@ export default function Footer() {
 
                     <AccordionContent className="pb-[0]">
                       <div className="flex flex-col pt-[20px] pb-[0]">
-                        <MenuLink
-                          MenuLink="#"
-                          MenuTitle="Retail Gas Stations"
-                        />
-                        <MenuLink MenuLink="#" MenuTitle="Convenience Stores" />
-                        <MenuLink
-                          MenuLink="#"
-                          MenuTitle="Unattended Fuel Sites"
-                        />
-                        <MenuLink MenuLink="#" MenuTitle="Fleet Fueling" />
-                        <MenuLink
-                          MenuLink="#"
-                          MenuTitle="First Nations Retail"
-                        />
+                        {contactItems.map((item, i) => (
+                          <MenuLink key={i} MenuLink={item.url} MenuTitle={item.label} />
+                        ))}
                       </div>
                     </AccordionContent>
                   </AccordionItem>
@@ -373,20 +395,9 @@ export default function Footer() {
 
                     <AccordionContent className="pb-[0]">
                       <div className="flex flex-col pt-[20px] pb-[0]">
-                        <MenuLink
-                          MenuLink="#"
-                          MenuTitle="Retail Gas Stations"
-                        />
-                        <MenuLink MenuLink="#" MenuTitle="Convenience Stores" />
-                        <MenuLink
-                          MenuLink="#"
-                          MenuTitle="Unattended Fuel Sites"
-                        />
-                        <MenuLink MenuLink="#" MenuTitle="Fleet Fueling" />
-                        <MenuLink
-                          MenuLink="#"
-                          MenuTitle="First Nations Retail"
-                        />
+                        {socialItems.map((item, i) => (
+                          <MenuLink key={i} MenuLink={item.url} MenuTitle={item.label} />
+                        ))}
                       </div>
                     </AccordionContent>
                   </AccordionItem>
@@ -394,20 +405,21 @@ export default function Footer() {
               </div>
 
               <div className="pt-[30px] mb-[20px]">
-                <Image
-                  width={158}
-                  height={50}
-                  src="https://staging.hellonotionhive.com/wordpress/infonet/wp-content/uploads/2026/01/infonetLogo.png"
-                  className="w-[127px] sm:w-[158px]"
-                  alt="Infonet Logo"
-                  style={{ width: "auto", height: "auto" }}
-                />
+                <Link href="/">
+                  <Image
+                    width={158}
+                    height={50}
+                    src={footerLogo}
+                    className="w-[127px] sm:max-w-[158px]"
+                    alt="Infonet Logo"
+                    style={{ width: "auto", height: "auto" }}
+                  />
+                </Link>
               </div>
 
               <div className="flex-col md:flex-row  flex-wrap 2xl:flex-no-wrap gap-[10px] flex justify-between">
                 <div className="text-[14px] leading-[20px] opacity-[40%] font-medium font-manrope">
-                  &copy;{new Date().getFullYear()} InfoNet Technology
-                  Corporation. All rights reserved.
+                  &copy;{new Date().getFullYear()} {copyrightText}
                 </div>
                 <MenuLink
                   MenuLink="#"

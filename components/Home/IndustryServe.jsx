@@ -66,8 +66,19 @@ const itemVariants = {
   },
 };
 
-export default function IndustryServe() {
+const TARGET_COUNT = 6;
+
+export default function IndustryServe({ header, items }) {
   const shouldReduce = useReducedMotion();
+  // Use items from WP when available; fallback to static Services when empty
+  const fromWp = items && items.length ? items : [];
+  // Pad to 6 when we have fewer than 6 (avoid duplicates by title)
+  const existingTitles = new Set(fromWp.map((i) => (i?.title || "").toLowerCase()));
+  const toAdd = Services.filter((s) => !existingTitles.has((s?.title || "").toLowerCase())).slice(
+    0,
+    Math.max(0, TARGET_COUNT - fromWp.length)
+  );
+  const services = fromWp.length > 0 ? [...fromWp, ...toAdd] : Services;
 
   return (
     <div className="2xl:pt-[24.15vh] 2xl:pb-[24vh] lg:pt-[120px] lg:pb-[120px] pt-[90px] pb-[90px] bg-white">
@@ -75,18 +86,20 @@ export default function IndustryServe() {
         {/* Header */}
         <div className="flex flex-col lg:flex-row justify-between items-end">
           <div className="w-full lg:w-[41.7%]">
-            <div className="top-title mb-[20px]">[ industries we serve ]</div>
+            <div className="top-title mb-[20px]">
+              {header?.topTitle || "[ industries we serve ]"}
+            </div>
             <div className="font-manrope mb-[20px] lg:mb-[0px] text-[28px] leading-[30px] lg:text-[40px] lg:leading-[50px]">
-              Industry-Specific Solutions You Can Trust
+              {header?.title || "Industry-Specific Solutions You Can Trust"}
             </div>
           </div>
           <div className="w-full lg:w-[41.7%] font-manrope font-medium text-[14px] leading-[20px] lg:text-[16px] lg:leading-[22px] opacity-80">
-            Custom software and systems built to meet the unique needs of fuel,
-            retail, and fleet businesses across North America.
+            {header?.shortDescription ||
+              "Custom software and systems built to meet the unique needs of fuel, retail, and fleet businesses across North America."}
           </div>
         </div>
 
-        {/* Desktop Grid - FIXED: Pass all props from Services array */}
+        {/* Desktop Grid */}
         <motion.div
           className="hidden lg:flex flex-wrap gap-x-[44px] gap-y-[78px] mt-[40px] lg:mt-[120px]"
           variants={shouldReduce ? {} : containerVariants}
@@ -95,7 +108,7 @@ export default function IndustryServe() {
           custom={false} // desktop = not mobile
           viewport={{ once: true, amount: 0.4 }}
         >
-          {Services.map((item, i) => (
+          {services.map((item) => (
             <motion.div
               key={item.id}
               variants={shouldReduce ? {} : itemVariants}
@@ -105,12 +118,13 @@ export default function IndustryServe() {
                 FeatureImage={item.image}
                 title={item.title}
                 description={item.description}
+                slug={item.slug}
               />
             </motion.div>
           ))}
         </motion.div>
 
-        {/* Mobile Grid - FIXED: Pass all props from Services array */}
+        {/* Mobile Grid */}
         <motion.div
           className="flex lg:hidden flex-wrap gap-x-[44px] gap-y-[40px] mt-[40px]"
           variants={shouldReduce ? {} : containerVariants}
@@ -119,16 +133,17 @@ export default function IndustryServe() {
           custom={true} // mobile
           viewport={{ once: true, amount: 0.05 }} // triggers early
         >
-          {Services.map((item) => (
+          {services.map((item) => (
             <motion.div
               key={item.id}
               variants={shouldReduce ? {} : itemVariants}
               className="w-full sm:w-[calc((100%-88px)/2)] flex flex-col"
             >
               <ServeCard
-                image={item.image}
+                FeatureImage={item.image}
                 title={item.title}
                 description={item.description}
+                slug={item.slug}
               />
             </motion.div>
           ))}

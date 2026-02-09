@@ -82,19 +82,19 @@ export default function CareerDetailsSidebar() {
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <g clip-path="url(#clip0_821_290)">
+              <g clipPath="url(#clip0_821_290)">
                 <path
                   d="M3.125 10H16.875"
                   stroke="white"
-                  stroke-width="1.5"
-                  stroke-linecap="square"
-                  stroke-linejoin="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="square"
+                  strokeLinejoin="round"
                 />
                 <path
                   d="M12.25 4.375L17.875 10L12.25 15.625"
                   stroke="white"
-                  stroke-width="1.5"
-                  stroke-linecap="square"
+                  strokeWidth="1.5"
+                  strokeLinecap="square"
                 />
               </g>
             </svg>

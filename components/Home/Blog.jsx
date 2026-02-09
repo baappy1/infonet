@@ -1,19 +1,37 @@
 "use client";
 
-import * as React from "react";
-import BlogCard from "./BlogCard";
-import Link from "next/link";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
+import Link from "next/link";
+import * as React from "react";
+import BlogCard from "./BlogCard";
 
-export default function Blog() {
+function formatDate(dateStr) {
+  if (!dateStr) return "";
+  const d = new Date(dateStr);
+  return d.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+export default function Blog({
+  items = [],
+  topTitle = "[ Insights ]",
+  title = "Industry Resources & Informations",
+  shortDescription = "Stay ahead of the curve with the latest stories, research and developments shaping the fuel retail, convenience store and unattended fueling‑industry ecosystem.",
+  buttonText = "view all insights",
+  buttonUrl = "/blog",
+}) {
   const [api, setApi] = React.useState(null); // carousel API
   const [selectedIndex, setSelectedIndex] = React.useState(0); // current slide
 
-  const slides = Array.from({ length: 3 }); // ensure this matches CarouselItem count
+  const slideCount = items.length > 0 ? Math.max(1, Math.ceil(items.length / 2)) : 3;
+  const slides = Array.from({ length: slideCount });
 
   // Update selectedIndex when carousel changes
   const onSelect = () => {
@@ -38,18 +56,35 @@ export default function Blog() {
         {/* Header */}
         <div className="flex flex-col lg:flex-row justify-between items-end">
           <div className="w-full lg:w-[41.7%]">
-            <div className="top-title mb-[20px]">[ Insights ]</div>
+            <div className="top-title mb-[20px]">{topTitle}</div>
             <div className="font-manrope mb-[20px] lg:mb-[0px] text-[28px] leading-[30px] lg:text-[40px] lg:leading-[50px]">
-              Industry Resources & Informations
+              {title}
             </div>
           </div>
           <div className="w-full lg:w-[40.7%] font-manrope font-medium text-[14px] leading-[20px] lg:text-[16px] lg:leading-[22px] opacity-80">
-            Stay ahead of the curve with the latest stories, research and developments shaping the fuel retail, convenience store and unattended fueling‑industry ecosystem.
+            {shortDescription}
           </div>
         </div>
 
         {/* Desktop Grid */}
         <div className="hidden lg:flex flex-wrap gap-x-[22px] gap-y-[22px] mt-[40px] lg:mt-[100px]">
+          {items.length > 0 ? (
+            items.map((post) => (
+              <div
+                key={post.id}
+                className="w-[calc((100%-66px)/3)] flex flex-col"
+              >
+                <BlogCard
+                  Title={post.title}
+                  FeatureImage={post.image || "/assets/blog/01.png"}
+                  Date={formatDate(post.date)}
+                  Category={post.category || "News & Blog"}
+                  ReadMoreLink={post.slug ? `/blog/${post.slug}` : "/blog"}
+                />
+              </div>
+            ))
+          ) : (
+            <>
           <div className="w-[calc((100%-66px)/3)] flex flex-col">
             <BlogCard 
                 Title="Infonet Technology launches next-gen EMV Pay-at-the-Pump module"
@@ -77,6 +112,8 @@ export default function Blog() {
                 ReadMoreLink="/blog/amid-macro-pressures-c-stores-have-an-opportunity-to-innovate"
               />
           </div>
+            </>
+          )}
         </div>
 
         {/* Mobile Carousel */}
@@ -87,11 +124,34 @@ export default function Blog() {
             opts={{ align: "start", containScroll: "trimSnaps" }}
           >
             <CarouselContent className="flex gap-4">
-              {slides.map((_, index) => (
-                <CarouselItem
-                  key={index}
-                  className="flex-[0_0_100%]" // 100% width per slide on mobile
-                >
+              {items.length > 0 ? (
+                slides.map((_, index) => {
+                  const start = index * 2;
+                  const slideItems = items.slice(start, start + 2);
+                  return (
+                    <CarouselItem
+                      key={index}
+                      className="flex-[0_0_100%] space-y-4"
+                    >
+                      {slideItems.map((post) => (
+                        <BlogCard
+                          key={post.id}
+                          Title={post.title}
+                          FeatureImage={post.image || "/assets/blog/01.png"}
+                          Date={formatDate(post.date)}
+                          Category={post.category || "News & Blog"}
+                          ReadMoreLink={post.slug ? `/blog/${post.slug}` : "/blog"}
+                        />
+                      ))}
+                    </CarouselItem>
+                  );
+                })
+              ) : (
+                slides.map((_, index) => (
+                  <CarouselItem
+                    key={index}
+                    className="flex-[0_0_100%] space-y-4"
+                  >
                   <BlogCard 
                       Title="Amid Macro Pressures, C‑Stores Have an Opportunity to Innovate"
                       FeatureImage="/assets/blog/01.png"
@@ -113,8 +173,9 @@ export default function Blog() {
                       Category="News & Blog"
                       ReadMoreLink="/blog/amid-macro-pressures-c-stores-have-an-opportunity-to-innovate"
                     />
-                </CarouselItem>
-              ))}
+                  </CarouselItem>
+                ))
+              )}
             </CarouselContent>
           </Carousel>
 
@@ -137,10 +198,10 @@ export default function Blog() {
         {/* View All Button */}
         <div className="flex justify-center mt-[60px]">
           <Link
-            href="/blog"
+            href={buttonUrl}
             className="flex font-medium justify-between box-border rounded-[4px] bg-[#F8F8F3] border-[1px] hover:border-[#EBFF3A] transition duration-150 hover:bg-[#EBFF3A] uppercase gap-[10px] px-[16px] py-[12px]"
           >
-            <span className="text-[14px] leading-[18px]">view all insights</span>
+            <span className="text-[14px] leading-[18px]">{buttonText}</span>
             <svg
               width={16}
               height={16}

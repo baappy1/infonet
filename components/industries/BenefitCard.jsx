@@ -2,17 +2,17 @@ import Image from "next/image";
 
 const BenefitCard = ({ item }) => {
   return (
-    <div className="bg-white p-5 lg:p-7.5 rounded-lg">
-      <div className="relative max-h-64  aspect-square">
+    <div className="bg-white p-5 xl:p-7.5 rounded-lg  w-full">
+      <div className="relative w-full aspect-square">
         <Image
           src={item.icon}
-          className="rounded-lg object-cover h-full w-full"
+          className="rounded-lg object-contain h-full w-full"
           alt={item.title}
           fill
         />
       </div>
 
-      <h4 className="font-manrope max-w-[253.5px] text-2xl leading-7.5 text-[#08090D] mt-14 tracking-[0px]">
+      <h4 className="font-manrope  text-2xl leading-7.5 text-[#08090D] mt-14 tracking-[0px]">
         {item.title}
       </h4>
 

@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 
-export default function ServeCard( { FeatureImage,title,description } ){
+export default function ServeCard({ FeatureImage, title, description, slug }) {
     return(
         <>
             <div className="w-full">
@@ -9,7 +9,7 @@ export default function ServeCard( { FeatureImage,title,description } ){
                     <Image
                         width={202}
                         height={202}
-                        className="rounded-[999999px] h-[130px] w-[130px] md:h-[202px] md:w-[202px] mb-[20px] overflow-hidden relative" 
+                        className="rounded-[999999px] h-[130px] w-[130px] md:h-[202px] md:w-[202px] mb-[20px] object-cover overflow-hidden relative" 
                         src={FeatureImage}
                         alt={title} /> }
 
@@ -22,7 +22,7 @@ export default function ServeCard( { FeatureImage,title,description } ){
                             </p>
                         }
                         <Link
-                            href="/service/service-details"
+                            href={slug ? `/Industries/${slug}` : "/service/service-details"}
                             className="inline-flex font-medium box-border rounded-[4px] bg-[#EBFF3A] transition duration-150 hover:bg-white hover:border border-1 border-[#EBFF3A] hover:border-[#08090D] hover:text-[#08090D] uppercase gap-[10px] px-[15px] py-[11px] mt-[20px]"
                             >
                             <span className="text-[14px] leading-[18px]">learn more</span>

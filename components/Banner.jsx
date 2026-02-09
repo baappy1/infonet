@@ -1,7 +1,7 @@
 "use client";
+import { gsap } from "gsap";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
 
 export default function Banner({
   bannerTopTitle,
@@ -19,27 +19,28 @@ export default function Banner({
   const buttonRef = useRef(null);
   const videoRef = useRef(null);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const [videoError, setVideoError] = useState(false);
 
   // Auto-detect media type if not explicitly provided
   const getMediaType = () => {
     // Explicit override wins
     if (mediaType) return mediaType;
 
-    // Prefer explicit video prop
+    // Prefer image when both exist (image loads faster, better for banners)
+    if (bannerImage) return "image";
+
+    // Use video only when no image is available
     if (bannerVideo) return "video";
 
-    // Treat .mp4 bannerImage as video source
+    // Treat .mp4 bannerImage as video source when it's the only media
     if (bannerImage && bannerImage.toLowerCase().endsWith(".mp4")) {
       return "video";
     }
 
-    // Fallback to image
-    if (bannerImage) return "image";
-
     return "image";
   };
 
-  const currentMediaType = getMediaType();
+  const currentMediaType = videoError ? "image" : getMediaType();
   const videoSrc =
     bannerVideo ||
     (bannerImage && bannerImage.toLowerCase().endsWith(".mp4") ? bannerImage : null);
@@ -89,7 +90,7 @@ export default function Banner({
   const handleVideoLoad = () => {
     setIsVideoLoaded(true);
     if (videoRef.current) {
-      videoRef.current.play().catch(e => console.log("Autoplay prevented:", e));
+      videoRef.current.play().catch(() => {});
     }
   };
 
@@ -105,27 +106,11 @@ export default function Banner({
             playsInline
             preload="metadata"
             onLoadedData={handleVideoLoad}
+            onError={() => setVideoError(true)}
             className="w-full h-full object-cover"
-            // Only use poster when bannerImage is an actual image, not the mp4 itself
-            poster={
-              bannerImage && !bannerImage.toLowerCase().endsWith(".mp4")
-                ? bannerImage
-                : undefined
-            } // Optional: show image as poster while video loads
+            poster={bannerImage || undefined}
           >
             <source src={videoSrc} type="video/mp4" />
-            {/* Fallback for browsers that don't support video */}
-            {bannerImage && (
-              <div
-                style={{
-                  backgroundImage: `url(${bannerImage})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  width: "100%",
-                  height: "100%",
-                }}
-              />
-            )}
           </video>
           {/* Overlay for better text readability */}
           <div className="absolute inset-0 bg-black/20"></div>
@@ -133,7 +118,12 @@ export default function Banner({
       );
     }
 
-    // Default to image background
+    // Default to image background (also fallback when video errors)
+    if (!bannerImage) {
+      return (
+        <div className="absolute inset-0 w-full h-full bg-[#08090D]/80" />
+      );
+    }
     return (
       <div
         className="absolute inset-0 w-full h-full"
