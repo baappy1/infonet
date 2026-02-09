@@ -123,7 +123,7 @@ If you're using Cloudflare or another CDN:
 Test the revalidation endpoint manually:
 
 ```bash
-curl -X POST "https://infonet-woad.vercel.app/api/revalidate?secret=12345678&path=/blog/test-post&tag=cms"
+curl -X POST "https://infonet-three.vercel.app/api/revalidate?secret=12345678&path=/blog/test-post&tag=cms"
 ```
 
 Should return:

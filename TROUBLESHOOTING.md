@@ -17,7 +17,7 @@
 
 ### 3. WordPress Webhook - CHECK THIS ⚠️
 - [ ] WordPress `functions.php` has the webhook code
-- [ ] WordPress theme option `url` is set to: `https://infonet-woad.vercel.app`
+- [ ] WordPress theme option `url` is set to: `https://infonet-three.vercel.app`
 - [ ] Test: Update a post → Check WordPress error logs for "Revalidation successful"
 
 ### 4. WordPress Caching - THIS IS LIKELY THE PROBLEM ⚠️⚠️⚠️
@@ -34,7 +34,7 @@ npm run test:revalidate
 
 Or manually:
 ```bash
-curl -X POST "https://infonet-woad.vercel.app/api/revalidate?secret=12345678&path=/blog/test&tag=cms"
+curl -X POST "https://infonet-three.vercel.app/api/revalidate?secret=12345678&path=/blog/test&tag=cms"
 ```
 
 Expected response:

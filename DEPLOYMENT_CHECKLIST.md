@@ -14,23 +14,29 @@ git push origin main
 - Wait for the latest deployment to finish (should show "Ready" ✅)
 - Check build logs for any errors
 
-### 3. Set Environment Variable in Vercel
-**CRITICAL**: This must be done AFTER deployment
+### 3. Set Environment Variables in Vercel
+**CRITICAL**: Set these in Vercel AFTER deployment
 
 1. Go to: https://vercel.com → Your Project → **Settings** → **Environment Variables**
-2. Click **Add New**
-3. Add:
-   - **Key**: `REVALIDATE_SECRET`
-   - **Value**: `12345678`
-   - **Environment**: Production (and Preview if you want)
-4. Click **Save**
-5. **Redeploy** (or wait for next deployment)
+2. Add these variables:
+
+| Key | Value | Environment |
+|-----|-------|-------------|
+| `REVALIDATE_SECRET` | `12345678` | Production, Preview |
+| `NEXT_PUBLIC_SITE_URL` | `https://infonet-three.vercel.app` | Production, Preview |
+| `NEXT_PUBLIC_WORDPRESS_API_URL` | `https://staging.hellonotionhive.com/wordpress/infonet` | Production, Preview |
+
+3. Click **Save**
+4. **Redeploy** (or wait for next deployment)
 
 ### 4. Verify Route is Deployed
 After deployment, test the route directly:
 
 ```bash
-curl -X POST "https://infonet-woad.vercel.app/api/revalidate?secret=12345678&path=/blog&tag=cms"
+# Your frontend: https://infonet-three.vercel.app
+# Your WordPress: https://staging.hellonotionhive.com/wordpress/infonet/
+
+curl -X POST "https://infonet-three.vercel.app/api/revalidate?secret=12345678&path=/blog&tag=cms"
 ```
 
 **Expected Response** (if working):

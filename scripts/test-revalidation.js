@@ -4,7 +4,7 @@
  */
 
 const REVALIDATE_SECRET = process.env.REVALIDATE_SECRET || '12345678';
-const FRONTEND_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://infonet-woad.vercel.app';
+const FRONTEND_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://infonet-three.vercel.app';
 
 async function testRevalidation(path = '/', tag = 'cms') {
   const url = `${FRONTEND_URL}/api/revalidate?secret=${REVALIDATE_SECRET}&path=${encodeURIComponent(path)}&tag=${tag}`;
