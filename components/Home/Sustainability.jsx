@@ -20,7 +20,7 @@ export default function Sustainability({
     shortDescription ||
     "From energy-efficient fuel management to reduced paper and resource use, our solutions make sustainability simple for your business.";
   const resolvedButtonTitle = buttonTitle || "read more";
-  const resolvedButtonUrl = buttonUrl || "/sustainability";
+  const resolvedButtonUrl = buttonUrl || "/";
   const resolvedBannerImage =
     bannerImage ||
     "https://staging.hellonotionhive.com/wordpress/infonet/wp-content/uploads/2026/01/2224526_Car_Refuel_3840x2160-2.webp";

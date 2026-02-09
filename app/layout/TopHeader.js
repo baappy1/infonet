@@ -139,13 +139,13 @@ export default function TopHeader({ setActive, activeMenu, themeOptions = {}, me
                     </Link>
                   </div>
                   <div className="relative group">
-                    <Link href="/Industries" className="text-white uppercase font-medium leading-5.5 relative transition-colors duration-200">
+                    <Link href="/industries" className="text-white uppercase font-medium leading-5.5 relative transition-colors duration-200">
                       Industries
                       <span className="absolute bottom-[-3px] left-0 w-0 h-[2px] bg-[#EBFF3A] group-hover:w-full transition-all duration-300"></span>
                     </Link>
                   </div>
                   <div className="relative group">
-                    <Link href="/solutions" className="text-white uppercase font-medium leading-5.5 relative transition-colors duration-200">
+                    <Link href="/service" className="text-white uppercase font-medium leading-5.5 relative transition-colors duration-200">
                       Solutions
                       <span className="absolute bottom-[-3px] left-0 w-0 h-[2px] bg-[#EBFF3A] group-hover:w-full transition-all duration-300"></span>
                     </Link>

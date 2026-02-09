@@ -105,10 +105,10 @@ export default function MobileHeaderPopup({ setActive, activeMenu, themeOptions 
               <Link href="/" className="uppercase font-medium leading-[22px]" onClick={() => hidePopupMenu()}>
                 Home
               </Link>
-              <Link href="/Industries" className="uppercase font-medium leading-[22px]" onClick={() => hidePopupMenu()}>
+              <Link href="/industries" className="uppercase font-medium leading-[22px]" onClick={() => hidePopupMenu()}>
                 Industries
               </Link>
-              <Link href="/solutions" className="uppercase font-medium leading-[22px]" onClick={() => hidePopupMenu()}>
+              <Link href="/service" className="uppercase font-medium leading-[22px]" onClick={() => hidePopupMenu()}>
                 Solutions
               </Link>
               <Link href="/service" className="uppercase font-medium leading-[22px]" onClick={() => hidePopupMenu()}>

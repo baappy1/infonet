@@ -18,17 +18,24 @@ const nextConfig = {
     ],
   },
 
-  // Disable caching for WordPress content updates
-  async headers() {
+  // Ensure case-insensitive routing and handle missing routes
+  async rewrites() {
     return [
       {
-        source: '/:path*',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
-          },
-        ],
+        source: '/Industries',
+        destination: '/industries',
+      },
+      {
+        source: '/Solutions',
+        destination: '/service',
+      },
+      {
+        source: '/solutions',
+        destination: '/service',
+      },
+      {
+        source: '/sustainability',
+        destination: '/',
       },
     ];
   },
