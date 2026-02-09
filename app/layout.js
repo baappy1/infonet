@@ -1,14 +1,17 @@
 import { client } from "@/lib/graphql/client";
 import {
-  GET_MENU,
-  GET_THEME_OPTIONS,
-  processMenuItems,
-  toLocalPath,
+    GET_MENU,
+    GET_THEME_OPTIONS,
+    processMenuItems,
+    toLocalPath,
 } from "@/lib/graphql/queries";
 import { JetBrains_Mono, Manrope } from "next/font/google";
 import "./globals.css";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 // JetBrains Mono font
 const jetBrainsMono = JetBrains_Mono({

@@ -1,18 +1,21 @@
 import { BlockRenderer } from "@/components/blocks";
 import { client } from "@/lib/graphql/client";
 import {
-  buildIndustriesQuery,
-  GET_ALL_CLIENTS,
-  GET_ALL_INDUSTRIES,
-  GET_ALL_TESTIMONIALS,
-  GET_HOMEPAGE_ENTITIES,
-  GET_INDUSTRIES_FIRST_6,
-  GET_PAGE_BLOCKS,
-  GET_RECENT_POSTS,
-  GET_SERVICES_BY_IDS,
-  HOME_PAGE_ID,
+    buildIndustriesQuery,
+    GET_ALL_CLIENTS,
+    GET_ALL_INDUSTRIES,
+    GET_ALL_TESTIMONIALS,
+    GET_HOMEPAGE_ENTITIES,
+    GET_INDUSTRIES_FIRST_6,
+    GET_PAGE_BLOCKS,
+    GET_RECENT_POSTS,
+    GET_SERVICES_BY_IDS,
+    HOME_PAGE_ID,
 } from "@/lib/graphql/queries";
 import { getHomepageSeoMetadata } from "@/lib/seo";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function generateMetadata() {
   return getHomepageSeoMetadata();

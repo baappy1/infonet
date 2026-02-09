@@ -8,13 +8,16 @@ import Reason from "@/components/industries/Reason";
 import OurImpactSolutions from "@/components/solutions/OurImpactSolutions";
 import { client } from "@/lib/graphql/client";
 import {
-  GET_ALL_CLIENTS,
-  GET_ALL_INDUSTRIES,
-  GET_ALL_TESTIMONIALS,
-  GET_HOMEPAGE_ENTITIES,
-  GET_PAGE_BLOCKS,
-  INDUSTRIES_PAGE_ID,
+    GET_ALL_CLIENTS,
+    GET_ALL_INDUSTRIES,
+    GET_ALL_TESTIMONIALS,
+    GET_HOMEPAGE_ENTITIES,
+    GET_PAGE_BLOCKS,
+    INDUSTRIES_PAGE_ID,
 } from "@/lib/graphql/queries";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 async function getIndustryPageBlocks() {
   try {

@@ -5,10 +5,13 @@ import Banner from "@/components/Banner";
 import { BlockRenderer } from "@/components/blocks";
 import { client } from "@/lib/graphql/client";
 import {
-  AFFILIATIONS_PAGE_ID,
-  GET_HOMEPAGE_ENTITIES,
-  GET_PAGE_BLOCKS,
+    AFFILIATIONS_PAGE_ID,
+    GET_HOMEPAGE_ENTITIES,
+    GET_PAGE_BLOCKS,
 } from "@/lib/graphql/queries";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 async function getAffiliationsPageBlocks() {
   try {

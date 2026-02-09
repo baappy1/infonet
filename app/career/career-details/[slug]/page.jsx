@@ -5,6 +5,9 @@ import { client } from "@/lib/graphql/client";
 import { GET_CAREER_BY_ID, GET_CAREER_BY_SLUG } from "@/lib/graphql/queries";
 import { notFound } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 async function getCareerBySlug(slug) {
   try {
     const { data } = await client.query({

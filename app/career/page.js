@@ -12,6 +12,9 @@ import {
     GET_PAGE_BLOCKS,
 } from "@/lib/graphql/queries";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 async function getCareerPageBlocks() {
   try {
     const { data } = await client.query({

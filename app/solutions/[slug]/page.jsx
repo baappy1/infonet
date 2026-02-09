@@ -14,6 +14,9 @@ import {
 } from "@/lib/graphql/queries";
 import { getSolutionSeoMetadata } from "@/lib/seo";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 async function getSolutionBlocks(slug) {
   try {
     // Try solutionBy with idType: SLUG first

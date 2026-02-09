@@ -2,11 +2,14 @@ import NewsBanner from "@/components/NewsAndBlog/NewsBanner";
 import NewsDetails from "@/components/NewsAndBlog/NewsDetails";
 import { client } from "@/lib/graphql/client";
 import {
-  BLOG_PAGE_ID,
-  GET_ALL_POSTS,
-  GET_HOMEPAGE_ENTITIES,
-  GET_PAGE_BLOCKS,
+    BLOG_PAGE_ID,
+    GET_ALL_POSTS,
+    GET_HOMEPAGE_ENTITIES,
+    GET_PAGE_BLOCKS,
 } from "@/lib/graphql/queries";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 function getBlockData(blocks, name) {
   const block = (blocks || []).find((b) => b?.name === name);

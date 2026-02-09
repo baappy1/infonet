@@ -2,18 +2,21 @@ import Banner from "@/components/Banner";
 import { BlockRenderer } from "@/components/blocks";
 import { client } from "@/lib/graphql/client";
 import {
-  GET_ALL_CLIENTS,
-  GET_ALL_INDUSTRIES,
-  GET_ALL_TESTIMONIALS,
-  GET_HOMEPAGE_ENTITIES,
-  GET_INDUSTRIE_BY_ID,
-  GET_INDUSTRY_BY_SLUG,
-  GET_PAGE_BLOCKS,
-  GET_PAGE_BY_SLUG,
-  GET_SERVICE_BY_SLUG,
+    GET_ALL_CLIENTS,
+    GET_ALL_INDUSTRIES,
+    GET_ALL_TESTIMONIALS,
+    GET_HOMEPAGE_ENTITIES,
+    GET_INDUSTRIE_BY_ID,
+    GET_INDUSTRY_BY_SLUG,
+    GET_PAGE_BLOCKS,
+    GET_PAGE_BY_SLUG,
+    GET_SERVICE_BY_SLUG,
 } from "@/lib/graphql/queries";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 async function getIndustryBySlug(slug) {
   try {

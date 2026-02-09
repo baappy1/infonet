@@ -1,11 +1,14 @@
 import { BlockRenderer } from "@/components/blocks";
 import { client } from "@/lib/graphql/client";
 import {
-  GET_ALL_TEAMS,
-  GET_PAGE_BLOCKS,
-  GET_TEAMS,
-  LEADERSHIP_PAGE_ID,
+    GET_ALL_TEAMS,
+    GET_PAGE_BLOCKS,
+    GET_TEAMS,
+    LEADERSHIP_PAGE_ID,
 } from "@/lib/graphql/queries";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 async function getLeadershipPageBlocks() {
   try {
