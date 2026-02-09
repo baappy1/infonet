@@ -1,3 +1,6 @@
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 import BlogContent from "@/components/NewsAndBlog/BlogContent";
 import BlogDetails from "@/components/NewsAndBlog/BlogDetails";
 import SimilarInsights from "@/components/NewsAndBlog/SimilarInsights";
