@@ -12,31 +12,47 @@ import {
 import Autoplay from "embla-carousel-autoplay";
 import LifeInfoNetCard from "./LifeInfoNetCard";
 
-export default function LifeInfoNet() {
+const DEFAULT_ITEMS = [
+  { image: "/assets/service-details/infront/01.png", title: "Retail Gas Stations" },
+  { image: "/assets/service-details/infront/02.png", title: "Convenience Stores" },
+  { image: "/assets/service-details/infront/03.png", title: "Unattended Fuel Sites" },
+  { image: "/assets/service-details/infront/04.png", title: "Fleet Fueling Operations" },
+  { image: "/assets/service-details/infront/05.png", title: "First Nations Retail" },
+];
+
+export default function LifeInfoNet({
+  topTitle = "[ Life at InfoNet ]",
+  title = "Perfect for All Retail Fuel & Convenience Environments",
+  shortDescription = "Designed for operators who need reliable installations, compatible hardware, and hands-on support.",
+  services,
+}) {
   const [leftOffset, setLeftOffset] = useState(0);
   const containerRef = useRef(null);
   const plugin = useRef(Autoplay({ delay: 5000, stopOnInteraction: false }));
 
+  // Build items from services prop or fallback
+  const items =
+    Array.isArray(services) && services.length > 0
+      ? services.map((s) => ({
+        image: s.featuredImage?.node?.mediaItemUrl || "/assets/service-details/infront/01.png",
+        title: s.title || "",
+        slug: s.slug,
+      }))
+      : DEFAULT_ITEMS;
+
   useEffect(() => {
-    // Function to calculate left offset
     const calculateLeftOffset = () => {
       if (containerRef.current) {
         const containerRect = containerRef.current.getBoundingClientRect();
-        // Get the left position of container relative to viewport
         const containerLeft = containerRect.left;
-        // Add any padding/margin from container if needed
-        const leftPadding = 20; // If container has padding of 20px
+        const leftPadding = 20;
         setLeftOffset(containerLeft + leftPadding);
       }
     };
 
-    // Calculate on initial render
     calculateLeftOffset();
-
-    // Recalculate on window resize
     window.addEventListener("resize", calculateLeftOffset);
 
-    // Cleanup
     return () => {
       window.removeEventListener("resize", calculateLeftOffset);
     };
@@ -51,13 +67,12 @@ export default function LifeInfoNet() {
         >
           <div className="w-full">
             <div className="w-full ">
-              <div className="top-title mb-5">[ Life at InfoNet ]</div>
+              <div className="top-title mb-5">{topTitle}</div>
               <h2 className="heading-h2 mb-5 max-w-162.25">
-                Perfect for All Retail Fuel & Convenience Environments
+                {title}
               </h2>
               <p className="paragraph-text mb-10 lg:mb-20 max-w-162.25">
-                Designed for operators who need reliable installations,
-                compatible hardware, and hands-on support.
+                {shortDescription}
               </p>
             </div>
           </div>
@@ -77,55 +92,17 @@ export default function LifeInfoNet() {
               className="w-full"
             >
               <CarouselContent className="-ml-2">
-                {/* <CarouselItem className="sm:basis-1/2 md:basis-1/3 lg:basis-1/4 2xl:basis-1/5 "> */}
-                <CarouselItem className="pl-2 sm:basis-[calc(50%-8px)] md:basis-[calc(33.333%-8px)] lg:basis-[calc(25%-8px)] 2xl:basis-[calc(18%-8px)] ">
-                  <LifeInfoNetCard
-                    image="/assets/service-details/infront/01.png"
-                    title="Retail Gas Stations"
-                  />
-                </CarouselItem>
-                <CarouselItem className="pl-2 sm:basis-[calc(50%-8px)] md:basis-[calc(33.333%-8px)] lg:basis-[calc(25%-8px)] 2xl:basis-[calc(18%-8px)]">
-                  <LifeInfoNetCard
-                    image="/assets/service-details/infront/02.png"
-                    title="Convenience Stores"
-                  />
-                </CarouselItem>
-                <CarouselItem className="pl-2 sm:basis-[calc(50%-8px)] md:basis-[calc(33.333%-8px)] lg:basis-[calc(25%-8px)] 2xl:basis-[calc(18%-8px)]">
-                  <LifeInfoNetCard
-                    image="/assets/service-details/infront/03.png"
-                    title="Unattended Fuel Sites"
-                  />
-                </CarouselItem>
-                <CarouselItem className="pl-2 sm:basis-[calc(50%-8px)] md:basis-[calc(33.333%-8px)] lg:basis-[calc(25%-8px)] 2xl:basis-[calc(18%-8px)]">
-                  <LifeInfoNetCard
-                    image="/assets/service-details/infront/04.png"
-                    title="Fleet Fueling Operations"
-                  />
-                </CarouselItem>
-                <CarouselItem className="pl-2 sm:basis-[calc(50%-8px)] md:basis-[calc(33.333%-8px)] lg:basis-[calc(25%-8px)] 2xl:basis-[calc(18%-8px)]">
-                  <LifeInfoNetCard
-                    image="/assets/service-details/infront/05.png"
-                    title="First Nations Retail"
-                  />
-                </CarouselItem>
-                <CarouselItem className="pl-2 sm:basis-[calc(50%-8px)] md:basis-[calc(33.333%-8px)] lg:basis-[calc(25%-8px)] 2xl:basis-[calc(18%-8px)]">
-                  <LifeInfoNetCard
-                    image="/assets/service-details/infront/01.png"
-                    title="Retail Gas Stations"
-                  />
-                </CarouselItem>
-                <CarouselItem className="pl-2 sm:basis-[calc(50%-8px)] md:basis-[calc(33.333%-8px)] lg:basis-[calc(25%-8px)] 2xl:basis-[calc(18%-8px)]">
-                  <LifeInfoNetCard
-                    image="/assets/service-details/infront/02.png"
-                    title="Convenience Stores"
-                  />
-                </CarouselItem>
-                <CarouselItem className="pl-2 sm:basis-[calc(50%-8px)] md:basis-[calc(33.333%-8px)] lg:basis-[calc(25%-8px)] 2xl:basis-[calc(18%-8px)]">
-                  <LifeInfoNetCard
-                    image="/assets/service-details/infront/03.png"
-                    title="Unattended Fuel Sites"
-                  />
-                </CarouselItem>
+                {items.map((item, index) => (
+                  <CarouselItem
+                    key={index}
+                    className="pl-2 sm:basis-[calc(50%-8px)] md:basis-[calc(33.333%-8px)] lg:basis-[calc(25%-8px)] 2xl:basis-[calc(18%-8px)]"
+                  >
+                    <LifeInfoNetCard
+                      image={item.image}
+                      title={item.title}
+                    />
+                  </CarouselItem>
+                ))}
               </CarouselContent>
             </Carousel>
           </div>

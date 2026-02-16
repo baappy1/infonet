@@ -6,7 +6,7 @@ export default function LifeInfoNetCard({ image, title }) {
       <div className=" cursor-pointer">
         {image && (
           <Image
-            className="rounded-lg h-100 object-cover mb-5"
+            className="h-100 object-contain mb-5"
             src={image}
             width={324}
             height={400}
