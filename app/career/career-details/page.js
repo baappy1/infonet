@@ -14,7 +14,6 @@ export default async function CareerDetailsPage({ searchParams }) {
         fetchPolicy: "no-cache",
       });
       const career = data?.careerBy;
-      // console.log(career.slug);
       if (career?.slug) {
         redirect(`/career/career-details/${career.slug}`);
       }

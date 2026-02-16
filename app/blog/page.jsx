@@ -70,7 +70,6 @@ async function getAllPosts() {
       variables: { first: 100 },
       fetchPolicy: "no-cache",
     });
-    // console.log(data);
     return data?.posts?.nodes || [];
   } catch (error) {
     console.error("Error fetching posts:", error);

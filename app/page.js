@@ -286,8 +286,6 @@ async function getHomePageEntities(blocks) {
 export default async function Home() {
   const blocks = await getHomePageBlocks();
   const entities = await getHomePageEntities(blocks);
-  // console.log(blocks);
-  // console.log(entities);
 
   return (
     <>
