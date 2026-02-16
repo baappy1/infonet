@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
 import OurImpactCard from "@/components/About/OurImpactCard";
+import { motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
 
 const containerVariants = {
@@ -22,12 +22,54 @@ const itemVariants = {
   },
 };
 
-export default function OurImpactSolutions() {
+const DEFAULT_TOP_TITLE = "[ Our Impact ]";
+const DEFAULT_TITLE = "Powering Retail & Fuel Operations Across North America";
+const DEFAULT_DESCRIPTION =
+  "A snapshot of how Infonet Technology keeps businesses running smoothly, efficiently, and reliably — every single day.";
+const DEFAULT_IMPACT_ITEMS = [
+  {
+    cardTitle: "92%",
+    cardDescription:
+      "Improvement in overall charger uptime within the first three months",
+  },
+  {
+    cardTitle: "37%",
+    cardDescription: "Reduction in customer-reported charging issues",
+  },
+  {
+    cardTitle: "42%",
+    cardDescription:
+      "Increase in repeat charging sessions across upgraded stations",
+  },
+  {
+    cardTitle: "3x",
+    cardDescription: "Faster average charging session start time",
+  },
+];
+const DEFAULT_BUTTON_TEXT = "explore our solutions";
+const DEFAULT_BUTTON_LINK = "/contact";
+
+export default function OurImpactSolutions({
+  topTitle = DEFAULT_TOP_TITLE,
+  title = DEFAULT_TITLE,
+  shortDescription = DEFAULT_DESCRIPTION,
+  impactItems = DEFAULT_IMPACT_ITEMS,
+  buttonText = DEFAULT_BUTTON_TEXT,
+  buttonLink = DEFAULT_BUTTON_LINK,
+}) {
   const shouldReduce = useReducedMotion();
 
   // Detect mobile
   const isMobile =
     typeof window !== "undefined" ? window.innerWidth < 1024 : false;
+
+  const items =
+    Array.isArray(impactItems) && impactItems.length > 0
+      ? impactItems.map((i) => ({
+          cardTitle: i.impact_title ?? i.cardTitle,
+          cardDescription: i.impact_description ?? i.cardDescription,
+        }))
+      : DEFAULT_IMPACT_ITEMS;
 
   return (
     <div className="bg-[#F8F8F3]">
@@ -45,22 +87,21 @@ export default function OurImpactSolutions() {
             variants={shouldReduce ? {} : itemVariants}
             className="top-title mb-[20px]"
           >
-            [ Our Impact ]
+            {topTitle}
           </motion.div>
 
           <motion.div
             variants={shouldReduce ? {} : itemVariants}
             className="font-manrope lg:mb-[0px] text-[28px] mx-auto max-w-[649px] leading-[30px] lg:text-[40px] lg:leading-[50px]"
           >
-            Powering Retail & Fuel Operations Across North America
+            {title}
           </motion.div>
 
           <motion.div
             variants={shouldReduce ? {} : itemVariants}
-            className="mt-[20px] font-manrope font-medium text-[14px] mx-auto max-w-[649px] leading-[20px] lg:text-[16px] lg:leading-[22px] opacity-80"
+            className="mt-5 font-manrope font-medium text-[14px] mx-auto max-w-162.25 leading-5 lg:text-[16px] lg:leading-5.5 opacity-80"
           >
-            A snapshot of how Infonet Technology keeps businesses running
-            smoothly, efficiently, and reliably — every single day.
+            {shortDescription}
           </motion.div>
         </motion.div>
 
@@ -72,54 +113,27 @@ export default function OurImpactSolutions() {
           custom={isMobile}
           viewport={{ once: true, amount: 0.1 }}
         >
-          <motion.div
-            className="w-full sm:w-[calc(50%-15px)] lg:w-[calc(25%-15px)]"
-            variants={shouldReduce ? {} : itemVariants}
-          >
-            <OurImpactCard
-              cardTitle="92%"
-              cardDescription="Improvement in overall charger uptime within the first three months"
-            />
-          </motion.div>
-
-          <motion.div
-            className="w-full sm:w-[calc(50%-15px)] lg:w-[calc(25%-15px)]"
-            variants={shouldReduce ? {} : itemVariants}
-          >
-            <OurImpactCard
-              cardTitle="37%"
-              cardDescription="Reduction in customer-reported charging issues"
-            />
-          </motion.div>
-
-          <motion.div
-            className="w-full sm:w-[calc(50%-15px)] lg:w-[calc(25%-15px)]"
-            variants={shouldReduce ? {} : itemVariants}
-          >
-            <OurImpactCard
-              cardTitle="42%"
-              cardDescription="Increase in repeat charging sessions across upgraded stations"
-            />
-          </motion.div>
-
-          <motion.div
-            className="w-full sm:w-[calc(50%-15px)] lg:w-[calc(25%-15px)]"
-            variants={shouldReduce ? {} : itemVariants}
-          >
-            <OurImpactCard
-              cardTitle="3x"
-              cardDescription="Faster average charging session start time"
-            />
-          </motion.div>
+          {items.map((item, index) => (
+            <motion.div
+              key={index}
+              className="w-full sm:w-[calc(50%-15px)] lg:w-[calc(25%-15px)]"
+              variants={shouldReduce ? {} : itemVariants}
+            >
+              <OurImpactCard
+                cardTitle={item.cardTitle}
+                cardDescription={item.cardDescription}
+              />
+            </motion.div>
+          ))}
         </motion.div>
 
         <div className="flex justify-center mt-12 sm:mt-17.5">
           <Link
             className="inline-flex lg:px-[16px] px-[16px] py-[12px] lg:py-[12px] text-[14px] leading-[18px] font-medium box-border rounded-[4px] bg-[#EBFF3A] transition duration-150 hover:bg-white hover:text-[#08090D] uppercase gap-[10px]"
-            href="/contact"
+            href={buttonLink || "/contact"}
           >
             <span className="font-medium sm:leading-[18px] text-[14px]">
-              explore our solutions
+              {buttonText}
             </span>
             <svg
               width={16}

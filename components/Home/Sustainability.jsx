@@ -3,8 +3,27 @@
 import { motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
 
-export default function Sustainability() {
+export default function Sustainability({
+  topTitle,
+  title,
+  shortDescription,
+  buttonTitle,
+  buttonUrl,
+  bannerImage,
+}) {
   const shouldReduce = useReducedMotion();
+
+  // Fallbacks to keep your current design if fields are empty
+  const resolvedTopTitle = topTitle || "[ Sustainability ]";
+  const resolvedTitle = title || "Smarter Systems for a Greener Future";
+  const resolvedShortDescription =
+    shortDescription ||
+    "From energy-efficient fuel management to reduced paper and resource use, our solutions make sustainability simple for your business.";
+  const resolvedButtonTitle = buttonTitle || "read more";
+  const resolvedButtonUrl = buttonUrl || "/sustainability";
+  const resolvedBannerImage =
+    bannerImage ||
+    "https://staging.hellonotionhive.com/wordpress/infonet/wp-content/uploads/2026/01/2224526_Car_Refuel_3840x2160-2.webp";
 
   // Variants for parent container (stagger children)
   const containerVariants = {
@@ -31,7 +50,7 @@ export default function Sustainability() {
       <div
         className="h-full rounded-[8px]"
         style={{
-          backgroundImage: `url('https://staging.hellonotionhive.com/wordpress/infonet/wp-content/uploads/2026/01/2224526_Car_Refuel_3840x2160-2.webp')`,
+          backgroundImage: `url('${resolvedBannerImage}')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -52,7 +71,7 @@ export default function Sustainability() {
                     variants={shouldReduce ? {} : itemVariants}
                     className="top-title text-white mb-[20px]"
                   >
-                    [ Sustainability ]
+                    {resolvedTopTitle}
                   </motion.div>
 
                   {/* Heading */}
@@ -60,7 +79,7 @@ export default function Sustainability() {
                     variants={shouldReduce ? {} : itemVariants}
                     className="heading-h1 text-white font-normal mb-[20px] text-[36px] leading-[40px] xl:text-[50px] xl:leading-[60px] font-manrope"
                   >
-                    Smarter Systems for a Greener Future
+                    {resolvedTitle}
                   </motion.div>
 
                   {/* Paragraph */}
@@ -68,18 +87,16 @@ export default function Sustainability() {
                     variants={shouldReduce ? {} : itemVariants}
                     className="text-white font-medium font-manrope mb-[20px] text-[14px] lg:text-[16px] leading-[20px] lg:leading-[22px]"
                   >
-                    From energy-efficient fuel management to reduced paper and
-                    resource use, our solutions make sustainability simple for
-                    your business.
+                    {resolvedShortDescription}
                   </motion.p>
 
                   {/* Button */}
                   <motion.div variants={shouldReduce ? {} : itemVariants}>
                     <Link
-                      href=""
-                      className="inline-flex lg:px-[24px] px-[16px] py-[12px] text-[14px] leading-[18px] lg:text-[16px] lg:leading-[22px] lg:py-[14px] font-medium box-border rounded-[4px] bg-[#EBFF3A] transition duration-150 hover:bg-white hover:text-[#08090D] uppercase gap-[10px]"
+                      href={resolvedButtonUrl}
+                      className="inline-flex lg:px-[24px] px-[16px] py-[12px] text-[14px] leading-[18px] lg:text-[16px] lg:leading-[22px] lg:py-[14px] font-medium box-border rounded-[4px] bg-[#EBFF3A] transition duration-150 hover:bg:white hover:text-[#08090D] uppercase gap-[10px]"
                     >
-                      <span>read more</span>
+                      <span>{resolvedButtonTitle}</span>
                       <svg
                         className="w-[16px] h-[16px] lg:w-[20px] lg:h-[20px]"
                         viewBox="0 0 20 20"

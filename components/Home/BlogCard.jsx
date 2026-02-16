@@ -11,7 +11,7 @@ export default function BlogCard({FeatureImage, Category, Date, Title, ReadMoreL
                 <Image
                     width={393}
                     height={270}
-                    className="mb-5 overflow-hidden relative rounded-lg w-full" 
+                    className="mb-5 overflow-hidden relative h-[270px] object-cover rounded-lg w-full" 
                     src={FeatureImage}
                     alt="Blog post image" /> }
                     

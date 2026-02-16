@@ -1,16 +1,12 @@
-import Image from "next/image";
-import React from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "../ui/accordion";
 import { cn } from "@/lib/utils";
+import { Accordion, AccordionContent, AccordionItem } from "../ui/accordion";
 
-const accordionData = [
+const DEFAULT_ACCORDION = [
   {
     id: "integrity",
     title: "INTEGRITY",
@@ -43,7 +39,6 @@ const CustomAccordionTrigger = React.forwardRef(
       {...props}
     >
       {children}
-      {/* Change this icon to any lucide-react icon you want */}
       <Image
         src="/assets/about/arrow-down.svg"
         alt="down-arrow"
@@ -55,29 +50,40 @@ const CustomAccordionTrigger = React.forwardRef(
 );
 CustomAccordionTrigger.displayName = "CustomAccordionTrigger";
 
-const CultureAndValues = () => {
+const CultureAndValues = ({
+  topTitle = "[ Culture & Values ]",
+  title = "Driven by Collaboration and Innovation",
+  accordionItems = DEFAULT_ACCORDION,
+  buttonTitle = "Explore Careers",
+  buttonUrl = "/career",
+  featureImage = "/assets/about/culture-2.jpg",
+}) => {
+  const items =
+    Array.isArray(accordionItems) && accordionItems.length > 0
+      ? accordionItems
+      : DEFAULT_ACCORDION;
+
   return (
     <section className="bg-[#FFFFFF] ">
       <div className="container mx-auto py-22.5 lg:py-55 px-5">
         <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-12.5">
           <div className="relative w-full  lg:max-w-167.75  h-100 md:h-134 ">
             <Image
-              src="/assets/about/culture-2.jpg"
-              alt="image"
+              src={featureImage}
+              alt="Culture and values"
               fill
               className="w-full h-full object-cover rounded-sm"
             />
           </div>
 
           <div className="flex flex-col w-full lg:max-w-134.25">
-            <div className="top-title mb-5">[ Culture & Values ]</div>
+            <div className="top-title mb-5">{topTitle}</div>
             <h2 className="font-manrope text-[28px]  leading-7.5 lg:text-[40px] lg:leading-12.5 ">
-              Driven by Collaboration and Innovation
+              {title}
             </h2>
-            {/* accordion */}
             <div className="mt-7.5 ">
               <Accordion type="single" collapsible className="w-full">
-                {accordionData.map((item) => (
+                {items.map((item) => (
                   <AccordionItem
                     key={item.id}
                     value={item.id}
@@ -94,17 +100,20 @@ const CultureAndValues = () => {
               </Accordion>
             </div>
 
-            <button className="self-start px-4 py-3 bg-[#EBFF3A] flex items-center gap-2.5 mt-10 rounded-sm">
+            <Link
+              href={buttonUrl || "/career"}
+              className="self-start px-4 py-3 bg-[#EBFF3A] flex items-center gap-2.5 mt-10 rounded-sm hover:bg-white"
+            >
               <p className="font-mono font-medium text-sm leading-4.5 uppercase text-[#08090D]">
-                Explore Careers
-              </p>{" "}
+                {buttonTitle}
+              </p>
               <Image
                 src="/assets/about/arrow-right.svg"
                 width={16}
                 height={16}
                 alt="right-arrow"
               />
-            </button>
+            </Link>
           </div>
         </div>
       </div>

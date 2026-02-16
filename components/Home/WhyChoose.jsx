@@ -1,8 +1,8 @@
-"use client";
-
+ "use client";
+ 
+import WhyChooseCard from "@/components/Home/WhyChooseCard";
 import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useState } from "react";
-import WhyChooseCard from "@/components/Home/WhyChooseCard";
 
 const Items = [
   {
@@ -60,7 +60,12 @@ const itemVariants = {
   },
 };
 
-export default function WhyChoose() {
+export default function WhyChoose({
+  topTitle,
+  title,
+  shortDescription,
+  cards,
+}) {
   const shouldReduce = useReducedMotion();
   const [isMobile, setIsMobile] = useState(false);
 
@@ -70,6 +75,26 @@ export default function WhyChoose() {
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
   }, []);
+
+  const resolvedTopTitle = topTitle || "[ Why Choose Us ]";
+  const resolvedTitle = title || "Why Industry Leaders Trust InfoNet";
+  const resolvedShortDescription =
+    shortDescription ||
+    "From seamless transactions to fully integrated management systems, InfoNet delivers technology solutions that help retailers operate efficiently.";
+
+  const dynamicItems =
+    cards && cards.length
+      ? cards.map((card, idx) => ({
+          id: card._id || idx + 1,
+          image: card.icon,
+          title: card.card_title,
+          description: card.card_short_description,
+        }))
+      : Items;
+
+  const leftItems = dynamicItems.slice(0, 2);
+  const middleItem = dynamicItems[2] || dynamicItems[0];
+  const rightItems = dynamicItems.slice(3, 5);
 
   return (
     <div className="2xl:pt-[24vh] 2xl:pb-[24vh] lg:pt-[120px] lg:pb-[120px] pt-[90px] pb-[90px] bg-[#F8F8F3]">
@@ -85,22 +110,21 @@ export default function WhyChoose() {
           viewport={{ once: true, amount: 0.1 }}
         >
           <motion.div variants={itemVariants} className="top-title mb-[20px]">
-            [ Why Choose Us ]
+            {resolvedTopTitle}
           </motion.div>
 
           <motion.h2
             variants={itemVariants}
             className="font-manrope text-[28px] leading-[30px] lg:text-[40px] lg:leading-[50px]"
           >
-            Why Industry Leaders Trust InfoNet
+            {resolvedTitle}
           </motion.h2>
 
           <motion.p
             variants={itemVariants}
             className="mt-[20px] font-manrope font-medium text-[14px] lg:text-[16px] max-w-[649px] mx-auto opacity-80"
           >
-            From seamless transactions to fully integrated management systems,
-            InfoNet delivers technology solutions that help retailers operate efficiently.
+            {resolvedShortDescription}
           </motion.p>
         </motion.div>
 
@@ -115,9 +139,9 @@ export default function WhyChoose() {
         >
           {/* Left */}
           <div className="flex flex-col gap-2">
-            {Items.slice(0, 2).map((item) => (
+            {leftItems.map((item) => (
               <motion.div key={item.id} variants={itemVariants}>
-                <WhyChooseCard 
+                <WhyChooseCard
                   cardImage={item.image}
                   title={item.title}
                   description={item.description}
@@ -127,20 +151,23 @@ export default function WhyChoose() {
           </div>
 
           <div className="flex flex-col gap-[8px]">
-            <motion.div className="h-full" variants={shouldReduce ? {} : itemVariants}>
-              <WhyChooseCard 
-                cardImage="assets/about/icon/02.svg"
-                title="1,000,000"
-                description="Daily Transactions Processed – Powering fast, accurate sales every day, across diverse retail and fueling sectors."
+            <motion.div
+              className="h-full"
+              variants={shouldReduce ? {} : itemVariants}
+            >
+              <WhyChooseCard
+                cardImage={middleItem.image}
+                title={middleItem.title}
+                description={middleItem.description}
               />
             </motion.div>
           </div>
 
           {/* Right */}
           <div className="flex flex-col gap-2">
-            {Items.slice(3, 5).map((item) => (
+            {rightItems.map((item) => (
               <motion.div key={item.id} variants={itemVariants}>
-                <WhyChooseCard 
+                <WhyChooseCard
                   cardImage={item.image}
                   title={item.title}
                   description={item.description}

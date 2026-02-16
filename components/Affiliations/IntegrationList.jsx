@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const LogoList = [
+const FALLBACK_LOGOS = [
   {
     id: 1,
     src: "/assets/brand/toshiba-logo.svg",
@@ -249,35 +249,38 @@ const LogoList = [
   },
 ];
 
-export default function IntegrationList() {
+export default function IntegrationList({
+  topTitle = "[ Integrations ]",
+  title = "Fully integrated solutions that connect your systems",
+  description = "At InfoNet, we integrate with a broad range of partners spanning hardware providers, payment gateways, loyalty programs, and more to create a unified, end-to-end experience for our clients.",
+  logos = FALLBACK_LOGOS,
+  buttonTitle = "Let's Collaborate",
+  buttonUrl = "/contact",
+}) {
+  const logoList = Array.isArray(logos) && logos.length > 0 ? logos : FALLBACK_LOGOS;
+
   return (
     <>
       <div className="pt-27 lg:pt-54 pb-31 lg:pb-62.5 bg-[#F8F8F3]">
         <div className="container lg:pr-0 lg:pl-0 pr-5 pl-5">
           <div className="w-full sm:w-164.75">
-            <div className="top-title mb-5">[ Integrations ]</div>
-            <h2 className="heading-h2 mb-5">
-              Fully integrated solutions that connect your systems
-            </h2>
-            <p className="paragraph-text">
-              At InfoNet, we integrate with a broad range of partners spanning
-              hardware providers, payment gateways, loyalty programs, and more
-              to create a unified, end-to-end experience for our clients.
-            </p>
+            <div className="top-title mb-5">{topTitle}</div>
+            <h2 className="heading-h2 mb-5">{title}</h2>
+            <p className="paragraph-text">{description}</p>
           </div>
 
           <div className="flex flex-wrap mt-10 gap-x-1.5 gap-y-2 -mr-1.5">
-            {LogoList.map((logo) => (
+            {logoList.map((logo) => (
               <div
                 key={logo.id}
                 className="w-[calc(50%-6px)] p-[20] border-box sm:w-[calc(33%-6px)] lg:w-[calc(20%-6px)] h-42.5 flex items-center justify-center bg-white rounded-lg"
               >
                 <Image
                   className="object-contain max-w-full mx-auto"
-                  src={logo.src}
-                  width={logo.width}
-                  height={logo.height}
-                  alt={logo.alt}
+                  src={logo.src || logo.icon}
+                  width={logo.width || 186}
+                  height={logo.height || 60}
+                  alt={logo.alt || logo.title || "Partner"}
                 />
               </div>
             ))}
@@ -286,10 +289,10 @@ export default function IntegrationList() {
           <div className="flex justify-center mt-12 sm:mt-17.5">
             <Link
               className="inline-flex lg:px-[16px] px-[16px] py-[12px] lg:py-[12px] text-[14px] leading-[18px] font-medium box-border rounded-[4px] bg-[#EBFF3A] transition duration-150 hover:bg-white hover:text-[#08090D] uppercase gap-[10px]"
-              href="/contact"
+              href={buttonUrl || "/contact"}
             >
               <span className="font-medium  sm:leading-[18px] text-[14px]">
-                Let's Collaborate
+                {buttonTitle}
               </span>
               <svg
                 width={16}

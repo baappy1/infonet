@@ -1,16 +1,33 @@
 "use client";
-import Image from "next/image";
-import Link from "next/link";
+import ButtonNext from "@/components/Global/ButtonNext";
+import ButtonPrev from "@/components/Global/ButtonPrev";
+import CtaIcon from "@/components/Global/CtaIcon";
 import TestimonialCard from "@/components/Home/TestimonialCard";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-import { useState } from "react";
 import { motion } from "framer-motion";
-import CtaIcon from "@/components/Global/CtaIcon"
-import ButtonPrev from "@/components/Global/ButtonPrev"
-import ButtonNext from "@/components/Global/ButtonNext"
+import Link from "next/link";
+import { useState } from "react";
 
-export default function Testimonial() {
+const FALLBACK_ITEMS = [
+  {
+    id: 1,
+    title: "Lisa R.",
+    content: "The integration between our POS and fuel systems is seamless now. InfoNet helped us eliminate downtime and keep our customers happy even during high-traffic hours.",
+    designation: "Operations Manager",
+    image: "https://staging.hellonotionhive.com/wordpress/infonet/wp-content/uploads/2026/01/testimoinal-image-01.webp",
+    logo: "https://staging.hellonotionhive.com/wordpress/infonet/wp-content/uploads/2026/01/anfet-logo.svg",
+  },
+];
+
+export default function Testimonial({
+  items = [],
+  topTitle = "[ Testimonials ]",
+  title = "Success Stories of Industry Leaders",
+  buttonText = "get in touch",
+  buttonUrl = "/contact",
+}) {
   const [api, setApi] = useState(null); // store carousel API
+  const displayItems = items?.length ? items : FALLBACK_ITEMS;
 
   // Variants for fade-up animation
   const itemVariants = {
@@ -29,17 +46,17 @@ export default function Testimonial() {
         {/* Header */}
         <div className="flex flex-col lg:flex-row justify-between items-end lg:pr-[15px]">
           <div className="w-full lg:w-[41.7%]">
-            <div className="top-title mb-[20px]">[ Testimonials ]</div>
+            <div className="top-title mb-[20px]">{topTitle}</div>
             <div className="font-manrope text-[28px] leading-[30px] lg:text-[40px] lg:leading-[50px]">
-              Success Stories of Industry Leaders
+              {title}
             </div>
           </div>
           <div className="w-full flex justify-end lg:w-[41.7%]">
             <Link
-              href="/contact"
+              href={buttonUrl}
               className="hidden lg:inline-flex lg:px-[16px] px-[16px] py-[12px] lg:py-[12px] text-[14px] leading-[18px] font-medium box-border rounded-[4px] bg-[#EBFF3A] transition duration-150 hover:bg-white hover:text-[#08090D] uppercase gap-[10px]"
             >
-              <span>get in touch</span>
+              <span>{buttonText}</span>
               <CtaIcon/>
             </Link>
           </div>
@@ -49,15 +66,21 @@ export default function Testimonial() {
         <div className="relative mt-[40px] lg:mt-[100px]">
           <Carousel opts={{ }} setApi={setApi} className="w-full">
             <CarouselContent className="w-full flex gap-4">
-              {[...Array(5)].map((_, index) => (
-                <CarouselItem key={index} className="w-full">
+              {displayItems.map((item) => (
+                <CarouselItem key={item.id} className="w-full">
                   <motion.div
                     variants={itemVariants}
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.5 }}
                   >
-                    <TestimonialCard />
+                    <TestimonialCard
+                      image={item.image}
+                      logo={item.logo}
+                      content={item.content}
+                      title={item.title}
+                      designation={item.designation}
+                    />
                   </motion.div>
                 </CarouselItem>
               ))}
@@ -84,10 +107,10 @@ export default function Testimonial() {
 
         <div className="w-full flex lg:hidden justify-center mt-[40px]">
             <Link
-              href=""
+              href={buttonUrl}
               className="inline-flex lg:hidden lg:px-[16px] px-[16px] py-[12px] lg:py-[12px] text-[14px] leading-[18px] font-medium box-border rounded-[4px] bg-[#EBFF3A] transition duration-150 hover:bg-white hover:text-[#08090D] uppercase gap-[10px]"
             >
-              <span>get in touch</span>
+              <span>{buttonText}</span>
               <CtaIcon/>
             </Link>
         </div>

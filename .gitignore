@@ -43,4 +43,9 @@ Thumbs.db
 .next
 
 # Large media files
+*.tiff
+*.avi
+*.flv
+*.mov
+*.wmv
 

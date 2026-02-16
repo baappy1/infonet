@@ -10,6 +10,11 @@ const nextConfig = {
         hostname: 'staging.hellonotionhive.com',
         pathname: '/**',
       },
+      {
+        protocol: 'http',
+        hostname: 'infonet.local',
+        pathname: '/**',
+      },
     ],
   },
 };

@@ -1,8 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
 import OurImpactCard from "@/components/About/OurImpactCard";
-import Link from "next/link";
+import { motion, useReducedMotion } from "motion/react";
 
 const containerVariants = {
   hidden: {},

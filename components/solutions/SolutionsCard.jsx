@@ -3,8 +3,8 @@ import React from "react";
 
 const SolutionsCard = ({ item }) => {
   return (
-    <div className="relative">
-      <div className="relative h-100 md:h-117 ">
+    <div className="relative overflow-hidden cursor-pointer group">
+      <div className="relative h-100 md:h-117 transition-transform duration-500 ease-out group-hover:scale-110">
         <Image
           src={item.image}
           fill
@@ -14,7 +14,7 @@ const SolutionsCard = ({ item }) => {
       </div>
 
       <div className="absolute bottom-5 left-5 lg:bottom-7.5 lg:left-7.5">
-        <h4 className="font-manrope text-2xl leading-7.5 text-white tracking-[0px]">
+        <h4 className="font-manrope text-2xl leading-7.5 text-white tracking-[0px] hover:underline">
           {item.title}
         </h4>
 

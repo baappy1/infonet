@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import Image from "next/image";
+import { useEffect, useRef } from "react";
 
-const Logos = [
+const FALLBACK_LOGOS = [
   {
     id: 1,
     icon: "/assets/logo/01.png",
@@ -29,10 +29,9 @@ const Logos = [
     id: 6,
     icon: "/assets/logo/06.png",
   },
-  // Removed duplicates: 01-04 were duplicated as 07-10
 ];
 
-export default function InfiniteSlider() {
+export default function InfiniteSlider({ logos, title }) {
   const wrapperRef = useRef(null);
   const trackRef = useRef(null);
   const animationRef = useRef(null);
@@ -40,7 +39,7 @@ export default function InfiniteSlider() {
   useEffect(() => {
     const track = trackRef.current;
     const wrapper = wrapperRef.current;
-    
+
     if (!track || !wrapper) return;
 
     const items = Array.from(track.children);
@@ -49,23 +48,23 @@ export default function InfiniteSlider() {
 
     // Clear any existing clones first
     const clones = track.querySelectorAll('[data-clone="true"]');
-    clones.forEach(clone => clone.remove());
+    clones.forEach((clone) => clone.remove());
 
     // Duplicate items for seamless infinite scroll
     // We need enough clones to fill at least 2x the wrapper width
     const neededClones = Math.ceil((wrapperWidth * 2) / trackWidth) + 1;
-    
+
     for (let i = 0; i < neededClones; i++) {
       items.forEach((item, index) => {
         const clone = item.cloneNode(true);
-        clone.setAttribute('data-clone', 'true');
-        clone.setAttribute('data-index', `${i}-${index}`);
+        clone.setAttribute("data-clone", "true");
+        clone.setAttribute("data-index", `${i}-${index}`);
         track.appendChild(clone);
       });
     }
 
     trackWidth = track.scrollWidth;
-    
+
     // Create GSAP animation
     animationRef.current = gsap.to(track, {
       x: `-=${trackWidth / 2}`,
@@ -73,8 +72,8 @@ export default function InfiniteSlider() {
       ease: "linear",
       repeat: -1,
       modifiers: {
-        x: gsap.utils.unitize(x => parseFloat(x) % (trackWidth / 2))
-      }
+        x: gsap.utils.unitize((x) => parseFloat(x) % (trackWidth / 2)),
+      },
     });
 
     // Cleanup function
@@ -83,13 +82,13 @@ export default function InfiniteSlider() {
         animationRef.current.kill();
       }
     };
-  }, []);
+  }, [logos?.length]);
 
   return (
     <div className="pt-[50px] lg:pt-[100px] pb:[45px] lg:pb-[120px] bg-[#F8F8F3] overflow-hidden">
       <div className="container">
         <div className="text-center uppercase mb-7.5 lg:mb-14 px-2.5 lg:pl-0 lg:pr-0 text-sm leading-4.5 lg:text-base lg:leading-5.5">
-          Helping 100+ leading companies get better results
+          {title || "Helping 100+ leading companies get better results"}
         </div>
       </div>
       <div className="container mx-auto relative">
@@ -134,19 +133,19 @@ export default function InfiniteSlider() {
           className="w-full overflow-hidden pb-[20px] lg:pb-[50px] border-b border-dashed border-b-[#08090D33]"
         >
           <div ref={trackRef} className="flex gap-[34px] lg:gap-[63px] w-max">
-            {Logos.map((item) => (
+            {(logos && logos.length ? logos : FALLBACK_LOGOS).map((item) => (
               <div
                 key={item.id}
-                className="w-auto h-[39px] lg:h-[48px] flex items-center justify-center flex-shrink-0"
+                className="w-auto h-[28px] lg:h-[48px] flex items-center justify-center flex-shrink-0"
                 data-original="true"
               >
                 <Image
-                  width={142}
+                  width={192}
                   height={42}
-                  className="h-[22px] lg:h-[42px] w-auto object-contain"
+                  className="w-auto h-full object-contain"
                   src={item.icon}
-                  alt={`Partner logo ${item.id}`}
-                  style={{ width: "auto", height: "auto" }}
+                  alt={item.title || `Partner logo ${item.id}`}
+                  // style={{ width: "auto", height: "auto" }}
                 />
               </div>
             ))}
