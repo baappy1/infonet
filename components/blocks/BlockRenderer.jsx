@@ -47,14 +47,19 @@ export default function BlockRenderer({ blocks, entities = {}, pageType }) {
     return null;
   }
 
+  // Only render the first hero-section to avoid duplicate banners
+  const heroSectionIndex = blocks.findIndex((b) => b?.name === "carbon-fields/hero-section");
+
   return (
     <>
       {blocks.map((block, index) => {
         const name = block?.name;
         const data = block?.attributes?.data || {};
 
-        // HERO / BANNER
+        // HERO / BANNER — render only the first one to prevent duplicate banners
         if (name === "carbon-fields/hero-section") {
+          if (index !== heroSectionIndex) return null;
+
           const primaryButton = Array.isArray(data.hero_buttons)
             ? data.hero_buttons[0]
             : null;

@@ -30,7 +30,7 @@ const ChevronIcon = ({ isOpen }) => (
   </svg>
 );
 
-export default function TopHeader({ setActive, activeMenu, themeOptions = {}, menuItems = [] }) {
+export default function TopHeader({ setActive, themeOptions = {}, menuItems = [] }) {
   const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
   const dropdownRef = useRef(null);
 
@@ -38,7 +38,7 @@ export default function TopHeader({ setActive, activeMenu, themeOptions = {}, me
   const letsTalkTitle = themeOptions?.letstalkTitle || "get in touch";
   const letsTalkUrl = themeOptions?.letstalkUrl || "/contact";
 
-  const handleMobileMenuClick = () => setActive(!activeMenu);
+  const handleMobileMenuClick = () => setActive(true);
 
   // Close dropdown on Escape
   useEffect(() => {

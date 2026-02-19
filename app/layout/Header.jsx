@@ -32,7 +32,14 @@ export default function Header({ themeOptions = {}, menuItems = [] }) {
   return (
     <>
       <TopHeader setActive={setActive} activeMenu={activeMenu} themeOptions={themeOptions} menuItems={menuItems} />
-      <MobileHeaderPopup setActive={setActive} activeMenu={activeMenu} themeOptions={themeOptions} menuItems={menuItems} />
+      {activeMenu && (
+        <MobileHeaderPopup
+          setActive={setActive}
+          activeMenu={activeMenu}
+          themeOptions={themeOptions}
+          menuItems={menuItems}
+        />
+      )}
     </>
   );
 }

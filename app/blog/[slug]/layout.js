@@ -1,10 +1,3 @@
-import HeaderSecound from "@/app/layout/HeaderSecound";
-
-export default function CareerDetailsLayout({ children }) {
-  return (
-    <>
-      <HeaderSecound />
-      {children}
-    </>
-  );
+export default function BlogSlugLayout({ children }) {
+  return <>{children}</>;
 }

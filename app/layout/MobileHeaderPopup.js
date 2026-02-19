@@ -18,9 +18,7 @@ export default function MobileHeaderPopup({ setActive, activeMenu, themeOptions 
     return dropdownRefs.current[index]?.scrollHeight ?? 0;
   };
 
-  const hidePopupMenu = () => {
-    setActive(!activeMenu); 
-  };
+  const hidePopupMenu = () => setActive(false);
 
   return (
     <div className={ `fixed w-full bg-white h-screen top-0 left-0 z-9991 p-[10px] ${activeMenu ? 'flex' : 'hidden'}` }>
