@@ -9,10 +9,70 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const ProcessSection = () => {
+const DEFAULT_STEPS = [
+  {
+    step: 1,
+    title: "Consultation",
+    description:
+      "We begin by learning about your site, your operational challenges, and the outcomes you want to achieve. This helps us determine the right hardware, software, and setup approach for your environment.",
+    image: "/assets/service-details/thumbnail-01.png",
+  },
+  {
+    step: 2,
+    title: "Planning & Coordination",
+    description:
+      "We begin by learning about your site, your operational challenges, and the outcomes you want to achieve. This helps us determine the right hardware, software, and setup approach for your environment.",
+    image: "/assets/service-details/thumbnail-02.png",
+  },
+  {
+    step: 3,
+    title: "Deployment",
+    description:
+      "We begin by learning about your site, your operational challenges, and the outcomes you want to achieve. This helps us determine the right hardware, software, and setup approach for your environment.",
+    image: "/assets/service-details/thumbnail-03.png",
+  },
+  {
+    step: 4,
+    title: "Training / Verification",
+    description:
+      "On your first day of operation with the new system, we provide guidance and support to help everything run smoothly. This includes monitoring performance and helping your team with early-stage questions.",
+    image: "/assets/service-details/thumbnail-04.png",
+  },
+  {
+    step: 5,
+    title: "Ongoing Support",
+    description:
+      "After deployment, we remain available for continuous technical assistance, remote troubleshooting, maintenance, and updates. Our goal is to help your operation stay reliable and efficient long-term.",
+    image: "/assets/service-details/thumbnail-05.png",
+  },
+  {
+    step: 6,
+    title: "Go-Live Optimization",
+    description:
+      "After deployment, we remain available for continuous technical assistance, remote troubleshooting, maintenance, and updates. Our goal is to help your operation stay reliable and efficient long-term.",
+    image: "/assets/service-details/thumbnail-06.png",
+  },
+];
+
+const ProcessSection = ({
+  topTitle = "[ Process ]",
+  title = "How We Guide You From Start to Finish",
+  shortDescription = "We follow a proven, transparent process that keeps your project moving efficiently and ensures every detail is handled with care.",
+  processSteps,
+}) => {
   const sectionRef = useRef(null);
   const borderRef = useRef(null);
   const borderFillRef = useRef(null);
+
+  const steps =
+    Array.isArray(processSteps) && processSteps.length > 0
+      ? processSteps.map((s, i) => ({
+        step: i + 1,
+        title: s.step_title || "",
+        description: (s.step_description || "").trim(),
+        image: s.feature_image || `/assets/service-details/thumbnail-0${(i % 6) + 1}.png`,
+      }))
+      : DEFAULT_STEPS;
 
   useEffect(() => {
     const stepsContainer =
@@ -53,15 +113,13 @@ const ProcessSection = () => {
       // Initialize all cards with step 1 as active
       cardEls.forEach((card, index) => {
         const step = Number(card.getAttribute("data-step") ?? index + 1);
-        // For initial state (step 1 active), card with step 1 is at position 6 (top 66px)
-        // Other cards fill positions 1-5 based on their step
         if (step === 1) {
-          card.style.top = `${topPositions[5]}px`; // 66px
+          card.style.top = `${topPositions[5]}px`;
           card.style.zIndex = "6";
           card.classList.add("is-active-card");
         } else {
-          card.style.top = `${topPositions[step - 2]}px`; // step 2 gets 11px, step 3 gets 22px, etc.
-          card.style.zIndex = String(step - 1); // step 2 gets z-index 1, step 3 gets 2, etc.
+          card.style.top = `${topPositions[step - 2]}px`;
+          card.style.zIndex = String(step - 1);
           card.classList.remove("is-active-card");
         }
         card.style.opacity = "1";
@@ -77,21 +135,14 @@ const ProcessSection = () => {
       let activeStep = 1;
 
       const rearrangeCards = (activeStepNumber) => {
-        // Create an array of steps in the new order
-        // Active card goes to the back (position 6), others fill positions 1-5
         const stepsInOrder = [];
-
-        // Add all steps except active
         for (let i = 1; i <= totalSteps; i++) {
           if (i !== activeStepNumber) {
             stepsInOrder.push(i);
           }
         }
-
-        // Add active step at the end (position 6)
         stepsInOrder.push(activeStepNumber);
 
-        // Apply positions to cards
         cardEls.forEach((card) => {
           const step = Number(card.getAttribute("data-step") ?? 0);
           if (!step) return;
@@ -99,7 +150,6 @@ const ProcessSection = () => {
           const positionIndex = stepsInOrder.indexOf(step);
           const isActive = step === activeStepNumber;
 
-          // Animate to new position
           gsap.to(card, {
             top: `${topPositions[positionIndex]}px`,
             duration: 0.5,
@@ -107,10 +157,7 @@ const ProcessSection = () => {
             overwrite: "auto",
           });
 
-          // Set z-index (position in array + 1 for 1-indexed z-index)
           card.style.zIndex = String(positionIndex + 1);
-
-          // Update active class and pointer events
           card.classList.toggle("is-active-card", isActive);
           card.style.pointerEvents = isActive ? "auto" : "none";
         });
@@ -120,7 +167,6 @@ const ProcessSection = () => {
         if (nextStep === activeStep) return;
         activeStep = nextStep;
 
-        // Update dots
         gsap.to(dotEls, {
           backgroundColor: "#fff",
           duration: 0.2,
@@ -139,7 +185,6 @@ const ProcessSection = () => {
           });
         }
 
-        // Rearrange cards
         rearrangeCards(nextStep);
       };
 
@@ -151,7 +196,6 @@ const ProcessSection = () => {
         onUpdate: (self) => {
           const p = self.progress;
 
-          // Update border
           if (setBorderHeight) setBorderHeight(`${p * 100}%`);
           if (borderRef.current && p > 0) {
             borderRef.current.style.borderLeftColor = "#08090D";
@@ -159,7 +203,6 @@ const ProcessSection = () => {
               p > 0.5 ? "solid" : "dashed";
           }
 
-          // Calculate current step
           const nextStep = Math.min(
             totalSteps,
             Math.max(1, Math.round(p * (totalSteps - 1) + 1)),
@@ -178,19 +221,18 @@ const ProcessSection = () => {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [steps]);
 
   return (
     <div className="pt-20 lg:pt-55 pb-20 lg:pb-55">
       <div className="container lg:pr-0 lg:pl-0 pr-5 pl-5">
         <div className="w-full lg:w-[40.7%] sm:mb-0 mb-20">
-          <div className="top-title mb-5">[ Process ]</div>
+          <div className="top-title mb-5">{topTitle}</div>
           <h2 className="heading-h2 mb-5">
-            How We Guide You From Start to Finish
+            {title}
           </h2>
           <p className="paragraph-text mb-5">
-            We follow a proven, transparent process that keeps your project
-            moving efficiently and ensures every detail is handled with care.
+            {shortDescription}
           </p>
         </div>
 
@@ -215,177 +257,47 @@ const ProcessSection = () => {
 
             {/* Steps content */}
             <div className="relative z-10">
-              {/* Step 1 - Consultation */}
-              <div className="relative mb-22 md:mb-42.5" id="step-1">
-                <span className="w-5.25 h-5.25 border bg-[#EBFF3A] border-[#08090D] block absolute top-0 left-[-51px] rounded-full z-20"></span>
-                <h4 className="uppercase mb-6 font-bold mt-2.5 leading-5.5">
-                  Consultation
-                </h4>
-                <p className="font-manrope font-medium leading-5.5 text-[#08090D]/80">
-                  We begin by learning about your site, your operational
-                  challenges, and the outcomes you want to achieve. This helps
-                  us determine the right hardware, software, and setup approach
-                  for your environment.
-                </p>
-                <Image
-                  src="/assets/service-details/thumbnail-01.png"
-                  alt=""
-                  width={600}
-                  height={600}
-                  className="w-full h-auto md:hidden mt-7"
-                />
-              </div>
-
-              {/* Step 2 - Planning & Coordination */}
-              <div className="relative mb-22 md:mb-42.5" id="step-2">
-                <span className="w-5.25 h-5.25 border bg-white border-[#08090D] block absolute top-0 left-[-51px] rounded-full z-20"></span>
-                <h4 className="uppercase mb-6 font-bold mt-2.5">
-                  Planning & Coordination
-                </h4>
-                <p className="font-manrope medium">
-                  We begin by learning about your site, your operational
-                  challenges, and the outcomes you want to achieve. This helps
-                  us determine the right hardware, software, and setup approach
-                  for your environment.
-                </p>
-                <Image
-                  src="/assets/service-details/thumbnail-02.png"
-                  alt=""
-                  width={600}
-                  height={600}
-                  className="w-full h-auto md:hidden mt-7"
-                />
-              </div>
-
-              {/* Step 3 - Deployment */}
-              <div className="relative mb-22 md:mb-42.5" id="step-3">
-                <span className="w-5.25 h-5.25 border bg-white border-[#08090D] block absolute top-0 left-[-51px] rounded-full z-20"></span>
-                <h4 className="uppercase mb-6 font-bold mt-2.5">Deployment</h4>
-                <p className="font-manrope medium">
-                  We begin by learning about your site, your operational
-                  challenges, and the outcomes you want to achieve. This helps
-                  us determine the right hardware, software, and setup approach
-                  for your environment.
-                </p>
-                <Image
-                  src="/assets/service-details/thumbnail-03.png"
-                  alt=""
-                  width={600}
-                  height={600}
-                  className="w-full h-auto md:hidden mt-7"
-                />
-              </div>
-
-              {/* Step 4 - Training / Verification */}
-              <div className="relative mb-22 md:mb-42.5" id="step-4">
-                <span className="w-5.25 h-5.25 border bg-white border-[#08090D] block absolute top-0 left-[-51px] rounded-full z-20"></span>
-                <h4 className="uppercase mb-6 font-bold mt-2.5">
-                  Training / Verification
-                </h4>
-                <p className="font-manrope medium">
-                  On your first day of operation with the new system, we provide
-                  guidance and support to help everything run smoothly. This
-                  includes monitoring performance and helping your team with
-                  early-stage questions.
-                </p>
-                <Image
-                  src="/assets/service-details/thumbnail-04.png"
-                  alt=""
-                  width={600}
-                  height={600}
-                  className="w-full h-auto md:hidden mt-7"
-                />
-              </div>
-
-              {/* Step 5 - Ongoing Support */}
-              <div className="relative mb-22 md:mb-42.5" id="step-5">
-                <span className="w-5.25 h-5.25 border bg-white border-[#08090D] block absolute top-0 left-[-51px] rounded-full z-20"></span>
-                <h4 className="uppercase mb-6 font-bold mt-2.5">
-                  Ongoing Support
-                </h4>
-                <p className="font-manrope medium">
-                  After deployment, we remain available for continuous technical
-                  assistance, remote troubleshooting, maintenance, and updates.
-                  Our goal is to help your operation stay reliable and efficient
-                  long-term.
-                </p>
-                <Image
-                  src="/assets/service-details/thumbnail-05.png"
-                  alt=""
-                  width={600}
-                  height={600}
-                  className="w-full h-auto md:hidden mt-7"
-                />
-              </div>
-
-              {/* Step 6 - Go-Live Optimization */}
-              <div className="relative" id="step-6">
-                <span className="w-5.25 h-5.25 border bg-white border-[#08090D] block absolute top-0 left-[-51px] rounded-full z-20"></span>
-                <h4 className="uppercase mb-6 font-bold mt-2.5">
-                  Go-Live Optimization
-                </h4>
-                <p className="font-manrope medium">
-                  After deployment, we remain available for continuous technical
-                  assistance, remote troubleshooting, maintenance, and updates.
-                  Our goal is to help your operation stay reliable and efficient
-                  long-term.
-                </p>
-                <Image
-                  src="/assets/service-details/thumbnail-06.png"
-                  alt=""
-                  width={600}
-                  height={600}
-                  className="w-full h-auto md:hidden mt-7"
-                />
-              </div>
+              {steps.map((s, i) => (
+                <div
+                  key={s.step}
+                  className={`relative ${i < steps.length - 1 ? "mb-22 md:mb-42.5" : ""}`}
+                  id={`step-${s.step}`}
+                >
+                  <span
+                    className={`w-5.25 h-5.25 border ${s.step === 1 ? "bg-[#EBFF3A]" : "bg-white"} border-[#08090D] block absolute top-0 left-[-51px] rounded-full z-20`}
+                  ></span>
+                  <h4 className="uppercase mb-6 font-bold mt-2.5 leading-5.5">
+                    {s.title}
+                  </h4>
+                  <p className="font-manrope font-medium leading-5.5 text-[#08090D]/80">
+                    {s.description}
+                  </p>
+                  <Image
+                    src={s.image}
+                    alt={s.title}
+                    width={600}
+                    height={600}
+                    className="w-full h-auto md:hidden mt-7"
+                  />
+                </div>
+              ))}
             </div>
           </div>
 
           {/* Right Column - Images */}
           <div className="md:block hidden w-[49.2%] sticky top-0 self-start">
             <div className="relative h-[600px] isolate">
-              {[
-                {
-                  step: 1,
-                  src: "/assets/service-details/thumbnail-01.png",
-                  alt: "Consultation Process Diagram",
-                },
-                {
-                  step: 2,
-                  src: "/assets/service-details/thumbnail-02.png",
-                  alt: "Planning & Coordination Process Diagram",
-                },
-                {
-                  step: 3,
-                  src: "/assets/service-details/thumbnail-03.png",
-                  alt: "Deployment Process Diagram",
-                },
-                {
-                  step: 4,
-                  src: "/assets/service-details/thumbnail-04.png",
-                  alt: "Training Process Diagram",
-                },
-                {
-                  step: 5,
-                  src: "/assets/service-details/thumbnail-05.png",
-                  alt: "Ongoing Support Process Diagram",
-                },
-                {
-                  step: 6,
-                  src: "/assets/service-details/thumbnail-06.png",
-                  alt: "Go-Live Optimization Process Diagram",
-                },
-              ].map(({ step, src, alt }) => (
+              {steps.map((s) => (
                 <div
-                  key={step}
+                  key={s.step}
                   className="absolute stacked-image left-0 w-full transition-all duration-500 ease-out"
-                  style={{ top: "11px" }} // Initial top, will be overridden by GSAP
+                  style={{ top: "11px" }}
                   data-card
-                  data-step={step}
+                  data-step={s.step}
                 >
                   <Image
-                    src={src}
-                    alt={alt}
+                    src={s.image}
+                    alt={s.title}
                     width={600}
                     height={600}
                     className="w-full h-auto"
@@ -397,7 +309,7 @@ const ProcessSection = () => {
         </div>
 
         <div className="flex items-center justify-center mt-10 md:mt-42.5">
-          <button className="flex items-center bg-[#EBFF3A] px-4 py-3 gap-2.5 font-jetbrains uppercase font-medium text-sm leading-4.5 text-[#08090D] rounded cursor-pointer">
+          <button className="flex items-center bg-[#EBFF3A] px-4 py-3 gap-2.5 font-jetbrains uppercase font-medium text-sm leading-4.5 text-[#08090D] rounded cursor-pointer hover:bg-white">
             Request a Demo{" "}
             <Image
               src="/assets/service-details/arrow-right.svg"

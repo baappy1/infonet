@@ -1,6 +1,6 @@
 import BenefitsCard from "./BenefitsCard";
 
-const benefits = [
+const DEFAULT_BENEFITS = [
   {
     id: 1,
     icon: "/assets/service-details/benefit/01.svg",
@@ -28,28 +28,40 @@ const benefits = [
   },
 ];
 
-export default function Benefits() {
+export default function Benefits({
+  topTitle = "[ Key Benefits ]",
+  title = "Why This Service Is Critical for Your Operations",
+  shortDescription = "Fuel and retail environments rely on precision. Our service ensures your systems are fast, reliable, and optimized for real-world performance.",
+  benefits,
+}) {
+  const items =
+    Array.isArray(benefits) && benefits.length > 0
+      ? benefits.map((b, i) => ({
+        id: b._id ?? i,
+        icon: b.feature_image || `/assets/service-details/benefit/0${(i % 5) + 1}.svg`,
+        title: b.benefit_title || "",
+      }))
+      : DEFAULT_BENEFITS;
+
   return (
     <>
       <div className="pt-20 lg:pt-25 pb-25 lg:pb-55 bg-[#F8F8F3]">
         <div className="container lg:pr-0 lg:pl-0 pr-5 pl-5">
           <div className="w-full">
             <div className="w-full lg:w-[49.7%]">
-              <div className="top-title mb-5">[ Key Benefits ]</div>
+              <div className="top-title mb-5">{topTitle}</div>
               <h2 className="heading-h2 mb-5">
-                Why This Service Is Critical for Your Operations
+                {title}
               </h2>
               <p className="paragraph-text mb-10 lg:mb-20">
-                Fuel and retail environments rely on precision. Our service
-                ensures your systems are fast, reliable, and optimized for
-                real-world performance.
+                {shortDescription}
               </p>
             </div>
           </div>
 
           <div className="w-full">
             <div className="flex flex-wrap gap-2">
-              {benefits.map((benefit, index) => (
+              {items.map((benefit, index) => (
                 <BenefitsCard
                   key={benefit.id}
                   CardIcon={benefit.icon}

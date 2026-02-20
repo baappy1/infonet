@@ -18,9 +18,7 @@ export default function MobileHeaderPopup({ setActive, activeMenu, themeOptions 
     return dropdownRefs.current[index]?.scrollHeight ?? 0;
   };
 
-  const hidePopupMenu = () => {
-    setActive(!activeMenu); 
-  };
+  const hidePopupMenu = () => setActive(false);
 
   return (
     <div className={ `fixed w-full bg-white h-screen top-0 left-0 z-9991 p-[10px] ${activeMenu ? 'flex' : 'hidden'}` }>
@@ -105,10 +103,10 @@ export default function MobileHeaderPopup({ setActive, activeMenu, themeOptions 
               <Link href="/" className="uppercase font-medium leading-[22px]" onClick={() => hidePopupMenu()}>
                 Home
               </Link>
-              <Link href="/industries" className="uppercase font-medium leading-[22px]" onClick={() => hidePopupMenu()}>
+              <Link href="/Industries" className="uppercase font-medium leading-[22px]" onClick={() => hidePopupMenu()}>
                 Industries
               </Link>
-              <Link href="/service" className="uppercase font-medium leading-[22px]" onClick={() => hidePopupMenu()}>
+              <Link href="/solutions" className="uppercase font-medium leading-[22px]" onClick={() => hidePopupMenu()}>
                 Solutions
               </Link>
               <Link href="/service" className="uppercase font-medium leading-[22px]" onClick={() => hidePopupMenu()}>

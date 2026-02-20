@@ -5,47 +5,50 @@ import Link from "next/link";
 
 const DEFAULT_CATEGORY = "NEWS & BLOG";
 const socialLinks = [
-    {
-      id: 1,
-      name: "Twitter",
-      icon: "/assets/newsandblog/twitter.svg",
-      url: "#",
-    },
-    {
-      id: 2,
-      name: "Medium",
-      icon: "/assets/newsandblog/medium.svg",
-      url: "#",
-    },
-    {
-      id: 3,
-      name: "Facebook",
-      icon: "/assets/newsandblog/facebook-circle-fill.svg",
-      url: "#",
-    },
-    {
-      id: 4,
-      name: "LinkedIn",
-      icon: "/assets/newsandblog/linkedin-box-fill.svg",
-      url: "#",
-    },
-    {
-      id: 5,
-      name: "Telegram",
-      icon: "/assets/newsandblog/send-plane-line.svg",
-      url: "#",
-    },
+  {
+    id: 1,
+    name: "Twitter",
+    icon: "/assets/newsandblog/twitter.svg",
+    url: "#",
+  },
+  {
+    id: 2,
+    name: "Medium",
+    icon: "/assets/newsandblog/medium.svg",
+    url: "#",
+  },
+  {
+    id: 3,
+    name: "Facebook",
+    icon: "/assets/newsandblog/facebook-circle-fill.svg",
+    url: "#",
+  },
+  {
+    id: 4,
+    name: "LinkedIn",
+    icon: "/assets/newsandblog/linkedin-box-fill.svg",
+    url: "#",
+  },
+  {
+    id: 5,
+    name: "Telegram",
+    icon: "/assets/newsandblog/send-plane-line.svg",
+    url: "#",
+  },
 ];
 
 function formatDate(isoDate) {
   if (!isoDate) return "";
   try {
     const d = new Date(isoDate);
-    return d.toLocaleDateString("en-US", {
-      month: "short",
-      day: "2-digit",
-      year: "numeric",
-    }).toUpperCase().replace(",", "");
+    return d
+      .toLocaleDateString("en-US", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric",
+      })
+      .toUpperCase()
+      .replace(",", "");
   } catch {
     return "";
   }
@@ -55,10 +58,12 @@ const BlogDetails = ({ post, slug }) => {
   const category = post?.categories?.edges?.[0]?.node?.name || DEFAULT_CATEGORY;
   const date = formatDate(post?.date) || "—";
   const title = post?.title || "";
-  const imageUrl = post?.featuredImage?.node?.mediaItemUrl || "/assets/newsandblog/green-pump.png";
+  const imageUrl =
+    post?.featuredImage?.node?.mediaItemUrl ||
+    "/assets/newsandblog/green-pump.png";
 
   return (
-    <section className="pt-15 lg:pt-41.5 pb-8.5 bg-[#f8f8f3]">
+    <section className="pt-15 lg:pt-17.5 pb-8.5 bg-[#f8f8f3]">
       <div className="max-w-247.5 mx-auto px-2.5">
         <Link
           href="/blog"
@@ -102,7 +107,11 @@ const BlogDetails = ({ post, slug }) => {
 
               <div className="flex items-center gap-1 ">
                 {socialLinks.map((item) => (
-                  <Link href={item.url} key={item.id}>
+                  <Link
+                    href={item.url}
+                    key={item.id}
+                    className="transition-all duration-200 hover:scale-110 hover:-translate-y-1"
+                  >
                     <Image src={item.icon} alt="icon" width={24} height={24} />
                   </Link>
                 ))}

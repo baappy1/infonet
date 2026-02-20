@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 
+import AboutTestimonial from "../About/Testimonial";
 import CultureAndValues from "../About/CultureAndValues";
 import KeyMilestone from "../About/KeyMilestone";
 import LeadershipTeam from "../About/LeadershipTeam";
@@ -27,6 +28,11 @@ import Testimonial from "../Home/Testimonial";
 import WhyChoose from "../Home/WhyChoose";
 import MoreIndustries from "../industries/MoreIndustries";
 import Reason from "../industries/Reason";
+import ServiceBenefits from "../service-details/Benefits";
+import ServiceInclude from "../service-details/Include";
+import ServiceLifeInfoNet from "../service-details/LifeInfoNet";
+import ServiceMoreServices from "../service-details/MoreServices";
+import ServiceProcess from "../service-details/process";
 import Features from "../solutions/Features";
 import MoreSolutions from "../solutions/MoreSolutions";
 import UseCases from "../solutions/UseCases";
@@ -41,14 +47,19 @@ export default function BlockRenderer({ blocks, entities = {}, pageType }) {
     return null;
   }
 
+  // Only render the first hero-section to avoid duplicate banners
+  const heroSectionIndex = blocks.findIndex((b) => b?.name === "carbon-fields/hero-section");
+
   return (
     <>
       {blocks.map((block, index) => {
         const name = block?.name;
         const data = block?.attributes?.data || {};
 
-        // HERO / BANNER
+        // HERO / BANNER — render only the first one to prevent duplicate banners
         if (name === "carbon-fields/hero-section") {
+          if (index !== heroSectionIndex) return null;
+
           const primaryButton = Array.isArray(data.hero_buttons)
             ? data.hero_buttons[0]
             : null;
@@ -78,10 +89,10 @@ export default function BlockRenderer({ blocks, entities = {}, pageType }) {
           const clients =
             clientIdSet.size > 0
               ? allClients.filter(
-                  (c) =>
-                    clientIdSet.has(Number(c.databaseId)) ||
-                    clientIdSet.has(Number(c.clientId))
-                )
+                (c) =>
+                  clientIdSet.has(Number(c.databaseId)) ||
+                  clientIdSet.has(Number(c.clientId))
+              )
               : allClients;
           const logos = clients.map((client) => ({
             id: client.id ?? client.databaseId ?? client.clientId,
@@ -459,8 +470,8 @@ export default function BlockRenderer({ blocks, entities = {}, pageType }) {
           const testimonials =
             testimonialIdSet.size > 0
               ? allTestimonials.filter((item) =>
-                  testimonialIdSet.has(Number(item.databaseId))
-                )
+                testimonialIdSet.has(Number(item.databaseId))
+              )
               : allTestimonials;
           const testimonialsMapped = testimonials.map((item) => ({
             id: item.id,
@@ -471,8 +482,9 @@ export default function BlockRenderer({ blocks, entities = {}, pageType }) {
             designation: item.testimonialDesignation || "",
           }));
 
+          const TestimonialComponent = pageType === "service" ? AboutTestimonial : Testimonial;
           return (
-            <Testimonial
+            <TestimonialComponent
               key={`testimonial-${index}`}
               items={testimonialsMapped}
               topTitle={data.top_title}
@@ -496,13 +508,13 @@ export default function BlockRenderer({ blocks, entities = {}, pageType }) {
               ? allPosts.filter((item) => postIdSet.has(Number(item.databaseId)))
               : allPosts;
           const postsMapped = posts.map((item) => ({
-                id: item.id,
-                title: item.title,
-                date: item.date,
-                slug: item.slug,
-                category: item.categories?.edges?.[0]?.node?.name || "",
-                image: item.featuredImage?.node?.mediaItemUrl || "",
-              }));
+            id: item.id,
+            title: item.title,
+            date: item.date,
+            slug: item.slug,
+            category: item.categories?.edges?.[0]?.node?.name || "",
+            image: item.featuredImage?.node?.mediaItemUrl || "",
+          }));
 
           return (
             <Blog
@@ -602,6 +614,75 @@ export default function BlockRenderer({ blocks, entities = {}, pageType }) {
               impactItems={impactItems}
               buttonText={data.button_text}
               buttonLink={data.button_link}
+            />
+          );
+        }
+
+        // SERVICE: Core Values (Include section)
+        if (name === "carbon-fields/service-core-values") {
+          return (
+            <ServiceInclude
+              key={`service-include-${index}`}
+              topTitle={data.top_title}
+              title={data.title}
+              shortDescription={data.short_description}
+              buttonTitle={data.button_title}
+              buttonUrl={data.button_url}
+              coreValues={data.core_values}
+            />
+          );
+        }
+
+        // SERVICE: Benefits
+        if (name === "carbon-fields/service-benefits") {
+          return (
+            <ServiceBenefits
+              key={`service-benefits-${index}`}
+              topTitle={data.top_title}
+              title={data.title}
+              shortDescription={data.short_description}
+              benefits={data.benefits}
+            />
+          );
+        }
+
+        // SERVICE: Process (uses same block type as solution-process)
+        if (name === "carbon-fields/solution-process") {
+          return (
+            <ServiceProcess
+              key={`service-process-${index}`}
+              topTitle={data.top_title}
+              title={data.title}
+              shortDescription={data.short_description}
+              processSteps={data.process_steps}
+            />
+          );
+        }
+
+        // SERVICE: Life at InfoNet
+        if (name === "carbon-fields/service-life-at-infonet") {
+          const associatedServices = entities.associatedServices || [];
+          return (
+            <ServiceLifeInfoNet
+              key={`service-life-${index}`}
+              topTitle={data.top_title}
+              title={data.title}
+              shortDescription={data.short_description}
+              services={associatedServices}
+            />
+          );
+        }
+
+        // SERVICE: More Industries
+        if (name === "carbon-fields/service-more-industries") {
+          const serviceIndustries = entities.serviceIndustries || [];
+          return (
+            <ServiceMoreServices
+              key={`service-more-industries-${index}`}
+              topTitle={data.top_title}
+              title={data.title}
+              shortDescription={data.short_description}
+              industries={serviceIndustries}
             />
           );
         }

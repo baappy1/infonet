@@ -7,14 +7,26 @@ import { Accordion } from "@/components/ui/accordion";
 
 /* Plus Icon */
 const AccordionArrowPlus = () => (
-  <svg className="plus-arrow-accordion" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <svg
+    className="plus-arrow-accordion"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+  >
     <path d="M11 5H13V11H19V13H13V19H11V13H5V11H11V5Z" fill="#08090D" />
   </svg>
 );
 
 /* Minus Icon */
 const AccordionArrowMinus = () => (
-  <svg className="minus-arrow-accordion" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <svg
+    className="minus-arrow-accordion"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+  >
     <path d="M5 11H19V13H5V11Z" fill="#08090D" />
   </svg>
 );
@@ -26,7 +38,6 @@ export default function Faq() {
   return (
     <div className="bg-[#F8F8F3] pt-25 lg:pt-55 pb-17 lg:pb-30">
       <div className="container lg:pr-0 lg:pl-0 pr-5 pl-5">
-
         {/* Header */}
         <motion.div
           className="text-center"
@@ -35,12 +46,13 @@ export default function Faq() {
           viewport={{ once: true }}
         >
           <div className="top-title mb-5">[ faq ]</div>
-          <h2 className="font-manrope text-[28px] lg:text-[40px]">
+          <h2 className="heading-h2  max-w-162.5 mx-auto">
             Have questions before getting in touch?
           </h2>
-          <p className="mt-5 font-manrope opacity-80 max-w-162.5 mx-auto">
-            We’ve gathered answers to the most common inquiries about our products,
-            integrations, and support to help you find what you need fast.
+          <p className="mt-5 font-manrope text-[#08090D]/80 leading-5.5 font-medium max-w-162.5 mx-auto">
+            We’ve gathered answers to the most common inquiries about our
+            products, integrations, and support to help you find what you need
+            fast.
           </p>
         </motion.div>
 
@@ -110,7 +122,6 @@ export default function Faq() {
             />
           </Accordion>
         </motion.div>
-
       </div>
     </div>
   );

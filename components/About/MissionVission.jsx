@@ -19,8 +19,8 @@ export default function MissionVision({ items = [] }) {
   return (
     <>
       <div className="bg-[#F8F8F3]">
-        <div className="container lg:px-[0]  px-5 mx-auto">
-          <div className="flex flex-col sm:flex-row gap-12.5 sm:gap-0 justify-between pt-[100px] pb-[100px] border-b-[1px] border-dashed border-[#08090D33]">
+        <div className="container lg:px-0 xl:px-5 2xl:px-0  px-5 mx-auto">
+          <div className="flex flex-col sm:flex-row gap-12.5 sm:gap-0 justify-between pt-25 pb-25 border-b border-dashed border-[#08090D33]">
             {displayItems.map((item, i) => (
               <MissionVisionCard
                 key={i}

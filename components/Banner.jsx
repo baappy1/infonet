@@ -11,12 +11,15 @@ export default function Banner({
   bannerDescription,
   bannerButtonTitle,
   bannerButtonURL,
+  bannerButtonTitle2, // Add these new props
+  bannerButtonURL2,
   mediaType, // optional: 'image' or 'video'
 }) {
   const topTitleRef = useRef(null);
   const titleRef = useRef(null);
   const descriptionRef = useRef(null);
   const buttonRef = useRef(null);
+  const button2Ref = useRef(null);
   const videoRef = useRef(null);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
@@ -43,7 +46,9 @@ export default function Banner({
   const currentMediaType = videoError ? "image" : getMediaType();
   const videoSrc =
     bannerVideo ||
-    (bannerImage && bannerImage.toLowerCase().endsWith(".mp4") ? bannerImage : null);
+    (bannerImage && bannerImage.toLowerCase().endsWith(".mp4")
+      ? bannerImage
+      : null);
 
   useEffect(() => {
     const tl = gsap.timeline();
@@ -84,6 +89,16 @@ export default function Banner({
         "-=0.4",
       );
     }
+
+    // Add animation for second button
+    if (button2Ref.current) {
+      gsap.set(button2Ref.current, { opacity: 0, y: 30 });
+      tl.to(
+        button2Ref.current,
+        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
+        "-=0.4",
+      );
+    }
   }, []);
 
   // Video loading handler
@@ -120,9 +135,7 @@ export default function Banner({
 
     // Default to image background (also fallback when video errors)
     if (!bannerImage) {
-      return (
-        <div className="absolute inset-0 w-full h-full bg-[#08090D]/80" />
-      );
+      return <div className="absolute inset-0 w-full h-full bg-[#08090D]/80" />;
     }
     return (
       <div
@@ -142,7 +155,7 @@ export default function Banner({
         <div className="h-full rounded-[8px] relative overflow-hidden">
           {/* Background media (image or video) */}
           {renderBackground()}
-          
+
           <div className="container h-full mx-auto pb-[10px] lg:pb-[120px] pl-[10px] pr-[10px] 2xl:pl-[0] 2xl:pr-[0] relative z-10">
             <div className="flex flex-wrap items-end h-full">
               <div className="w-full flex flex-col">
@@ -173,7 +186,84 @@ export default function Banner({
                     </p>
                   )}
 
-                  {bannerButtonURL && (
+                  {/* Buttons container - wraps both buttons */}
+                  <div className="flex flex-wrap gap-5">
+                    {bannerButtonURL && (
+                      <Link
+                        ref={buttonRef}
+                        href={bannerButtonURL}
+                        className="primary-button text-[14px] lg:text-[16px] leading-4.5 font-medium lg:leading-5.5 max-h-12.5"
+                      >
+                        <span>{bannerButtonTitle}</span>
+                        <svg
+                          className="w-[16px] h-[16px] lg:w-[20px] lg:h-[20px]"
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <g clipPath="url(#clip0_456_280)">
+                            <path
+                              d="M3.125 10H16.875"
+                              stroke="#08090D"
+                              strokeWidth="1.5"
+                              strokeLinecap="square"
+                              strokeLinejoin="round"
+                            />
+                            <path
+                              d="M12.25 4.375L17.875 10L12.25 15.625"
+                              stroke="#08090D"
+                              strokeWidth="1.5"
+                              strokeLinecap="square"
+                            />
+                          </g>
+                          <defs>
+                            <clipPath id="clip0_456_280">
+                              <rect width={20} height={20} fill="white" />
+                            </clipPath>
+                          </defs>
+                        </svg>
+                      </Link>
+                    )}
+
+                    {/* Second optional button */}
+                    {bannerButtonURL2 && (
+                      <Link
+                        ref={button2Ref}
+                        href={bannerButtonURL2}
+                        className="secondary-button text-[14px] lg:text-[16px] leading-4.5 font-medium lg:leading-5.5 max-h-12.5"
+                      >
+                        <span>{bannerButtonTitle2}</span>
+                        <svg
+                          className="w-[16px] h-[16px] lg:w-[20px] lg:h-[20px]"
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <g clipPath="url(#clip0_456_280)">
+                            <path
+                              d="M3.125 10H16.875"
+                              stroke="#08090D"
+                              strokeWidth="1.5"
+                              strokeLinecap="square"
+                              strokeLinejoin="round"
+                            />
+                            <path
+                              d="M12.25 4.375L17.875 10L12.25 15.625"
+                              stroke="#08090D"
+                              strokeWidth="1.5"
+                              strokeLinecap="square"
+                            />
+                          </g>
+                          <defs>
+                            <clipPath id="clip0_456_280">
+                              <rect width={20} height={20} fill="white" />
+                            </clipPath>
+                          </defs>
+                        </svg>
+                      </Link>
+                    )}
+                  </div>
+                  {/* {bannerButtonURL && (
                     <Link
                       ref={buttonRef}
                       href={bannerButtonURL}
@@ -208,7 +298,7 @@ export default function Banner({
                         </defs>
                       </svg>
                     </Link>
-                  )}
+                  )} */}
                 </div>
               </div>
             </div>

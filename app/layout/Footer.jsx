@@ -94,12 +94,18 @@ function useItems(items, key) {
 
 export default function Footer({ footerMenus = {}, themeOptions = {} }) {
   const footerLogo = themeOptions?.footerLogo || "/assets/infonetLogo.svg";
-  const copyrightText = themeOptions?.copyrightText || "InfoNet Technology Corporation. All rights reserved.";
-  const footerTitle = themeOptions?.footerTitle || "Ready to Transform Your Business?";
-  const footerShortDescription = themeOptions?.footerShortDescription || "Whether you're managing fuel stations, convenience stores, or fleet operations, InfoNet provides the technology solutions that simplify operations";
+  const copyrightText =
+    themeOptions?.copyrightText ||
+    "InfoNet Technology Corporation. All rights reserved.";
+  const footerTitle =
+    themeOptions?.footerTitle || "Ready to Transform Your Business?";
+  const footerShortDescription =
+    themeOptions?.footerShortDescription ||
+    "Whether you're managing fuel stations, convenience stores, or fleet operations, InfoNet provides the technology solutions that simplify operations";
   const footerButtonTitle = themeOptions?.footerButtonTitle || "Request a Demo";
   const footerButtonUrl = themeOptions?.footerButtonUrl || "/contact";
-  const footerButtonTitleTwo = themeOptions?.footerButtonTitleTwo || "get in touch";
+  const footerButtonTitleTwo =
+    themeOptions?.footerButtonTitleTwo || "get in touch";
   const footerButtonUrlTwo = themeOptions?.footerButtonUrlTwo || "/contact";
 
   const industriesItems = useItems(footerMenus.industries, "industries");
@@ -127,7 +133,10 @@ export default function Footer({ footerMenus = {}, themeOptions = {} }) {
               {footerShortDescription}
             </div>
             <div className="flex flex-col sm:flex-row justify-center gap-[8px]">
-              <Link className="primary-button justify-center" href={footerButtonUrl}>
+              <Link
+                className="primary-button justify-center"
+                href={footerButtonUrl}
+              >
                 <span className="font-medium leading-[22px]">
                   {footerButtonTitle}
                 </span>
@@ -164,7 +173,9 @@ export default function Footer({ footerMenus = {}, themeOptions = {} }) {
                 className="inline-flex w-auto justify-center items-center gap-[10px] px-6 py-[15px] uppercase rounded-[4px] transition-colors duration-200 bg-white hover:bg-[#ebff3a]"
                 href={footerButtonUrlTwo}
               >
-                <span className="font-medium leading-[22px]">{footerButtonTitleTwo}</span>
+                <span className="font-medium leading-[22px]">
+                  {footerButtonTitleTwo}
+                </span>
                 <svg
                   width={20}
                   height={20}
@@ -199,13 +210,17 @@ export default function Footer({ footerMenus = {}, themeOptions = {} }) {
 
           <div className="px-[10px] sm:px-[40px] pb-2.5  lg:pb-12.5  pt-[90px] sm:pt-[150px]">
             <div className="bg-white p-[20px] sm:p-[70px] sm:pb-[48px] pb-[20px] rounded-[8px]">
-              <div className="pb-[0] sm:pb-[30px] sm:pb-[78px] border-dashed sm:border-b-[1px] border-[#08090D]/10 flex flex-wrap 2xl:flex-nowrap gap-[0] sm:gap-[50px] 2xl:gap-[0] 2xl:justify-between">
+              <div className="pb-[0] sm:pb-[30px] sm:pb-[78px] border-dashed sm:border-b-[1px] border-[#08090D]/10 flex flex-wrap  md:gap-20 lg:gap-12.5  2xl:flex-nowrap gap-[0] sm:gap-12.5 2xl:gap-0 2xl:justify-between">
                 <div className="flex flex-col hidden sm:flex">
                   <h4 className="mb-[30px] leading-[22px] uppercase">
                     Industries
                   </h4>
                   {industriesItems.map((item, i) => (
-                    <MenuLink key={i} MenuLink={item.url} MenuTitle={item.label} />
+                    <MenuLink
+                      key={i}
+                      MenuLink={item.url}
+                      MenuTitle={item.label}
+                    />
                   ))}
                 </div>
 
@@ -214,7 +229,11 @@ export default function Footer({ footerMenus = {}, themeOptions = {} }) {
                     Solutions
                   </h4>
                   {solutionsItems.map((item, i) => (
-                    <MenuLink key={i} MenuLink={item.url} MenuTitle={item.label} />
+                    <MenuLink
+                      key={i}
+                      MenuLink={item.url}
+                      MenuTitle={item.label}
+                    />
                   ))}
                 </div>
 
@@ -223,7 +242,11 @@ export default function Footer({ footerMenus = {}, themeOptions = {} }) {
                     Services
                   </h4>
                   {servicesItems.map((item, i) => (
-                    <MenuLink key={i} MenuLink={item.url} MenuTitle={item.label} />
+                    <MenuLink
+                      key={i}
+                      MenuLink={item.url}
+                      MenuTitle={item.label}
+                    />
                   ))}
                 </div>
 
@@ -232,7 +255,11 @@ export default function Footer({ footerMenus = {}, themeOptions = {} }) {
                     Insights
                   </h4>
                   {insightsItems.map((item, i) => (
-                    <MenuLink key={i} MenuLink={item.url} MenuTitle={item.label} />
+                    <MenuLink
+                      key={i}
+                      MenuLink={item.url}
+                      MenuTitle={item.label}
+                    />
                   ))}
                 </div>
 
@@ -241,7 +268,11 @@ export default function Footer({ footerMenus = {}, themeOptions = {} }) {
                     Company
                   </h4>
                   {companyItems.map((item, i) => (
-                    <MenuLink key={i} MenuLink={item.url} MenuTitle={item.label} />
+                    <MenuLink
+                      key={i}
+                      MenuLink={item.url}
+                      MenuTitle={item.label}
+                    />
                   ))}
                 </div>
 
@@ -250,7 +281,11 @@ export default function Footer({ footerMenus = {}, themeOptions = {} }) {
                     contact us
                   </h4>
                   {contactItems.map((item, i) => (
-                    <MenuLink key={i} MenuLink={item.url} MenuTitle={item.label} />
+                    <MenuLink
+                      key={i}
+                      MenuLink={item.url}
+                      MenuTitle={item.label}
+                    />
                   ))}
                 </div>
 
@@ -259,11 +294,169 @@ export default function Footer({ footerMenus = {}, themeOptions = {} }) {
                     Socials
                   </h4>
                   {socialItems.map((item, i) => (
-                    <MenuLink key={i} MenuLink={item.url} MenuTitle={item.label} />
+                    <MenuLink
+                      key={i}
+                      MenuLink={item.url}
+                      MenuTitle={item.label}
+                    />
                   ))}
                 </div>
 
+                {/* Mobile Accordion -  */}
                 <Accordion
+                  type="single"
+                  collapsible
+                  className="w-full sm:hidden"
+                >
+                  <AccordionItem
+                    value="industries"
+                    className="py-[20px] border-b-[1px] border-dashed border-[#08090D33]"
+                  >
+                    <AccordionTrigger className="flex hide-default-arrow justify-between uppercase p-[0]">
+                      <span>Industries</span>
+                      <AccordionArrow />
+                    </AccordionTrigger>
+                    <AccordionContent className="pb-[0]">
+                      <div className="flex flex-col pt-[20px] pb-[0]">
+                        {industriesItems.map((item, i) => (
+                          <MenuLink
+                            key={i}
+                            MenuLink={item.url}
+                            MenuTitle={item.label}
+                          />
+                        ))}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem
+                    value="solutions"
+                    className="py-[20px] border-b-[1px] border-dashed border-[#08090D33]"
+                  >
+                    <AccordionTrigger className="flex hide-default-arrow justify-between uppercase p-[0]">
+                      <span>Solutions</span>
+                      <AccordionArrow />
+                    </AccordionTrigger>
+                    <AccordionContent className="pb-[0]">
+                      <div className="flex flex-col pt-[20px] pb-[0]">
+                        {solutionsItems.map((item, i) => (
+                          <MenuLink
+                            key={i}
+                            MenuLink={item.url}
+                            MenuTitle={item.label}
+                          />
+                        ))}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem
+                    value="services"
+                    className="py-[20px] border-b-[1px] border-dashed border-[#08090D33]"
+                  >
+                    <AccordionTrigger className="flex hide-default-arrow justify-between uppercase p-[0]">
+                      <span>Services</span>
+                      <AccordionArrow />
+                    </AccordionTrigger>
+                    <AccordionContent className="pb-[0]">
+                      <div className="flex flex-col pt-[20px] pb-[0]">
+                        {servicesItems.map((item, i) => (
+                          <MenuLink
+                            key={i}
+                            MenuLink={item.url}
+                            MenuTitle={item.label}
+                          />
+                        ))}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem
+                    value="insights"
+                    className="py-[20px] border-b-[1px] border-dashed border-[#08090D33]"
+                  >
+                    <AccordionTrigger className="flex hide-default-arrow justify-between uppercase p-[0]">
+                      <span>Insights</span>
+                      <AccordionArrow />
+                    </AccordionTrigger>
+                    <AccordionContent className="pb-[0]">
+                      <div className="flex flex-col pt-[20px] pb-[0]">
+                        {insightsItems.map((item, i) => (
+                          <MenuLink
+                            key={i}
+                            MenuLink={item.url}
+                            MenuTitle={item.label}
+                          />
+                        ))}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem
+                    value="company"
+                    className="py-[20px] border-b-[1px] border-dashed border-[#08090D33]"
+                  >
+                    <AccordionTrigger className="flex hide-default-arrow justify-between uppercase p-[0]">
+                      <span>Company</span>
+                      <AccordionArrow />
+                    </AccordionTrigger>
+                    <AccordionContent className="pb-[0]">
+                      <div className="flex flex-col pt-[20px] pb-[0]">
+                        {companyItems.map((item, i) => (
+                          <MenuLink
+                            key={i}
+                            MenuLink={item.url}
+                            MenuTitle={item.label}
+                          />
+                        ))}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem
+                    value="contact"
+                    className="py-[20px] border-b-[1px] border-dashed border-[#08090D33]"
+                  >
+                    <AccordionTrigger className="flex hide-default-arrow justify-between uppercase p-[0]">
+                      <span>contact us</span>
+                      <AccordionArrow />
+                    </AccordionTrigger>
+                    <AccordionContent className="pb-[0]">
+                      <div className="flex flex-col pt-[20px] pb-[0]">
+                        {contactItems.map((item, i) => (
+                          <MenuLink
+                            key={i}
+                            MenuLink={item.url}
+                            MenuTitle={item.label}
+                          />
+                        ))}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem
+                    value="socials"
+                    className="py-[20px] border-b-[1px] border-dashed border-[#08090D33]"
+                  >
+                    <AccordionTrigger className="flex hide-default-arrow justify-between uppercase p-[0]">
+                      <span>Socials</span>
+                      <AccordionArrow />
+                    </AccordionTrigger>
+                    <AccordionContent className="pb-[0]">
+                      <div className="flex flex-col pt-[20px] pb-[0]">
+                        {socialItems.map((item, i) => (
+                          <MenuLink
+                            key={i}
+                            MenuLink={item.url}
+                            MenuTitle={item.label}
+                          />
+                        ))}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+
+                {/* <Accordion
                   type="multiple"
                   className="w-full sm:hidden py-[20px] border-b-[1px] border-dashed border-[#08090D33]"
                 >
@@ -276,7 +469,11 @@ export default function Footer({ footerMenus = {}, themeOptions = {} }) {
                     <AccordionContent className="pb-[0]">
                       <div className="flex flex-col pt-[20px] pb-[0]">
                         {industriesItems.map((item, i) => (
-                          <MenuLink key={i} MenuLink={item.url} MenuTitle={item.label} />
+                          <MenuLink
+                            key={i}
+                            MenuLink={item.url}
+                            MenuTitle={item.label}
+                          />
                         ))}
                       </div>
                     </AccordionContent>
@@ -296,7 +493,11 @@ export default function Footer({ footerMenus = {}, themeOptions = {} }) {
                     <AccordionContent className="pb-[0]">
                       <div className="flex flex-col pt-[20px] pb-[0]">
                         {solutionsItems.map((item, i) => (
-                          <MenuLink key={i} MenuLink={item.url} MenuTitle={item.label} />
+                          <MenuLink
+                            key={i}
+                            MenuLink={item.url}
+                            MenuTitle={item.label}
+                          />
                         ))}
                       </div>
                     </AccordionContent>
@@ -316,7 +517,11 @@ export default function Footer({ footerMenus = {}, themeOptions = {} }) {
                     <AccordionContent className="pb-[0]">
                       <div className="flex flex-col pt-[20px] pb-[0]">
                         {servicesItems.map((item, i) => (
-                          <MenuLink key={i} MenuLink={item.url} MenuTitle={item.label} />
+                          <MenuLink
+                            key={i}
+                            MenuLink={item.url}
+                            MenuTitle={item.label}
+                          />
                         ))}
                       </div>
                     </AccordionContent>
@@ -336,7 +541,11 @@ export default function Footer({ footerMenus = {}, themeOptions = {} }) {
                     <AccordionContent className="pb-[0]">
                       <div className="flex flex-col pt-[20px] pb-[0]">
                         {insightsItems.map((item, i) => (
-                          <MenuLink key={i} MenuLink={item.url} MenuTitle={item.label} />
+                          <MenuLink
+                            key={i}
+                            MenuLink={item.url}
+                            MenuTitle={item.label}
+                          />
                         ))}
                       </div>
                     </AccordionContent>
@@ -356,7 +565,11 @@ export default function Footer({ footerMenus = {}, themeOptions = {} }) {
                     <AccordionContent className="pb-[0]">
                       <div className="flex flex-col pt-[20px] pb-[0]">
                         {companyItems.map((item, i) => (
-                          <MenuLink key={i} MenuLink={item.url} MenuTitle={item.label} />
+                          <MenuLink
+                            key={i}
+                            MenuLink={item.url}
+                            MenuTitle={item.label}
+                          />
                         ))}
                       </div>
                     </AccordionContent>
@@ -376,7 +589,11 @@ export default function Footer({ footerMenus = {}, themeOptions = {} }) {
                     <AccordionContent className="pb-[0]">
                       <div className="flex flex-col pt-[20px] pb-[0]">
                         {contactItems.map((item, i) => (
-                          <MenuLink key={i} MenuLink={item.url} MenuTitle={item.label} />
+                          <MenuLink
+                            key={i}
+                            MenuLink={item.url}
+                            MenuTitle={item.label}
+                          />
                         ))}
                       </div>
                     </AccordionContent>
@@ -396,12 +613,16 @@ export default function Footer({ footerMenus = {}, themeOptions = {} }) {
                     <AccordionContent className="pb-[0]">
                       <div className="flex flex-col pt-[20px] pb-[0]">
                         {socialItems.map((item, i) => (
-                          <MenuLink key={i} MenuLink={item.url} MenuTitle={item.label} />
+                          <MenuLink
+                            key={i}
+                            MenuLink={item.url}
+                            MenuTitle={item.label}
+                          />
                         ))}
                       </div>
                     </AccordionContent>
                   </AccordionItem>
-                </Accordion>
+                </Accordion> */}
               </div>
 
               <div className="pt-[30px] mb-[20px]">

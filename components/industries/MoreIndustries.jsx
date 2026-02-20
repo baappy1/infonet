@@ -52,22 +52,28 @@ const MoreIndustries = ({
   industries,
 }) => {
   const industryMap = new Map(
-    (Array.isArray(industries) ? industries : []).map((i) => [i.title?.toLowerCase?.()?.trim?.() || "", i])
+    (Array.isArray(industries) ? industries : []).map((i) => [
+      i.title?.toLowerCase?.()?.trim?.() || "",
+      i,
+    ]),
   );
 
   const fromBlock =
     Array.isArray(moreFeatures) && moreFeatures.length > 0
       ? moreFeatures.map((f, i) => {
-          const title = f.feature_title ?? f.title ?? "";
-          const matched = industryMap.get(title.toLowerCase().trim());
-          return {
-            id: f._id ?? f.id ?? i + 1,
-            title,
-            description: f.feature_description ?? f.description ?? "",
-            image: f.feature_image ?? f.image ?? "/assets/industries/convenience.png",
-            slug: f.slug ?? matched?.slug ?? slugFromTitle(title),
-          };
-        })
+        const title = f.feature_title ?? f.title ?? "";
+        const matched = industryMap.get(title.toLowerCase().trim());
+        return {
+          id: f._id ?? f.id ?? i + 1,
+          title,
+          description: f.feature_description ?? f.description ?? "",
+          image:
+            f.feature_image ??
+            f.image ??
+            "/assets/industries/convenience.png",
+          slug: f.slug ?? matched?.slug ?? slugFromTitle(title),
+        };
+      })
       : [];
 
   const list =
@@ -79,24 +85,24 @@ const MoreIndustries = ({
 
   return (
     <section className="bg-[#f8f8f3]">
-      <div className="container mx-auto py-25 lg:pt-0 lg:pb-55 px-5">
+      <div className="container mx-auto py-25 lg:pt-0 lg:pb-55 px-5 lg:px-0">
         <div className="top-title mb-5">{topTitle}</div>
-        <h2 className="font-manrope text-[28px] leading-7.5 lg:text-[40px] lg:leading-12.5 mb-5 max-w-162.25">
+        <h2 className="font-manrope text-[28px] leading-7.5 lg:text-[40px] lg:leading-12.5 mb-5 max-w-162.25 ">
           {title}
         </h2>
         <p className="font-manrope text-[14px] lg:text-base leading-5 lg:leading-5.5  font-medium text-[#08090D]/80 max-w-162.25">
           {shortDescription}
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-2 mt-10 lg:mt-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4  gap-2 mt-10 lg:mt-20 w-full">
           {list.map((item) =>
             item.slug ? (
-              <Link key={item.id} href={`/Industries/${item.slug}`}>
+              <Link key={item.id} href={`/industries/${item.slug}`}>
                 <IndustryCard item={item} />
               </Link>
             ) : (
               <IndustryCard key={item.id} item={item} />
-            )
+            ),
           )}
         </div>
       </div>

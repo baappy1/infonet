@@ -99,6 +99,12 @@ body {
   @apply inline-flex w-auto items-center gap-2.5 px-6 py-3.5 uppercase rounded-sm transition-colors duration-200 hover:bg-white;
 }
 
+.secondary-button {
+  background-color: white;
+  font-family: var(--font-jetbrains-mono);
+  @apply inline-flex w-auto items-center gap-2.5 px-6 py-3.5 uppercase rounded-sm transition-colors duration-200 hover:bg-[#EBFF3A];
+}
+
 .native-accordion h3 button svg {
   display: none;
 }

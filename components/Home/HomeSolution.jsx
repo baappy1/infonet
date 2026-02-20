@@ -128,7 +128,7 @@ export default function HomeSolution({ data }) {
                   value={item._id || item.id || `item-${idx + 1}`}
                   className="border-t border-dashed border-b-0 border-[#08090D33]"
                 >
-                  <AccordionTrigger className="pt-5 pb-6 flex justify-between items-center leading-4.5 lg:leading-5.5 uppercase text-[14px] lg:text-[16px]">
+                  <AccordionTrigger className="pt-5 pb-6 flex justify-between items-center leading-4.5 lg:leading-5.5 uppercase text-[14px] lg:text-[16px] hover:no-underline">
                     {item.accordion_title}
                     <AccordionArrow />
                   </AccordionTrigger>

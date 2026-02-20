@@ -1,17 +1,14 @@
 import { client } from "@/lib/graphql/client";
 import {
-    GET_MENU,
-    GET_THEME_OPTIONS,
-    processMenuItems,
-    toLocalPath,
+  GET_MENU,
+  GET_THEME_OPTIONS,
+  processMenuItems,
+  toLocalPath,
 } from "@/lib/graphql/queries";
 import { JetBrains_Mono, Manrope } from "next/font/google";
 import "./globals.css";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
-
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
 
 // JetBrains Mono font
 const jetBrainsMono = JetBrains_Mono({
@@ -62,7 +59,7 @@ async function getThemeOptions() {
 }
 
 async function getMenu() {
-  const menuId = parseInt(process.env.NEXT_PUBLIC_PRIMARY_MENU_ID || "28", 10);
+  const menuId = String(process.env.NEXT_PUBLIC_PRIMARY_MENU_ID || "28");
   try {
     const { data } = await client.query({
       query: GET_MENU,
@@ -81,7 +78,8 @@ async function getMenu() {
         url: getUrl(c),
       })),
     }));
-  } catch {
+  } catch (error) {
+    console.error("Error fetching primary menu:", error);
     return [];
   }
 }
@@ -90,7 +88,7 @@ async function getFooterMenu(menuId) {
   try {
     const { data } = await client.query({
       query: GET_MENU,
-      variables: { menuId },
+      variables: { menuId: String(menuId) },
       fetchPolicy: "no-cache",
     });
     const menu = data?.menu;
@@ -107,7 +105,8 @@ async function getFooterMenu(menuId) {
       }
       return [{ label: item.label, url: getUrl(item) }];
     });
-  } catch {
+  } catch (error) {
+    console.error(`Error fetching footer menu (${menuId}):`, error);
     return [];
   }
 }

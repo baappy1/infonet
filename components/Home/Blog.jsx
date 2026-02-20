@@ -8,6 +8,7 @@ import {
 import Link from "next/link";
 import * as React from "react";
 import BlogCard from "./BlogCard";
+import Autoplay from "embla-carousel-autoplay";
 
 function formatDate(dateStr) {
   if (!dateStr) return "";
@@ -30,7 +31,13 @@ export default function Blog({
   const [api, setApi] = React.useState(null); // carousel API
   const [selectedIndex, setSelectedIndex] = React.useState(0); // current slide
 
-  const slideCount = items.length > 0 ? Math.max(1, Math.ceil(items.length / 2)) : 3;
+  // Add autoplay plugin
+  const plugin = React.useRef(
+    Autoplay({ delay: 3000, stopOnInteraction: true }),
+  );
+
+  const slideCount =
+    items.length > 0 ? Math.max(1, Math.ceil(items.length / 2)) : 3;
   const slides = Array.from({ length: slideCount });
 
   // Update selectedIndex when carousel changes
@@ -85,33 +92,33 @@ export default function Blog({
             ))
           ) : (
             <>
-          <div className="w-[calc((100%-66px)/3)] flex flex-col">
-            <BlogCard 
-                Title="Infonet Technology launches next-gen EMV Pay-at-the-Pump module"
-                FeatureImage="/assets/blog/04.png"
-                Date="Nov 03, 2025"
-                Category="News & Blog"
-                ReadMoreLink="/blog/amid-macro-pressures-c-stores-have-an-opportunity-to-innovate"
-              />
-          </div>
-          <div className="w-[calc((100%-66px)/3)] flex flex-col">
-            <BlogCard 
-                Title="Amid Macro Pressures, C‑Stores Have an Opportunity to Innovate"
-                FeatureImage="/assets/blog/01.png"
-                Date="July 15, 2023"
-                Category="News & Blog"
-                ReadMoreLink="/blog/amid-macro-pressures-c-stores-have-an-opportunity-to-innovate"
-              />
-          </div>
-          <div className="w-[calc((100%-66px)/3)] flex flex-col">
-            <BlogCard 
-                Title="Nawgati Partners with Seed Group to Modernise the UAE’s Fuel Retail"
-                FeatureImage="/assets/blog/02.png"
-                Date="December 1, 2022"
-                Category="event"
-                ReadMoreLink="/blog/amid-macro-pressures-c-stores-have-an-opportunity-to-innovate"
-              />
-          </div>
+              <div className="w-[calc((100%-66px)/3)] flex flex-col">
+                <BlogCard
+                  Title="Infonet Technology launches next-gen EMV Pay-at-the-Pump module"
+                  FeatureImage="/assets/blog/04.png"
+                  Date="Nov 03, 2025"
+                  Category="News & Blog"
+                  ReadMoreLink="/blog/amid-macro-pressures-c-stores-have-an-opportunity-to-innovate"
+                />
+              </div>
+              <div className="w-[calc((100%-66px)/3)] flex flex-col">
+                <BlogCard
+                  Title="Amid Macro Pressures, C‑Stores Have an Opportunity to Innovate"
+                  FeatureImage="/assets/blog/01.png"
+                  Date="July 15, 2023"
+                  Category="News & Blog"
+                  ReadMoreLink="/blog/amid-macro-pressures-c-stores-have-an-opportunity-to-innovate"
+                />
+              </div>
+              <div className="w-[calc((100%-66px)/3)] flex flex-col">
+                <BlogCard
+                  Title="Nawgati Partners with Seed Group to Modernise the UAE’s Fuel Retail"
+                  FeatureImage="/assets/blog/02.png"
+                  Date="December 1, 2022"
+                  Category="event"
+                  ReadMoreLink="/blog/amid-macro-pressures-c-stores-have-an-opportunity-to-innovate"
+                />
+              </div>
             </>
           )}
         </div>
@@ -121,61 +128,64 @@ export default function Blog({
           <Carousel
             className="w-full"
             setApi={setApi}
-            opts={{ align: "start", containScroll: "trimSnaps" }}
+            opts={{ align: "start", containScroll: "trimSnaps", loop: true }}
+            plugins={[plugin.current]} // Add plugins prop
+            onMouseEnter={plugin.current.stop} // Pause on hover
+            onMouseLeave={plugin.current.reset} // Resume on mouse leave
           >
             <CarouselContent className="flex gap-4">
-              {items.length > 0 ? (
-                slides.map((_, index) => {
-                  const start = index * 2;
-                  const slideItems = items.slice(start, start + 2);
-                  return (
+              {items.length > 0
+                ? slides.map((_, index) => {
+                    const start = index * 2;
+                    const slideItems = items.slice(start, start + 2);
+                    return (
+                      <CarouselItem
+                        key={index}
+                        className="flex-[0_0_100%] space-y-4"
+                      >
+                        {slideItems.map((post) => (
+                          <BlogCard
+                            key={post.id}
+                            Title={post.title}
+                            FeatureImage={post.image || "/assets/blog/01.png"}
+                            Date={formatDate(post.date)}
+                            Category={post.category || "News & Blog"}
+                            ReadMoreLink={
+                              post.slug ? `/blog/${post.slug}` : "/blog"
+                            }
+                          />
+                        ))}
+                      </CarouselItem>
+                    );
+                  })
+                : slides.map((_, index) => (
                     <CarouselItem
                       key={index}
                       className="flex-[0_0_100%] space-y-4"
                     >
-                      {slideItems.map((post) => (
-                        <BlogCard
-                          key={post.id}
-                          Title={post.title}
-                          FeatureImage={post.image || "/assets/blog/01.png"}
-                          Date={formatDate(post.date)}
-                          Category={post.category || "News & Blog"}
-                          ReadMoreLink={post.slug ? `/blog/${post.slug}` : "/blog"}
-                        />
-                      ))}
+                      <BlogCard
+                        Title="Amid Macro Pressures, C‑Stores Have an Opportunity to Innovate"
+                        FeatureImage="/assets/blog/01.png"
+                        Date="July 15, 2023"
+                        Category="News & Blog"
+                        ReadMoreLink="/blog/amid-macro-pressures-c-stores-have-an-opportunity-to-innovate"
+                      />
+                      <BlogCard
+                        Title="Nawgati Partners with Seed Group to Modernise the UAE’s Fuel Retail"
+                        FeatureImage="/assets/blog/02.png"
+                        Date="December 1, 2022"
+                        Category="event"
+                        ReadMoreLink="/blog/amid-macro-pressures-c-stores-have-an-opportunity-to-innovate"
+                      />
+                      <BlogCard
+                        Title="Infonet Technology launches next-gen EMV Pay-at-the-Pump module"
+                        FeatureImage="/assets/blog/03.png"
+                        Date="Nov 03, 2025"
+                        Category="News & Blog"
+                        ReadMoreLink="/blog/amid-macro-pressures-c-stores-have-an-opportunity-to-innovate"
+                      />
                     </CarouselItem>
-                  );
-                })
-              ) : (
-                slides.map((_, index) => (
-                  <CarouselItem
-                    key={index}
-                    className="flex-[0_0_100%] space-y-4"
-                  >
-                  <BlogCard 
-                      Title="Amid Macro Pressures, C‑Stores Have an Opportunity to Innovate"
-                      FeatureImage="/assets/blog/01.png"
-                      Date="July 15, 2023"
-                      Category="News & Blog"
-                      ReadMoreLink="/blog/amid-macro-pressures-c-stores-have-an-opportunity-to-innovate"
-                    />
-                    <BlogCard 
-                      Title="Nawgati Partners with Seed Group to Modernise the UAE’s Fuel Retail"
-                      FeatureImage="/assets/blog/02.png"
-                      Date="December 1, 2022"
-                      Category="event"
-                      ReadMoreLink="/blog/amid-macro-pressures-c-stores-have-an-opportunity-to-innovate"
-                    />
-                    <BlogCard 
-                      Title="Infonet Technology launches next-gen EMV Pay-at-the-Pump module"
-                      FeatureImage="/assets/blog/03.png"
-                      Date="Nov 03, 2025"
-                      Category="News & Blog"
-                      ReadMoreLink="/blog/amid-macro-pressures-c-stores-have-an-opportunity-to-innovate"
-                    />
-                  </CarouselItem>
-                ))
-              )}
+                  ))}
             </CarouselContent>
           </Carousel>
 

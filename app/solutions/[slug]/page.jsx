@@ -2,20 +2,18 @@ import Testimonial from "@/components/About/Testimonial";
 import Banner from "@/components/Banner";
 import { BlockRenderer } from "@/components/blocks";
 import InfiniteSlider from "@/components/Home/LogoSlider";
+import CoreValues from "@/components/solutions/CoreValues";
 import Features from "@/components/solutions/Features";
 import MoreSolutions from "@/components/solutions/MoreSolutions";
 import OurImpactSolutions from "@/components/solutions/OurImpactSolutions";
 import UseCases from "@/components/solutions/UseCases";
 import { client } from "@/lib/graphql/client";
 import {
-    GET_HOMEPAGE_ENTITIES,
-    GET_SOLUTION_BY_SLUG,
-    GET_SOLUTIONS_BY_SLUG,
+  GET_HOMEPAGE_ENTITIES,
+  GET_SOLUTION_BY_SLUG,
+  GET_SOLUTIONS_BY_SLUG,
 } from "@/lib/graphql/queries";
 import { getSolutionSeoMetadata } from "@/lib/seo";
-
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
 
 async function getSolutionBlocks(slug) {
   try {
@@ -123,9 +121,12 @@ export default async function SolutionDetailsPage({ params }) {
           bannerDescription="A customizable, full-featured point-of-sale and back-office platform built specifically for fuel and convenience retail. Streamline transactions, manage inventory, control pumps, and more — all from a single interface."
           bannerButtonTitle="Request a Demo"
           bannerButtonURL="#"
+          bannerButtonTitle2="Download Brochure"
+          bannerButtonURL2="#"
         />
         <InfiniteSlider />
         <UseCases />
+        <CoreValues />
         <Features />
         <OurImpactSolutions />
         <Testimonial />

@@ -48,23 +48,23 @@ export default function InfiniteSlider({ logos, title }) {
 
     // Clear any existing clones first
     const clones = track.querySelectorAll('[data-clone="true"]');
-    clones.forEach(clone => clone.remove());
+    clones.forEach((clone) => clone.remove());
 
     // Duplicate items for seamless infinite scroll
     // We need enough clones to fill at least 2x the wrapper width
     const neededClones = Math.ceil((wrapperWidth * 2) / trackWidth) + 1;
-    
+
     for (let i = 0; i < neededClones; i++) {
       items.forEach((item, index) => {
         const clone = item.cloneNode(true);
-        clone.setAttribute('data-clone', 'true');
-        clone.setAttribute('data-index', `${i}-${index}`);
+        clone.setAttribute("data-clone", "true");
+        clone.setAttribute("data-index", `${i}-${index}`);
         track.appendChild(clone);
       });
     }
 
     trackWidth = track.scrollWidth;
-    
+
     // Create GSAP animation
     animationRef.current = gsap.to(track, {
       x: `-=${trackWidth / 2}`,
@@ -72,8 +72,8 @@ export default function InfiniteSlider({ logos, title }) {
       ease: "linear",
       repeat: -1,
       modifiers: {
-        x: gsap.utils.unitize(x => parseFloat(x) % (trackWidth / 2))
-      }
+        x: gsap.utils.unitize((x) => parseFloat(x) % (trackWidth / 2)),
+      },
     });
 
     // Cleanup function
@@ -136,16 +136,16 @@ export default function InfiniteSlider({ logos, title }) {
             {(logos && logos.length ? logos : FALLBACK_LOGOS).map((item) => (
               <div
                 key={item.id}
-                className="w-auto h-[39px] lg:h-[48px] flex items-center justify-center flex-shrink-0"
+                className="w-auto h-[28px] lg:h-[48px] flex items-center justify-center flex-shrink-0"
                 data-original="true"
               >
                 <Image
                   width={192}
                   height={42}
-                  className="w-auto h-auto object-contain"
+                  className="w-auto h-full object-contain"
                   src={item.icon}
                   alt={item.title || `Partner logo ${item.id}`}
-                  style={{ width: "auto", height: "auto" }}
+                  // style={{ width: "auto", height: "auto" }}
                 />
               </div>
             ))}

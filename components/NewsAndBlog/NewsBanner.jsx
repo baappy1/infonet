@@ -32,19 +32,20 @@ const NewsBanner = ({
     },
   };
 
-  const cards = Array.isArray(items) && items.length > 0
-    ? items
-    : [...Array(5)].map(() => null);
+  const cards =
+    Array.isArray(items) && items.length > 0
+      ? items
+      : [...Array(5)].map(() => null);
 
   return (
     <section className="">
       <div className="h-full lg:h-235 pb-5 bg-linear-to-b from-[#F8F8F3] to-[#EBFF3A] rounded-lg">
         <div className="container mx-auto px-2.5">
-          <p className="font-jetbrains text-[#08090D] uppercase text-xs leading-[100%] pt-34">
+          <p className="font-jetbrains  text-[#08090D] uppercase text-xs leading-[100%] pt-34">
             {topTitle}
           </p>
 
-          <h1 className="font-manrope text-[28px] leading-7.5 lg:text-[50px] lg:leading-15 mb-18 max-w-134.25">
+          <h1 className="font-manrope mt-5 text-[28px] leading-7.5 lg:text-[50px] lg:leading-15 mb-18 max-w-134.25">
             {title}
           </h1>
 
@@ -67,7 +68,8 @@ const NewsBanner = ({
                                 date: formatDate(post.date),
                                 title: post.title,
                                 description: post.excerpt,
-                                image: post.image || "/assets/newsandblog/pump.png",
+                                image:
+                                  post.image || "/assets/newsandblog/pump.png",
                                 slug: post.slug,
                               }
                             : undefined
@@ -79,19 +81,23 @@ const NewsBanner = ({
               </CarouselContent>
             </Carousel>
 
-            <button
-              onClick={() => api?.scrollPrev()}
-              className="absolute bottom-5 md:bottom-7.5 left-44 sm:left-114 md:left-148 lg:left-156.5 z-10 p-2 bg-[#F8F8F3] hover:bg-[#EBFF3A] cursor-pointer rounded-sm w-12 h-10 flex justify-center items-center"
-            >
-              <ButtonPrev />
-            </button>
+            <div className="absolute bottom-5 sm:bottom-15 md:bottom-20 lg:bottom-7.5 left-32 sm:left-60 md:left-148 xl:left-190 2xl:left-153  flex items-center gap-1">
+              <button
+                onClick={() => api?.scrollPrev()}
+                className="p-2 bg-[#F8F8F3] hover:bg-[#EBFF3A] cursor-pointer rounded-sm w-12 h-10 flex justify-center items-center "
+                // className="absolute bottom-5 md:bottom-7.5 left-36 sm:left-114 md:left-148 lg:left-152.5 z-10 p-2 bg-[#F8F8F3] hover:bg-[#EBFF3A] cursor-pointer rounded-sm w-12 h-10 flex justify-center items-center"
+              >
+                <ButtonPrev />
+              </button>
 
-            <button
-              onClick={() => api?.scrollNext()}
-              className="absolute bottom-5 md:bottom-7.5 right-5 lg:left-170.5 z-10 p-2 bg-[#F8F8F3] hover:bg-[#EBFF3A] cursor-pointer rounded-sm w-12 h-10 flex justify-center items-center"
-            >
-              <ButtonNext />
-            </button>
+              <button
+                onClick={() => api?.scrollNext()}
+                className="p-2 bg-[#F8F8F3] hover:bg-[#EBFF3A] cursor-pointer rounded-sm w-12 h-10 flex justify-center items-center"
+                // className="absolute bottom-5 md:bottom-7.5 right-20 lg:left-165.5 z-10 p-2 bg-[#F8F8F3] hover:bg-[#EBFF3A] cursor-pointer rounded-sm w-12 h-10 flex justify-center items-center"
+              >
+                <ButtonNext />
+              </button>
+            </div>
           </div>
         </div>
       </div>

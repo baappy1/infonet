@@ -36,7 +36,6 @@ const GET_HOMEPAGE_SEO = `
 `;
 
 async function check() {
-  console.log('GraphQL URL:', url);
   try {
     const res = await fetch(url, {
       method: 'POST',
@@ -59,17 +58,8 @@ async function check() {
     }
     const home = seo.meta?.homepage ?? {};
     const frontPage = seo.openGraph?.frontPage ?? {};
-    console.log('\nHomepage SEO from WordPress:');
-    console.log('  title:', home.title || '(empty)');
-    console.log('  description:', (home.description || '(empty)').slice(0, 80) + (home.description?.length > 80 ? '...' : ''));
-    console.log('  OG title:', frontPage.title || '(empty)');
-    console.log('  OG image:', frontPage.image?.sourceUrl || seo.openGraph?.defaultImage?.sourceUrl || '(none)');
-    console.log('\nConnection OK. Homepage metadata will use this data.');
   } catch (err) {
     console.error('Connection failed:', err.message);
-    if (url.includes('infonet.local')) {
-      console.log('\nFor local WordPress at http://infonet.local use: WORDPRESS_GRAPHQL_URL=http://infonet.local/graphql');
-    }
     process.exit(1);
   }
 }

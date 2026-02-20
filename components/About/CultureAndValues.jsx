@@ -4,16 +4,27 @@ import Link from "next/link";
 import React from "react";
 
 import { cn } from "@/lib/utils";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem
-} from "../ui/accordion";
+import { Accordion, AccordionContent, AccordionItem } from "../ui/accordion";
 
 const DEFAULT_ACCORDION = [
-  { id: "integrity", title: "INTEGRITY", content: "An all-in-one touch-screen Point-of-Sale system built for convenience stores and fuel retail. C-Store Commander seamlessly connects your front counter to your back office, ensuring fast transactions, accurate inventory control, and real-time reporting." },
-  { id: "collaboration", title: "COLLABORATION", content: "We believe in the power of teamwork and open communication. Our collaborative approach brings together diverse perspectives and expertise to solve complex challenges. By fostering a culture of shared knowledge and mutual support, we create innovative solutions that drive success for our clients and partners." },
-  { id: "customer-focus", title: "CUSTOMER FOCUS", content: "Our customers are at the heart of everything we do. We are committed to understanding their unique needs and delivering tailored solutions that exceed expectations. Through continuous feedback, responsive support, and a dedication to quality, we build lasting relationships and ensure our clients achieve their business goals." },
+  {
+    id: "integrity",
+    title: "INTEGRITY",
+    content:
+      "An all-in-one touch-screen Point-of-Sale system built for convenience stores and fuel retail. C-Store Commander seamlessly connects your front counter to your back office, ensuring fast transactions, accurate inventory control, and real-time reporting.",
+  },
+  {
+    id: "collaboration",
+    title: "COLLABORATION",
+    content:
+      "We believe in the power of teamwork and open communication. Our collaborative approach brings together diverse perspectives and expertise to solve complex challenges. By fostering a culture of shared knowledge and mutual support, we create innovative solutions that drive success for our clients and partners.",
+  },
+  {
+    id: "customer-focus",
+    title: "CUSTOMER FOCUS",
+    content:
+      "Our customers are at the heart of everything we do. We are committed to understanding their unique needs and delivering tailored solutions that exceed expectations. Through continuous feedback, responsive support, and a dedication to quality, we build lasting relationships and ensure our clients achieve their business goals.",
+  },
 ];
 
 // Custom Accordion Trigger with custom icon
@@ -47,7 +58,10 @@ const CultureAndValues = ({
   buttonUrl = "/career",
   featureImage = "/assets/about/culture-2.jpg",
 }) => {
-  const items = Array.isArray(accordionItems) && accordionItems.length > 0 ? accordionItems : DEFAULT_ACCORDION;
+  const items =
+    Array.isArray(accordionItems) && accordionItems.length > 0
+      ? accordionItems
+      : DEFAULT_ACCORDION;
 
   return (
     <section className="bg-[#FFFFFF] ">
@@ -88,7 +102,7 @@ const CultureAndValues = ({
 
             <Link
               href={buttonUrl || "/career"}
-              className="self-start px-4 py-3 bg-[#EBFF3A] flex items-center gap-2.5 mt-10 rounded-sm"
+              className="self-start px-4 py-3 bg-[#EBFF3A] flex items-center gap-2.5 mt-10 rounded-sm hover:bg-white"
             >
               <p className="font-mono font-medium text-sm leading-4.5 uppercase text-[#08090D]">
                 {buttonTitle}

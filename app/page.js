@@ -1,21 +1,18 @@
 import { BlockRenderer } from "@/components/blocks";
 import { client } from "@/lib/graphql/client";
 import {
-    buildIndustriesQuery,
-    GET_ALL_CLIENTS,
-    GET_ALL_INDUSTRIES,
-    GET_ALL_TESTIMONIALS,
-    GET_HOMEPAGE_ENTITIES,
-    GET_INDUSTRIES_FIRST_6,
-    GET_PAGE_BLOCKS,
-    GET_RECENT_POSTS,
-    GET_SERVICES_BY_IDS,
-    HOME_PAGE_ID,
+  buildIndustriesQuery,
+  GET_ALL_CLIENTS,
+  GET_ALL_INDUSTRIES,
+  GET_ALL_TESTIMONIALS,
+  GET_HOMEPAGE_ENTITIES,
+  GET_INDUSTRIES_FIRST_6,
+  GET_PAGE_BLOCKS,
+  GET_RECENT_POSTS,
+  GET_SERVICES_BY_IDS,
+  HOME_PAGE_ID,
 } from "@/lib/graphql/queries";
 import { getHomepageSeoMetadata } from "@/lib/seo";
-
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
 
 export async function generateMetadata() {
   return getHomepageSeoMetadata();
@@ -57,7 +54,10 @@ function collectIds(blocks) {
     if (name === "carbon-fields/client-list") {
       hasClientListBlock = true;
       (data.selected_clients || []).forEach((item) => {
-        const id = typeof item === "object" ? item?.id ?? item?.value ?? item?.ID : item;
+        const id =
+          typeof item === "object"
+            ? (item?.id ?? item?.value ?? item?.ID)
+            : item;
         if (id != null && id !== "") clientIds.add(Number(id));
       });
     }
@@ -65,9 +65,13 @@ function collectIds(blocks) {
     if (name === "carbon-fields/home-industry-section") {
       hasIndustryBlock = true;
       (data.selected_industries || []).forEach((item) => {
-        const id = typeof item === "object" ? item?.id ?? item?.value ?? item?.ID : item;
+        const id =
+          typeof item === "object"
+            ? (item?.id ?? item?.value ?? item?.ID)
+            : item;
         if (id == null || id === "") return;
-        const subtype = typeof item === "object" ? (item?.subtype || item?.type) : null;
+        const subtype =
+          typeof item === "object" ? item?.subtype || item?.type : null;
         // Carbon Fields may store service CPT refs as subtype "service"
         if (subtype === "service") {
           serviceIds.add(Number(id));
@@ -80,7 +84,10 @@ function collectIds(blocks) {
     if (name === "carbon-fields/home-testimonial-section") {
       hasTestimonialBlock = true;
       (data.selected_testimonials || []).forEach((item) => {
-        const id = typeof item === "object" ? item?.id ?? item?.value ?? item?.ID : item;
+        const id =
+          typeof item === "object"
+            ? (item?.id ?? item?.value ?? item?.ID)
+            : item;
         if (id != null && id !== "") testimonialIds.add(Number(id));
       });
     }
@@ -88,7 +95,10 @@ function collectIds(blocks) {
     if (name === "carbon-fields/home-insight-section") {
       hasInsightBlock = true;
       (data.selected_posts || []).forEach((item) => {
-        const id = typeof item === "object" ? item?.id ?? item?.value ?? item?.ID : item;
+        const id =
+          typeof item === "object"
+            ? (item?.id ?? item?.value ?? item?.ID)
+            : item;
         if (id != null && id !== "") postIds.add(Number(id));
       });
     }
@@ -165,7 +175,7 @@ async function getHomePageEntities(blocks) {
       const query = buildIndustriesQuery(industryIds);
       if (query) {
         const variables = Object.fromEntries(
-          industryIds.map((id, i) => [`id${i}`, id])
+          industryIds.map((id, i) => [`id${i}`, id]),
         );
         const { data } = await client.query({
           query,
@@ -192,7 +202,9 @@ async function getHomePageEntities(blocks) {
       });
       const nodes = data?.services?.nodes || [];
       // Preserve block selection order
-      const byId = Object.fromEntries(nodes.map((n) => [Number(n.databaseId), n]));
+      const byId = Object.fromEntries(
+        nodes.map((n) => [Number(n.databaseId), n]),
+      );
       entities.industries = serviceIds.map((id) => byId[id]).filter(Boolean);
     } catch (error) {
       console.error("Error fetching services:", error);

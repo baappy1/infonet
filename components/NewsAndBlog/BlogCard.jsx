@@ -3,7 +3,8 @@ import Link from "next/link";
 
 const DEFAULT_CATEGORY = "News & Blog";
 const DEFAULT_DATE = "Nov 03, 2025";
-const DEFAULT_TITLE = "Infonet Technology launches next-gen EMV Pay-at-the-Pump module";
+const DEFAULT_TITLE =
+  "Infonet Technology launches next-gen EMV Pay-at-the-Pump module";
 const DEFAULT_DESCRIPTION =
   "An all-in-one touch-screen Point-of-Sale system built for convenience stores and fuel retail. C-Store Commander seamlessly connects your front counter to your back office.";
 const DEFAULT_IMAGE = "/assets/newsandblog/pump.png";
@@ -32,14 +33,14 @@ const BlogCard = ({
     <div className="flex flex-col h-full lg:flex-row gap-2 lg:h-134 items-start">
       <div className="bg-white h-full w-full p-5 xl:p-17.5 rounded-lg">
         <div className="flex items-center gap-2.5">
-          <p>{resolvedCategory}</p>
+          <p className="leading-5.5">{resolvedCategory}</p>
           <Image
             src="/assets/newsandblog/eclipse.svg"
             width={4}
             height={4}
             alt="icon"
           />
-          <p>{resolvedDate}</p>
+          <p className="leading-5.5">{resolvedDate}</p>
         </div>
         <h2 className="font-manrope text-[28px] leading-7.5 lg:text-[40px] lg:leading-12.5 text-[#020617] w-full max-w-158.5 mt-7.5">
           {resolvedTitle}
@@ -50,7 +51,7 @@ const BlogCard = ({
 
         <Link
           href={linkHref}
-          className="flex gap-2.5 font-jetbrains font-medium text-sm leading-4.5 tracking-[0px] uppercase pt-7.5"
+          className="flex gap-2.5 font-jetbrains font-medium text-sm leading-4.5 tracking-[0px] uppercase pt-7.5 hover:underline"
         >
           read more{" "}
           <Image

@@ -19,11 +19,11 @@ export default function FaqCard({
   return (
     <AccordionItem
       value={`item-${itemIndex}`}
-      className={`accordion-arrow-remove relative rounded-[9px] border border-[#3B3B331A] last:mb-0 mb-4 p-6 transition
-        ${isOpen ? "activated-accordion" : ""}`}
+      className={`accordion-arrow-remove relative rounded-[9px] border border-[#3B3B331A] last:mb-0 mb-4 p-6 transition 
+        ${isOpen ? "activated-accordion bg-[#f9f9fa]" : ""}`}
     >
-      <AccordionTrigger className="flex justify-between items-center text-left">
-        <span className="text-[20px] leading-7 font-manrope font-medium">
+      <AccordionTrigger className="flex justify-between items-center text-left hover:no-underline  ">
+        <span className="text-[20px] leading-7 font-manrope font-medium hover:font-bold transition-all ">
           {title}
         </span>
 

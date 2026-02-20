@@ -2,14 +2,11 @@ import NewsBanner from "@/components/NewsAndBlog/NewsBanner";
 import NewsDetails from "@/components/NewsAndBlog/NewsDetails";
 import { client } from "@/lib/graphql/client";
 import {
-    BLOG_PAGE_ID,
-    GET_ALL_POSTS,
-    GET_HOMEPAGE_ENTITIES,
-    GET_PAGE_BLOCKS,
+  BLOG_PAGE_ID,
+  GET_ALL_POSTS,
+  GET_HOMEPAGE_ENTITIES,
+  GET_PAGE_BLOCKS,
 } from "@/lib/graphql/queries";
-
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
 
 function getBlockData(blocks, name) {
   const block = (blocks || []).find((b) => b?.name === name);
@@ -17,10 +14,19 @@ function getBlockData(blocks, name) {
 }
 
 function getStickyPostIds(blocks) {
-  const stickyBlock = getBlockData(blocks, "carbon-fields/insight-sticky-section");
-  const raw = stickyBlock.selected_posts ?? stickyBlock.sticky_posts ?? stickyBlock.selectedPosts ?? [];
+  const stickyBlock = getBlockData(
+    blocks,
+    "carbon-fields/insight-sticky-section",
+  );
+  const raw =
+    stickyBlock.selected_posts ??
+    stickyBlock.sticky_posts ??
+    stickyBlock.selectedPosts ??
+    [];
   return raw
-    .map((item) => (typeof item === "object" ? item?.id ?? item?.value ?? item?.ID : item))
+    .map((item) =>
+      typeof item === "object" ? (item?.id ?? item?.value ?? item?.ID) : item,
+    )
     .filter((id) => id != null && id !== "")
     .map(Number);
 }
@@ -86,14 +92,18 @@ export default async function NewsAndBlogPage() {
   if (stickyPosts.length > 0) {
     stickyItems = stickyPosts;
     postsForGrid = allPosts.filter(
-      (p) => !stickyIdSet.has(Number(p.databaseId))
+      (p) => !stickyIdSet.has(Number(p.databaseId)),
     );
   } else {
     stickyItems = allPosts.slice(0, 3);
-    postsForGrid = allPosts.slice(3);
+    // postsForGrid = allPosts.slice(3);
+    postsForGrid = allPosts;
   }
 
-  const stickyBlock = getBlockData(blocks, "carbon-fields/insight-sticky-section");
+  const stickyBlock = getBlockData(
+    blocks,
+    "carbon-fields/insight-sticky-section",
+  );
   const stickyFormatted = stickyItems.map((post) => ({
     id: post.id,
     databaseId: post.databaseId,
@@ -102,7 +112,8 @@ export default async function NewsAndBlogPage() {
     date: post.date,
     excerpt: post.excerpt,
     category: post.categories?.edges?.[0]?.node?.name || "News & Blog",
-    image: post.featuredImage?.node?.mediaItemUrl || "/assets/newsandblog/pump.png",
+    image:
+      post.featuredImage?.node?.mediaItemUrl || "/assets/newsandblog/pump.png",
   }));
 
   return (

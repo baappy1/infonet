@@ -2,21 +2,18 @@ import Banner from "@/components/Banner";
 import { BlockRenderer } from "@/components/blocks";
 import { client } from "@/lib/graphql/client";
 import {
-    GET_ALL_CLIENTS,
-    GET_ALL_INDUSTRIES,
-    GET_ALL_TESTIMONIALS,
-    GET_HOMEPAGE_ENTITIES,
-    GET_INDUSTRIE_BY_ID,
-    GET_INDUSTRY_BY_SLUG,
-    GET_PAGE_BLOCKS,
-    GET_PAGE_BY_SLUG,
-    GET_SERVICE_BY_SLUG,
+  GET_ALL_CLIENTS,
+  GET_ALL_INDUSTRIES,
+  GET_ALL_TESTIMONIALS,
+  GET_HOMEPAGE_ENTITIES,
+  GET_INDUSTRIE_BY_ID,
+  GET_INDUSTRY_BY_SLUG,
+  GET_PAGE_BLOCKS,
+  GET_PAGE_BY_SLUG,
+  GET_SERVICE_BY_SLUG,
 } from "@/lib/graphql/queries";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
 
 async function getIndustryBySlug(slug) {
   try {
@@ -251,7 +248,7 @@ export default async function IndustryDetailPage({ params }) {
         />
         <div className="container mx-auto py-16 px-5">
           <Link
-            href="/Industries"
+            href="/industries"
             className="inline-flex items-center gap-2 text-sm font-medium text-[#08090D]/80 hover:text-[#08090D]"
           >
             ← Back to Industries

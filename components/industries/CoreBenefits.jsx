@@ -37,7 +37,8 @@ const CoreBenefits = ({ title = DEFAULT_TITLE, milestones }) => {
           id: m._id ?? m.id ?? i + 1,
           title: m.milestone_title || m.title || "",
           description: m.short_description || m.description || "",
-          icon: m.feature_image || m.icon || "/assets/industries/transactions.png",
+          icon:
+            m.feature_image || m.icon || "/assets/industries/transactions.png",
         }))
       : coreBenefits;
 
@@ -50,8 +51,8 @@ const CoreBenefits = ({ title = DEFAULT_TITLE, milestones }) => {
           </h2>
           {/* cards */}
 
-          <div className="max-w-330 mx-auto px-5">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5.5  lg:grid-cols-4 auto-rows-fr">
+          <div className="max-w-330 mx-auto px-5 lg:px-0">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5.5  lg:grid-cols-4 auto-rows-fr lg:px-5 xl:px-0">
               {items.map((item) => (
                 <BenefitCard key={item.id} item={item} />
               ))}

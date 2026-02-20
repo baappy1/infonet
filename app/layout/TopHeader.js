@@ -16,6 +16,12 @@ const ChevronIcon = ({ isOpen }) => (
     aria-hidden
   >
     <path
+      d="M8 3.33333V12.6667"
+      stroke="white"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
       d="M12.6667 8L8.00004 12.6667L3.33337 8"
       stroke="white"
       strokeLinecap="round"
@@ -24,7 +30,7 @@ const ChevronIcon = ({ isOpen }) => (
   </svg>
 );
 
-export default function TopHeader({ setActive, activeMenu, themeOptions = {}, menuItems = [] }) {
+export default function TopHeader({ setActive, themeOptions = {}, menuItems = [] }) {
   const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
   const dropdownRef = useRef(null);
 
@@ -32,7 +38,7 @@ export default function TopHeader({ setActive, activeMenu, themeOptions = {}, me
   const letsTalkTitle = themeOptions?.letstalkTitle || "get in touch";
   const letsTalkUrl = themeOptions?.letstalkUrl || "/contact";
 
-  const handleMobileMenuClick = () => setActive(!activeMenu);
+  const handleMobileMenuClick = () => setActive(true);
 
   // Close dropdown on Escape
   useEffect(() => {
@@ -139,13 +145,13 @@ export default function TopHeader({ setActive, activeMenu, themeOptions = {}, me
                     </Link>
                   </div>
                   <div className="relative group">
-                    <Link href="/industries" className="text-white uppercase font-medium leading-5.5 relative transition-colors duration-200">
+                    <Link href="/Industries" className="text-white uppercase font-medium leading-5.5 relative transition-colors duration-200">
                       Industries
                       <span className="absolute bottom-[-3px] left-0 w-0 h-[2px] bg-[#EBFF3A] group-hover:w-full transition-all duration-300"></span>
                     </Link>
                   </div>
                   <div className="relative group">
-                    <Link href="/service" className="text-white uppercase font-medium leading-5.5 relative transition-colors duration-200">
+                    <Link href="/solutions" className="text-white uppercase font-medium leading-5.5 relative transition-colors duration-200">
                       Solutions
                       <span className="absolute bottom-[-3px] left-0 w-0 h-[2px] bg-[#EBFF3A] group-hover:w-full transition-all duration-300"></span>
                     </Link>
