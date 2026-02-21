@@ -105,7 +105,6 @@ export default function HomeSolution({ data }) {
               className="w-full object-cover rounded-[8px]"
               src={resolvedFeatureImage}
               alt="Technology Tailored for Fuel & Retail Operations"
-              style={{ width: "auto", height: "auto" }}
             />
           </div>
 
