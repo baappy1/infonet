@@ -3,6 +3,10 @@
 /* -------------------- */
 /* CSS Variables / Fonts */
 /* -------------------- */
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   --background: #fff;
   --foreground: #08090d;
@@ -31,6 +35,19 @@ body {
   line-height: 24px;
   @apply antialiased;
   overflow-x: hidden;
+}
+
+/* -------------------- */
+/* Skeleton shimmer      */
+/* -------------------- */
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 /* -------------------- */
@@ -348,6 +365,7 @@ blockquote::before {
 }
 
 @media (max-width: 600px) {
+
   svg.plus-arrow-accordion,
   svg.minus-arrow-accordion {
     top: 30px;

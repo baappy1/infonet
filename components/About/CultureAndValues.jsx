@@ -1,5 +1,5 @@
+import Image from "@/components/ui/Image";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
@@ -72,6 +72,7 @@ const CultureAndValues = ({
               src={featureImage}
               alt="Culture and values"
               fill
+              loading="lazy"
               className="w-full h-full object-cover rounded-sm"
             />
           </div>

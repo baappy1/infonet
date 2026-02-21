@@ -8,7 +8,7 @@ export default function CareerListCard({
   slug,
   databaseId,
 }) {
-  const href = slug ? `/career/career-details/${slug}` : databaseId ? `/career/career-details?id=${databaseId}` : "/career/career-details";
+  const href = slug ? `/career/${slug}` : "/career";
 
   return (
     <div className="flex justify-between flex-col sm:gap-0 gap-6 sm:flex-row sm:items-center items-start p-5 sm:p-7.5 lg:p-10 bg-[#F8F8F3] border-[#08090D33] border-dashed border-b-1 relative last:border-0 duration-200 hover:bg-[#EBFF3A]">

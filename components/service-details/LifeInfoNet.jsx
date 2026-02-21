@@ -1,44 +1,43 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
 import {
   Carousel,
   CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
+  CarouselItem
 } from "@/components/ui/carousel";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import Autoplay from "embla-carousel-autoplay";
 import LifeInfoNetCard from "./LifeInfoNetCard";
 
 const DEFAULT_ITEMS = [
-  { image: "/assets/service-details/infront/01.png", title: "Retail Gas Stations" },
-  { image: "/assets/service-details/infront/02.png", title: "Convenience Stores" },
-  { image: "/assets/service-details/infront/03.png", title: "Unattended Fuel Sites" },
-  { image: "/assets/service-details/infront/04.png", title: "Fleet Fueling Operations" },
-  { image: "/assets/service-details/infront/05.png", title: "First Nations Retail" },
+  { image: "/assets/service-details/infront/01.png", title: "Retail Gas Stations", url: "" },
+  { image: "/assets/service-details/infront/02.png", title: "Convenience Stores", url: "" },
+  { image: "/assets/service-details/infront/03.png", title: "Unattended Fuel Sites", url: "" },
+  { image: "/assets/service-details/infront/04.png", title: "Fleet Fueling Operations", url: "" },
+  { image: "/assets/service-details/infront/05.png", title: "First Nations Retail", url: "" },
 ];
 
 export default function LifeInfoNet({
   topTitle = "[ Life at InfoNet ]",
   title = "Perfect for All Retail Fuel & Convenience Environments",
   shortDescription = "Designed for operators who need reliable installations, compatible hardware, and hands-on support.",
-  services,
+  serviceItems = [],
 }) {
   const [leftOffset, setLeftOffset] = useState(0);
   const containerRef = useRef(null);
   const plugin = useRef(Autoplay({ delay: 5000, stopOnInteraction: false }));
 
-  // Build items from services prop or fallback
-  const items =
-    Array.isArray(services) && services.length > 0
-      ? services.map((s) => ({
-        image: s.featuredImage?.node?.mediaItemUrl || "/assets/service-details/infront/01.png",
+  const items = useMemo(() => {
+    if (Array.isArray(serviceItems) && serviceItems.length > 0) {
+      return serviceItems.map((s) => ({
+        image: s.feature_image || "/assets/service-details/infront/01.png",
         title: s.title || "",
-        slug: s.slug,
-      }))
-      : DEFAULT_ITEMS;
+        url: s.url || "",
+      }));
+    }
+    return DEFAULT_ITEMS;
+  }, [serviceItems]);
 
   useEffect(() => {
     const calculateLeftOffset = () => {
@@ -100,6 +99,7 @@ export default function LifeInfoNet({
                     <LifeInfoNetCard
                       image={item.image}
                       title={item.title}
+                      url={item.url}
                     />
                   </CarouselItem>
                 ))}

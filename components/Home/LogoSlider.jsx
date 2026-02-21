@@ -68,7 +68,7 @@ export default function InfiniteSlider({ logos, title }) {
     // Create GSAP animation
     animationRef.current = gsap.to(track, {
       x: `-=${trackWidth / 2}`,
-      duration: 80,
+      duration: 140,
       ease: "linear",
       repeat: -1,
       modifiers: {
@@ -132,20 +132,19 @@ export default function InfiniteSlider({ logos, title }) {
           ref={wrapperRef}
           className="w-full overflow-hidden pb-[20px] lg:pb-[50px] border-b border-dashed border-b-[#08090D33]"
         >
-          <div ref={trackRef} className="flex gap-[34px] lg:gap-[63px] w-max">
+          <div ref={trackRef} className="flex gap-[34px] lg:gap-[54px] w-max">
             {(logos && logos.length ? logos : FALLBACK_LOGOS).map((item) => (
               <div
                 key={item.id}
-                className="w-auto h-[28px] lg:h-[48px] flex items-center justify-center flex-shrink-0"
+                className="w-auto h-[48px] flex items-center justify-center flex-shrink-0"
                 data-original="true"
               >
                 <Image
-                  width={192}
-                  height={42}
+                  width={400}
+                  height={48}
                   className="w-auto h-full object-contain"
                   src={item.icon}
                   alt={item.title || `Partner logo ${item.id}`}
-                  // style={{ width: "auto", height: "auto" }}
                 />
               </div>
             ))}

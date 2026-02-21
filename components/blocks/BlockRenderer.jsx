@@ -2,7 +2,6 @@
 
 import dynamic from "next/dynamic";
 
-import AboutTestimonial from "../About/Testimonial";
 import CultureAndValues from "../About/CultureAndValues";
 import KeyMilestone from "../About/KeyMilestone";
 import LeadershipTeam from "../About/LeadershipTeam";
@@ -11,6 +10,7 @@ import OurExperts from "../About/OurExperts";
 import OurImpact from "../About/OurImpact";
 import OurStory from "../About/OurStory";
 import OurValues from "../About/OurValues";
+import AboutTestimonial from "../About/Testimonial";
 import FeatureList from "../Affiliations/FeatureList";
 import IntegrationList from "../Affiliations/IntegrationList";
 import WhyMatters from "../Affiliations/WhyMatters";
@@ -33,6 +33,7 @@ import ServiceInclude from "../service-details/Include";
 import ServiceLifeInfoNet from "../service-details/LifeInfoNet";
 import ServiceMoreServices from "../service-details/MoreServices";
 import ServiceProcess from "../service-details/process";
+import CoreValues from "../solutions/CoreValues";
 import Features from "../solutions/Features";
 import MoreSolutions from "../solutions/MoreSolutions";
 import UseCases from "../solutions/UseCases";
@@ -42,19 +43,59 @@ const LogoSlider = dynamic(() => import("../Home/LogoSlider"), {
   ssr: false,
 });
 
+// Map crb_* keys (from attributesJSON data) to block names when API omits block name
+const CRB_TO_BLOCK_NAME = {
+  crb_hero_information_text: "carbon-fields/hero-section",
+  crb_core_values_info: "carbon-fields/service-core-values",
+  crb_client_list_info: "carbon-fields/client-list",
+  crb_service_benefits_info: "carbon-fields/service-benefits",
+  crb_solution_process_info: "carbon-fields/solution-process",
+  crb_service_life_info: "carbon-fields/service-life-at-infonet",
+  crb_impact_info: "carbon-fields/about-impact",
+  crb_testimonial_info: "carbon-fields/home-testimonial-section",
+  crb_service_industries_info: "carbon-fields/service-more-industries",
+};
+
+function getBlockName(block, data) {
+  const explicit = block?.name || block?.blockName;
+  if (explicit) return explicit;
+  for (const key of Object.keys(CRB_TO_BLOCK_NAME)) {
+    if (key in (data || {})) return CRB_TO_BLOCK_NAME[key];
+  }
+  return null;
+}
+
 export default function BlockRenderer({ blocks, entities = {}, pageType }) {
   if (!blocks || !Array.isArray(blocks)) {
     return null;
   }
 
   // Only render the first hero-section to avoid duplicate banners
-  const heroSectionIndex = blocks.findIndex((b) => b?.name === "carbon-fields/hero-section");
+  const heroSectionIndex = blocks.findIndex((b) => {
+    let attrs = b?.attributes || b?.attrs;
+    if (typeof b?.attributesJSON === "string") {
+      try {
+        attrs = JSON.parse(b.attributesJSON) || {};
+      } catch {
+        attrs = {};
+      }
+    }
+    return getBlockName(b, attrs?.data || {}) === "carbon-fields/hero-section";
+  });
 
   return (
     <>
       {blocks.map((block, index) => {
-        const name = block?.name;
-        const data = block?.attributes?.data || {};
+        let attrs = block?.attributes || block?.attrs;
+        if (typeof block?.attributesJSON === "string") {
+          try {
+            attrs = JSON.parse(block.attributesJSON) || {};
+          } catch {
+            attrs = {};
+          }
+        }
+        const data = attrs?.data || {};
+        const name = getBlockName(block, data);
 
         // HERO / BANNER — render only the first one to prevent duplicate banners
         if (name === "carbon-fields/hero-section") {
@@ -276,6 +317,7 @@ export default function BlockRenderer({ blocks, entities = {}, pageType }) {
             feature_description: f.feature_description || "",
             feature_image: f.feature_image || "/assets/industries/convenience.png",
             slug: f.slug,
+            feature_url: f.feature_url,
           }));
           if (pageType === "industry") {
             return (
@@ -295,7 +337,7 @@ export default function BlockRenderer({ blocks, entities = {}, pageType }) {
               topTitle={data.top_title}
               title={data.title}
               shortDescription={data.short_description}
-              moreFeatures={moreFeatures.map((f) => ({ id: f.id, title: f.feature_title, description: f.feature_description, image: f.feature_image }))}
+              moreFeatures={moreFeatures.map((f) => ({ id: f.id, title: f.feature_title, description: f.feature_description, image: f.feature_image, feature_url: f.feature_url }))}
             />
           );
         }
@@ -482,7 +524,7 @@ export default function BlockRenderer({ blocks, entities = {}, pageType }) {
             designation: item.testimonialDesignation || "",
           }));
 
-          const TestimonialComponent = pageType === "service" ? AboutTestimonial : Testimonial;
+          const TestimonialComponent = (pageType === "service" || pageType === "about" || pageType === "solution") ? AboutTestimonial : Testimonial;
           return (
             <TestimonialComponent
               key={`testimonial-${index}`}
@@ -577,9 +619,38 @@ export default function BlockRenderer({ blocks, entities = {}, pageType }) {
           );
         }
 
-        // ABOUT PAGE: Core Values
+        // ABOUT PAGE: Core Values (solution page uses CoreValues layout: odd | center | even)
         if (name === "carbon-fields/about-core-values") {
-          const coreValues = (data.core_values || []).map((v) => ({
+          const cv = data.core_values || [];
+          const cardFeatures = cv.map((v, i) => ({
+            id: i,
+            icon: v.icon,
+            title: v.value_title,
+            description: v.value_description,
+            hasImage: false,
+          }));
+          const centerItem = {
+            id: "center",
+            icon: data.right_icon,
+            title: data.right_title,
+            description: data.right_description,
+            hasImage: true,
+            image: data.background_image,
+          };
+          const features = [...cardFeatures, centerItem];
+
+          if (pageType === "solution") {
+            return (
+              <CoreValues
+                key={`core-values-${index}`}
+                topTitle={data.top_title}
+                title={data.title}
+                shortDescription={data.short_description}
+                features={features}
+              />
+            );
+          }
+          const coreValues = cv.map((v) => ({
             icon: v.icon,
             title: v.value_title,
             description: v.value_description,
@@ -659,29 +730,45 @@ export default function BlockRenderer({ blocks, entities = {}, pageType }) {
           );
         }
 
-        // SERVICE: Life at InfoNet
+        // SERVICE: Life at InfoNet (data from block service_items)
         if (name === "carbon-fields/service-life-at-infonet") {
-          const associatedServices = entities.associatedServices || [];
+          const serviceItems = (data.service_items || [])
+            .map((s) => ({
+              feature_image: s.feature_image || "",
+              title: s.title || "",
+              url: s.url || "",
+            }))
+            .filter((s) => s.title || s.feature_image);
+
           return (
             <ServiceLifeInfoNet
               key={`service-life-${index}`}
               topTitle={data.top_title}
               title={data.title}
               shortDescription={data.short_description}
-              services={associatedServices}
+              serviceItems={serviceItems}
             />
           );
         }
 
-        // SERVICE: More Industries
+        // SERVICE: More Industries (or More Solution with custom fields)
         if (name === "carbon-fields/service-more-industries") {
           const serviceIndustries = entities.serviceIndustries || [];
+          const moreFeatureImage = data.more_feature_image;
+          const imageUrl =
+            typeof moreFeatureImage === "string"
+              ? moreFeatureImage
+              : moreFeatureImage?.url || moreFeatureImage?.sourceUrl || moreFeatureImage?.mediaItemUrl;
           return (
             <ServiceMoreServices
               key={`service-more-industries-${index}`}
               topTitle={data.top_title}
               title={data.title}
               shortDescription={data.short_description}
+              moreSolutionTitle={data.more_solution_title}
+              moreSolutionDes={data.more_solution_des}
+              moreFeatureImage={imageUrl || moreFeatureImage}
+              moreSolutionUrl={data.more_solution_url}
               industries={serviceIndustries}
             />
           );

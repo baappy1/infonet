@@ -24,7 +24,7 @@ const OurExperts = ({
   const list = Array.isArray(members) && members.length > 0 ? members : DEFAULT_MEMBERS;
 
   return (
-    <section className="bg-[#F8F8F3]">
+    <section className="bg-[#F8F8F3]" id="leadership">
       <div className="container mx-auto pt-20  lg:pt-55  px-5">
         <div className="top-title mb-5">{topTitle}</div>
         <h2 className="font-manrope text-[28px] max-w-195.75 leading-7.5 lg:text-[40px] lg:leading-12.5 mb-10 lg:mb-25">

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import SolutionsCard from "./SolutionsCard";
 
 const DEFAULT_MORE_FEATURES = [
@@ -25,9 +26,25 @@ const MoreSolutions = ({
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-20">
-          {list.map((item, i) => (
-            <SolutionsCard key={item.id ?? item._id ?? i} item={{ ...item, image: item.image || item.feature_image }} />
-          ))}
+          {list.map((item, i) => {
+            const key = item.id ?? item._id ?? i;
+            const card = (
+              <SolutionsCard item={{ ...item, image: item.image || item.feature_image }} />
+            );
+            const url = item.feature_url || item.url;
+            if (url) {
+              return url.startsWith("#") ? (
+                <a key={key} href={url}>
+                  {card}
+                </a>
+              ) : (
+                <Link key={key} href={url}>
+                  {card}
+                </Link>
+              );
+            }
+            return <div key={key}>{card}</div>;
+          })}
         </div>
       </div>
     </section>

@@ -1,6 +1,14 @@
 "use client";
+
 import { gsap } from "gsap";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+
+function getContactEndpoint() {
+  const base =
+    process.env.NEXT_PUBLIC_WORDPRESS_API_URL?.replace(/\/graphql\/?$/, "") ||
+    "";
+  return `${base}/wp-json/nh/v1/cform`;
+}
 
 export default function Banner({
   bannerTopTitle,
@@ -14,6 +22,87 @@ export default function Banner({
   const titleRef = useRef(null);
   const descriptionRef = useRef(null);
   const buttonRef = useRef(null);
+
+  const [formData, setFormData] = useState({
+    fullname: "",
+    email: "",
+    contactNumber: "",
+    enquiry: "",
+    shortMessage: "",
+  });
+  const [status, setStatus] = useState({ type: null, message: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const updateField = (field, value) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    setStatus({ type: null, message: "" });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (isSubmitting) return;
+
+    if (!formData.fullname?.trim()) {
+      setStatus({ type: "error", message: "Name is required." });
+      return;
+    }
+    if (!formData.email?.trim()) {
+      setStatus({ type: "error", message: "Email is required." });
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setStatus({ type: "error", message: "Please provide a valid email address." });
+      return;
+    }
+
+    setIsSubmitting(true);
+    setStatus({ type: null, message: "" });
+
+    try {
+      const res = await fetch(getContactEndpoint(), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullname: formData.fullname.trim(),
+          email: formData.email.trim(),
+          contactNumber: formData.contactNumber.trim(),
+          enquiry: formData.enquiry.trim(),
+          shortMessage: formData.shortMessage.trim(),
+        }),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        const msg =
+          data?.message ||
+          data?.data?.message ||
+          `Something went wrong. Please try again.`;
+        setStatus({ type: "error", message: msg });
+        return;
+      }
+
+      setStatus({
+        type: "success",
+        message: data?.message || "Your message has been sent successfully!",
+      });
+      setFormData({
+        fullname: "",
+        email: "",
+        contactNumber: "",
+        enquiry: "",
+        shortMessage: "",
+      });
+    } catch (err) {
+      setStatus({
+        type: "error",
+        message: "Unable to send. Please check your connection and try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   useEffect(() => {
     const tl = gsap.timeline();
@@ -98,53 +187,110 @@ export default function Banner({
                   </div>
                 </div>
                 <div className="w-full xl:w-150">
-                  <div className="bg-[#F8F8F3] rounded-lg py-5 px-4">
+                  <form
+                    onSubmit={handleSubmit}
+                    className="bg-[#F8F8F3] rounded-lg py-5 px-4"
+                  >
+                    {status.message && (
+                      <div
+                        className={`mb-5 rounded-lg px-4 py-3 text-sm font-manrope ${
+                          status.type === "success"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800"
+                        }`}
+                        role="alert"
+                      >
+                        {status.message}
+                      </div>
+                    )}
                     <div className="flex flex-col mb-5 gap-2.5">
-                      <label className="font-manrope font-medium text-[14px] leading-[20px] text-[#08090D]">
+                      <label
+                        htmlFor="contact-name"
+                        className="font-manrope font-medium text-[14px] leading-[20px] text-[#08090D]"
+                      >
                         Name<span className="text-red-500">*</span>
                       </label>
                       <input
+                        id="contact-name"
                         type="text"
-                        className="w-full rounded-[9999px] bg-white px-[14px] py-[15px] font-manrope font-medium text-[16px] leading-[22px] not-outline text-[#08090D]"
+                        value={formData.fullname}
+                        onChange={(e) => updateField("fullname", e.target.value)}
+                        className="w-full rounded-[9999px] bg-white px-[14px] py-[15px] font-manrope font-medium text-[16px] leading-[22px] outline-none border border-transparent focus:border-[#08090D]/20 text-[#08090D]"
                       />
                     </div>
                     <div className="flex flex-col gap-[10px] sm:flex-row">
                       <div className="flex flex-col mb-[20px] gap-[10px] w-full sm:w-[50%]">
-                        <label className="font-manrope font-medium text-[14px] leading-[20px] text-[#08090D]">
+                        <label
+                          htmlFor="contact-email"
+                          className="font-manrope font-medium text-[14px] leading-[20px] text-[#08090D]"
+                        >
                           Email<span className="text-red-500">*</span>
                         </label>
                         <input
-                          type="text"
-                          className="w-full rounded-[9999px] bg-white px-[14px] py-[15px] font-manrope font-medium text-[16px] leading-[22px] not-outline text-[#08090D]"
+                          id="contact-email"
+                          type="email"
+                          value={formData.email}
+                          onChange={(e) => updateField("email", e.target.value)}
+                          className="w-full rounded-[9999px] bg-white px-[14px] py-[15px] font-manrope font-medium text-[16px] leading-[22px] outline-none border border-transparent focus:border-[#08090D]/20 text-[#08090D]"
                         />
                       </div>
                       <div className="flex flex-col mb-[20px] gap-[10px] w-full sm:w-[50%]">
-                        <label className="font-manrope font-medium text-[14px] leading-[20px] text-[#08090D]">
+                        <label
+                          htmlFor="contact-phone"
+                          className="font-manrope font-medium text-[14px] leading-[20px] text-[#08090D]"
+                        >
                           Contact Number
                         </label>
                         <input
-                          type="text"
-                          className="w-full rounded-[9999px] bg-white px-[14px] py-[15px] font-manrope font-medium text-[16px] leading-[22px] not-outline text-[#08090D]"
+                          id="contact-phone"
+                          type="tel"
+                          value={formData.contactNumber}
+                          onChange={(e) =>
+                            updateField("contactNumber", e.target.value)
+                          }
+                          className="w-full rounded-[9999px] bg-white px-[14px] py-[15px] font-manrope font-medium text-[16px] leading-[22px] outline-none border border-transparent focus:border-[#08090D]/20 text-[#08090D]"
                         />
                       </div>
                     </div>
                     <div className="flex flex-col mb-[20px] gap-[10px]">
-                      <label className="font-manrope font-medium text-[14px] leading-[20px] text-[#08090D]">
+                      <label
+                        htmlFor="contact-enquiry"
+                        className="font-manrope font-medium text-[14px] leading-[20px] text-[#08090D]"
+                      >
                         Enquiry
                       </label>
                       <input
+                        id="contact-enquiry"
                         type="text"
-                        className="w-full rounded-[9999px] bg-white px-[14px] py-[15px] font-manrope font-medium text-[16px] leading-[22px] not-outline text-[#08090D]"
+                        value={formData.enquiry}
+                        onChange={(e) => updateField("enquiry", e.target.value)}
+                        className="w-full rounded-[9999px] bg-white px-[14px] py-[15px] font-manrope font-medium text-[16px] leading-[22px] outline-none border border-transparent focus:border-[#08090D]/20 text-[#08090D]"
                       />
                     </div>
                     <div className="flex flex-col mb-[20px] gap-[10px]">
-                      <label className="font-manrope font-medium text-[14px] leading-[20px] text-[#08090D]">
+                      <label
+                        htmlFor="contact-message"
+                        className="font-manrope font-medium text-[14px] leading-[20px] text-[#08090D]"
+                      >
                         Short Message
                       </label>
-                      <textarea className="w-full rounded-2xl bg-white px-3.5 py-3.75 font-manrope font-medium text-[16px] leading-5.5 not-outline text-[#08090D] resize-none h-[140px]"></textarea>
+                      <textarea
+                        id="contact-message"
+                        value={formData.shortMessage}
+                        onChange={(e) =>
+                          updateField("shortMessage", e.target.value)
+                        }
+                        className="w-full rounded-2xl bg-white px-3.5 py-3.75 font-manrope font-medium text-[16px] leading-5.5 outline-none border border-transparent focus:border-[#08090D]/20 text-[#08090D] resize-none h-[140px]"
+                      />
                     </div>
-                    <button className="rounded-sm uppercase submit-button cursor-pointer mt-4  inline-flex w-full justify-between px-6 py-3.5 leading-5.5 font-medium text-[#08090D] bg-[#EBFF3A] hover:bg-white hover:text-[#08090D] gap-2.5">
-                      <span>Submit Inquiry</span>
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="rounded-sm uppercase submit-button cursor-pointer mt-4 inline-flex w-full justify-between px-6 py-3.5 leading-5.5 font-medium text-[#08090D] bg-[#EBFF3A] hover:bg-white hover:text-[#08090D] gap-2.5 disabled:opacity-70 disabled:cursor-not-allowed"
+                    >
+                      <span>
+                        {isSubmitting ? "Sending..." : "Submit Inquiry"}
+                      </span>
                       <svg
                         width="20"
                         height="20"
@@ -169,7 +315,7 @@ export default function Banner({
                         </g>
                       </svg>
                     </button>
-                  </div>
+                  </form>
                 </div>
               </div>
             </div>

@@ -1,12 +1,14 @@
 import NewsBanner from "@/components/NewsAndBlog/NewsBanner";
 import NewsDetails from "@/components/NewsAndBlog/NewsDetails";
-import { client } from "@/lib/graphql/client";
+import { fetchGraphQL } from "@/lib/graphql";
 import {
-  BLOG_PAGE_ID,
-  GET_ALL_POSTS,
-  GET_HOMEPAGE_ENTITIES,
-  GET_PAGE_BLOCKS,
+    BLOG_PAGE_ID,
+    GET_ALL_POSTS,
+    GET_CATEGORIES,
+    GET_HOMEPAGE_ENTITIES,
+    GET_PAGE_BLOCKS,
 } from "@/lib/graphql/queries";
+import { print } from "graphql";
 
 function getBlockData(blocks, name) {
   const block = (blocks || []).find((b) => b?.name === name);
@@ -31,13 +33,13 @@ function getStickyPostIds(blocks) {
     .map(Number);
 }
 
+export const revalidate = 60;
+
 async function getBlogPageBlocks() {
   if (!BLOG_PAGE_ID || BLOG_PAGE_ID <= 0) return [];
   try {
-    const { data } = await client.query({
-      query: GET_PAGE_BLOCKS,
-      variables: { pageId: BLOG_PAGE_ID },
-      fetchPolicy: "no-cache",
+    const data = await fetchGraphQL(print(GET_PAGE_BLOCKS), {
+      pageId: BLOG_PAGE_ID,
     });
     if (data?.pageBy?.blocksJSON) {
       return JSON.parse(data.pageBy.blocksJSON);
@@ -52,10 +54,10 @@ async function getBlogPageBlocks() {
 async function getStickyPosts(stickyIds) {
   if (!stickyIds?.length) return [];
   try {
-    const { data } = await client.query({
-      query: GET_HOMEPAGE_ENTITIES,
-      variables: { clientIds: [], testimonialIds: [], postIds: stickyIds },
-      fetchPolicy: "no-cache",
+    const data = await fetchGraphQL(print(GET_HOMEPAGE_ENTITIES), {
+      clientIds: [],
+      testimonialIds: [],
+      postIds: stickyIds,
     });
     return data?.posts?.nodes || [];
   } catch {
@@ -65,11 +67,7 @@ async function getStickyPosts(stickyIds) {
 
 async function getAllPosts() {
   try {
-    const { data } = await client.query({
-      query: GET_ALL_POSTS,
-      variables: { first: 100 },
-      fetchPolicy: "no-cache",
-    });
+    const data = await fetchGraphQL(print(GET_ALL_POSTS), { first: 100 });
     return data?.posts?.nodes || [];
   } catch (error) {
     console.error("Error fetching posts:", error);
@@ -77,14 +75,26 @@ async function getAllPosts() {
   }
 }
 
-export default async function NewsAndBlogPage() {
-  const blocks = await getBlogPageBlocks();
-  const stickyIds = getStickyPostIds(blocks);
+async function getCategories() {
+  try {
+    const data = await fetchGraphQL(print(GET_CATEGORIES));
+    const edges = data?.categories?.edges || [];
+    return edges.map((e) => e?.node).filter(Boolean);
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    return [];
+  }
+}
 
-  const [stickyPosts, allPosts] = await Promise.all([
-    stickyIds.length > 0 ? getStickyPosts(stickyIds) : [],
+export default async function NewsAndBlogPage() {
+  const [blocks, allPosts, categories] = await Promise.all([
+    getBlogPageBlocks(),
     getAllPosts(),
+    getCategories(),
   ]);
+  const stickyIds = getStickyPostIds(blocks);
+  const stickyPosts =
+    stickyIds.length > 0 ? await getStickyPosts(stickyIds) : [];
 
   const stickyIdSet = new Set(stickyIds);
   let stickyItems;
@@ -123,7 +133,7 @@ export default async function NewsAndBlogPage() {
         title={stickyBlock.title || "Innovation That Fuels the Future"}
         items={stickyFormatted}
       />
-      <NewsDetails items={postsForGrid} />
+      <NewsDetails items={postsForGrid} categories={categories} />
     </>
   );
 }

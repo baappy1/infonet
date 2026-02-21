@@ -1,11 +1,13 @@
-import { client } from "@/lib/graphql/client";
+import { fetchGraphQL } from "@/lib/graphql";
 import {
-  GET_MENU,
-  GET_THEME_OPTIONS,
-  processMenuItems,
-  toLocalPath,
+    GET_MENU,
+    GET_THEME_OPTIONS,
+    processMenuItems,
+    toLocalPath,
 } from "@/lib/graphql/queries";
+import { print } from "graphql";
 import { JetBrains_Mono, Manrope } from "next/font/google";
+import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
@@ -47,10 +49,7 @@ export const metadata = {
 
 async function getThemeOptions() {
   try {
-    const { data } = await client.query({
-      query: GET_THEME_OPTIONS,
-      fetchPolicy: "no-cache",
-    });
+    const data = await fetchGraphQL(print(GET_THEME_OPTIONS));
     return data?.crbThemeOptions || {};
   } catch (error) {
     console.error("Error fetching theme options:", error);
@@ -61,11 +60,7 @@ async function getThemeOptions() {
 async function getMenu() {
   const menuId = String(process.env.NEXT_PUBLIC_PRIMARY_MENU_ID || "28");
   try {
-    const { data } = await client.query({
-      query: GET_MENU,
-      variables: { menuId },
-      fetchPolicy: "no-cache",
-    });
+    const data = await fetchGraphQL(print(GET_MENU), { menuId });
     const menu = data?.menu;
     const nodes = menu?.menuItems?.nodes ?? [];
     const topLevel = processMenuItems(Array.isArray(nodes) ? nodes : []);
@@ -86,10 +81,8 @@ async function getMenu() {
 
 async function getFooterMenu(menuId) {
   try {
-    const { data } = await client.query({
-      query: GET_MENU,
-      variables: { menuId: String(menuId) },
-      fetchPolicy: "no-cache",
+    const data = await fetchGraphQL(print(GET_MENU), {
+      menuId: String(menuId),
     });
     const menu = data?.menu;
     const nodes = menu?.menuItems?.nodes ?? [];
@@ -146,6 +139,7 @@ export default async function RootLayout({ children }) {
       <body
         className={`${jetBrainsMono.variable} ${manrope.variable} antialiased bg-[#F8F8F3]`}
       >
+        <NextTopLoader height={4} color="#ebff3a" showSpinner={false} />
         <Header themeOptions={themeOptions} menuItems={menuItems} />
         {children}
         <Footer footerMenus={footerMenus} themeOptions={themeOptions} />

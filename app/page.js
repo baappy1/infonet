@@ -1,18 +1,21 @@
 import { BlockRenderer } from "@/components/blocks";
-import { client } from "@/lib/graphql/client";
+import { fetchGraphQL } from "@/lib/graphql";
 import {
-  buildIndustriesQuery,
-  GET_ALL_CLIENTS,
-  GET_ALL_INDUSTRIES,
-  GET_ALL_TESTIMONIALS,
-  GET_HOMEPAGE_ENTITIES,
-  GET_INDUSTRIES_FIRST_6,
-  GET_PAGE_BLOCKS,
-  GET_RECENT_POSTS,
-  GET_SERVICES_BY_IDS,
-  HOME_PAGE_ID,
+    buildIndustriesQuery,
+    GET_ALL_CLIENTS,
+    GET_ALL_INDUSTRIES,
+    GET_ALL_TESTIMONIALS,
+    GET_HOMEPAGE_ENTITIES,
+    GET_INDUSTRIES_FIRST_6,
+    GET_PAGE_BLOCKS,
+    GET_RECENT_POSTS,
+    GET_SERVICES_BY_IDS,
+    HOME_PAGE_ID,
 } from "@/lib/graphql/queries";
 import { getHomepageSeoMetadata } from "@/lib/seo";
+import { print } from "graphql";
+
+export const revalidate = 60;
 
 export async function generateMetadata() {
   return getHomepageSeoMetadata();
@@ -20,10 +23,8 @@ export async function generateMetadata() {
 
 async function getHomePageBlocks() {
   try {
-    const { data } = await client.query({
-      query: GET_PAGE_BLOCKS,
-      variables: { pageId: HOME_PAGE_ID },
-      fetchPolicy: "no-cache", // Always fetch fresh data from WordPress
+    const data = await fetchGraphQL(print(GET_PAGE_BLOCKS), {
+      pageId: HOME_PAGE_ID,
     });
 
     if (data?.pageBy?.blocksJSON) {
@@ -138,147 +139,120 @@ async function getHomePageEntities(blocks) {
     testimonialIds.length ||
     postIds.length;
 
+  const needsIndustriesFirst6 =
+    hasIndustryBlock && industryIds.length === 0 && serviceIds.length === 0;
+
+  // Tier 1: Run all primary fetches in parallel (only depend on block IDs)
+  const [entitiesResult, industriesByIdResult, servicesResult, industriesFirst6Result] =
+    await Promise.all([
+      hasEntityIds
+        ? fetchGraphQL(print(GET_HOMEPAGE_ENTITIES), {
+            clientIds,
+            testimonialIds,
+            postIds,
+          })
+            .then((data) => ({
+              clients: data?.clients?.nodes || [],
+              testimonials: data?.testimonials?.nodes || [],
+              posts: data?.posts?.nodes || [],
+            }))
+            .catch((error) => {
+              console.error("Error fetching homepage entities:", error);
+              return { clients: [], testimonials: [], posts: [] };
+            })
+        : Promise.resolve({
+            clients: [],
+            testimonials: [],
+            posts: [],
+          }),
+      industryIds.length > 0
+        ? (() => {
+            const query = buildIndustriesQuery(industryIds);
+            if (!query) return Promise.resolve([]);
+            return fetchGraphQL(print(query), {
+              ...Object.fromEntries(
+                industryIds.map((id, i) => [`id${i}`, id])
+              ),
+            })
+              .then((data) =>
+                industryIds
+                  .map((_, i) => data?.[`industry_${i}`])
+                  .filter(Boolean)
+              )
+              .catch((error) => {
+                console.error("Error fetching industries:", error);
+                return [];
+              });
+          })()
+        : Promise.resolve([]),
+      serviceIds.length > 0
+        ? fetchGraphQL(print(GET_SERVICES_BY_IDS), {
+            serviceIds: serviceIds.map(String),
+          })
+            .then((data) => {
+              const nodes = data?.services?.nodes || [];
+              const byId = Object.fromEntries(
+                nodes.map((n) => [Number(n.databaseId), n])
+              );
+              return serviceIds.map((id) => byId[id]).filter(Boolean);
+            })
+            .catch((error) => {
+              console.error("Error fetching services:", error);
+              return [];
+            })
+        : Promise.resolve([]),
+      needsIndustriesFirst6
+        ? fetchGraphQL(print(GET_INDUSTRIES_FIRST_6))
+            .then((data) => data?.industries?.nodes || [])
+            .catch(() => [])
+        : Promise.resolve([]),
+    ]);
+
   let entities = {
-    clients: [],
-    industries: [],
-    testimonials: [],
-    posts: [],
+    clients: entitiesResult.clients,
+    industries:
+      industryIds.length > 0
+        ? industriesByIdResult
+        : serviceIds.length > 0
+          ? servicesResult
+          : industriesFirst6Result,
+    testimonials: entitiesResult.testimonials,
+    posts: entitiesResult.posts,
   };
 
-  // Fetch main entities when we have IDs (industries fetched separately - no connection)
-  if (hasEntityIds) {
-    try {
-      const { data } = await client.query({
-        query: GET_HOMEPAGE_ENTITIES,
-        variables: {
-          clientIds,
-          testimonialIds,
-          postIds,
-        },
-        fetchPolicy: "no-cache",
-      });
+  // Tier 2: Run fallbacks in parallel (depend on tier 1 results)
+  const [
+    testimonialsFallback,
+    clientsFallback,
+    postsFallback,
+    industriesFallback,
+  ] = await Promise.all([
+    hasTestimonialBlock && entities.testimonials.length === 0
+      ? fetchGraphQL(print(GET_ALL_TESTIMONIALS))
+          .then((data) => data?.testimonials?.nodes || [])
+          .catch(() => [])
+      : Promise.resolve(null),
+    hasClientListBlock && entities.clients.length === 0
+      ? fetchGraphQL(print(GET_ALL_CLIENTS))
+          .then((data) => data?.clients?.nodes || [])
+          .catch(() => [])
+      : Promise.resolve(null),
+    hasInsightBlock && entities.posts.length === 0
+      ? fetchGraphQL(print(GET_RECENT_POSTS))
+          .then((data) => data?.posts?.nodes || [])
+          .catch(() => [])
+      : Promise.resolve(null),
+    needsIndustriesFirst6 && entities.industries.length === 0
+      ? fetchGraphQL(print(GET_ALL_INDUSTRIES))
+          .then((data) => data?.industries?.nodes || [])
+          .catch(() => [])
+      : Promise.resolve(null),
+  ]);
 
-      entities = {
-        clients: data?.clients?.nodes || [],
-        industries: [],
-        testimonials: data?.testimonials?.nodes || [],
-        posts: data?.posts?.nodes || [],
-      };
-    } catch (error) {
-      console.error("Error fetching homepage entities:", error);
-    }
-  }
-
-  // Fetch industries by ID (industriesBy requires single id, no connection)
-  if (industryIds.length > 0) {
-    try {
-      const query = buildIndustriesQuery(industryIds);
-      if (query) {
-        const variables = Object.fromEntries(
-          industryIds.map((id, i) => [`id${i}`, id]),
-        );
-        const { data } = await client.query({
-          query,
-          variables,
-          fetchPolicy: "no-cache",
-        });
-        const nodes = industryIds
-          .map((_, i) => data?.[`industry_${i}`])
-          .filter(Boolean);
-        entities.industries = nodes;
-      }
-    } catch (error) {
-      console.error("Error fetching industries:", error);
-    }
-  }
-
-  // Fetch services by ID (when block selects from service CPT, subtype "service")
-  if (serviceIds.length > 0) {
-    try {
-      const { data } = await client.query({
-        query: GET_SERVICES_BY_IDS,
-        variables: { serviceIds: serviceIds.map(String) },
-        fetchPolicy: "no-cache",
-      });
-      const nodes = data?.services?.nodes || [];
-      // Preserve block selection order
-      const byId = Object.fromEntries(
-        nodes.map((n) => [Number(n.databaseId), n]),
-      );
-      entities.industries = serviceIds.map((id) => byId[id]).filter(Boolean);
-    } catch (error) {
-      console.error("Error fetching services:", error);
-    }
-  }
-
-  // Fallback: fetch all testimonials when testimonial block exists but none selected
-  if (hasTestimonialBlock && entities.testimonials.length === 0) {
-    try {
-      const { data } = await client.query({
-        query: GET_ALL_TESTIMONIALS,
-        fetchPolicy: "no-cache",
-      });
-      entities.testimonials = data?.testimonials?.nodes || [];
-    } catch (error) {
-      console.error("Error fetching testimonials:", error);
-    }
-  }
-
-  // Fallback: fetch all clients when client-list block exists but no clients selected
-  if (hasClientListBlock && entities.clients.length === 0) {
-    try {
-      const { data } = await client.query({
-        query: GET_ALL_CLIENTS,
-        fetchPolicy: "no-cache",
-      });
-      entities.clients = data?.clients?.nodes || [];
-    } catch (error) {
-      console.error("Error fetching clients:", error);
-    }
-  }
-
-  // Industry section: use industries(first: 6) from industries CPT
-  if (hasIndustryBlock) {
-    try {
-      const { data } = await client.query({
-        query: GET_INDUSTRIES_FIRST_6,
-        fetchPolicy: "no-cache",
-      });
-      entities.industries = data?.industries?.nodes || [];
-      // Fallback if industries(first: 6) returns empty
-      if (entities.industries.length === 0) {
-        const { data: fallback } = await client.query({
-          query: GET_ALL_INDUSTRIES,
-          fetchPolicy: "no-cache",
-        });
-        entities.industries = fallback?.industries?.nodes || [];
-      }
-    } catch (error) {
-      console.error("Error fetching industries:", error);
-      try {
-        const { data } = await client.query({
-          query: GET_ALL_INDUSTRIES,
-          fetchPolicy: "no-cache",
-        });
-        entities.industries = data?.industries?.nodes || [];
-      } catch (e) {
-        console.error("Error fetching industries fallback:", e);
-      }
-    }
-  }
-
-  // Fallback: fetch recent posts when insight block exists but no posts selected
-  if (hasInsightBlock && entities.posts.length === 0) {
-    try {
-      const { data } = await client.query({
-        query: GET_RECENT_POSTS,
-        fetchPolicy: "no-cache",
-      });
-      entities.posts = data?.posts?.nodes || [];
-    } catch (error) {
-      console.error("Error fetching recent posts:", error);
-    }
-  }
+  if (testimonialsFallback) entities.testimonials = testimonialsFallback;
+  if (clientsFallback) entities.clients = clientsFallback;
+  if (postsFallback) entities.posts = postsFallback;
+  if (industriesFallback) entities.industries = industriesFallback;
 
   return entities;
 }

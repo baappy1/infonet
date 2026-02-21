@@ -2,39 +2,33 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useCallback, useState } from "react";
 
 const DEFAULT_CATEGORY = "NEWS & BLOG";
+
+function getShareUrl(platform, url, text) {
+  const encodedUrl = encodeURIComponent(url);
+  const encodedText = encodeURIComponent(text);
+  switch (platform) {
+    case "twitter":
+      return `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedText}`;
+    case "facebook":
+      return `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+    case "linkedin":
+      return `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+    case "telegram":
+      return `https://t.me/share/url?url=${encodedUrl}&text=${encodedText}`;
+    default:
+      return url;
+  }
+}
+
 const socialLinks = [
-  {
-    id: 1,
-    name: "Twitter",
-    icon: "/assets/newsandblog/twitter.svg",
-    url: "#",
-  },
-  {
-    id: 2,
-    name: "Medium",
-    icon: "/assets/newsandblog/medium.svg",
-    url: "#",
-  },
-  {
-    id: 3,
-    name: "Facebook",
-    icon: "/assets/newsandblog/facebook-circle-fill.svg",
-    url: "#",
-  },
-  {
-    id: 4,
-    name: "LinkedIn",
-    icon: "/assets/newsandblog/linkedin-box-fill.svg",
-    url: "#",
-  },
-  {
-    id: 5,
-    name: "Telegram",
-    icon: "/assets/newsandblog/send-plane-line.svg",
-    url: "#",
-  },
+  { id: 1, platform: "twitter", name: "Twitter", icon: "/assets/newsandblog/twitter.svg" },
+  { id: 2, platform: "copy", name: "Copy link", icon: "/assets/newsandblog/medium.svg" },
+  { id: 3, platform: "facebook", name: "Facebook", icon: "/assets/newsandblog/facebook-circle-fill.svg" },
+  { id: 4, platform: "linkedin", name: "LinkedIn", icon: "/assets/newsandblog/linkedin-box-fill.svg" },
+  { id: 5, platform: "telegram", name: "Telegram", icon: "/assets/newsandblog/send-plane-line.svg" },
 ];
 
 function formatDate(isoDate) {
@@ -54,10 +48,22 @@ function formatDate(isoDate) {
   }
 }
 
-const BlogDetails = ({ post, slug }) => {
+const BlogDetails = ({ post, slug, shareUrl = "", shareTitle = "" }) => {
+  const [copied, setCopied] = useState(false);
   const category = post?.categories?.edges?.[0]?.node?.name || DEFAULT_CATEGORY;
   const date = formatDate(post?.date) || "—";
   const title = post?.title || "";
+  const fullShareUrl =
+    shareUrl || (typeof window !== "undefined" ? `${window.location.origin}/blog/${slug}` : "");
+
+  const handleCopyLink = useCallback(() => {
+    if (!fullShareUrl) return;
+    navigator.clipboard?.writeText(fullShareUrl).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  }, [fullShareUrl]);
+
   const imageUrl =
     post?.featuredImage?.node?.mediaItemUrl ||
     "/assets/newsandblog/green-pump.png";
@@ -106,15 +112,31 @@ const BlogDetails = ({ post, slug }) => {
               </p>
 
               <div className="flex items-center gap-1 ">
-                {socialLinks.map((item) => (
-                  <Link
-                    href={item.url}
-                    key={item.id}
-                    className="transition-all duration-200 hover:scale-110 hover:-translate-y-1"
-                  >
-                    <Image src={item.icon} alt="icon" width={24} height={24} />
-                  </Link>
-                ))}
+                {socialLinks.map((item) =>
+                  item.platform === "copy" ? (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={handleCopyLink}
+                      className="transition-all duration-200 hover:scale-110 hover:-translate-y-1 cursor-pointer p-0 border-0 bg-transparent"
+                      aria-label={item.name}
+                      title={copied ? "Copied!" : item.name}
+                    >
+                      <Image src={item.icon} alt={item.name} width={24} height={24} />
+                    </button>
+                  ) : (
+                    <Link
+                      href={getShareUrl(item.platform, fullShareUrl, shareTitle || title)}
+                      key={item.id}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="transition-all duration-200 hover:scale-110 hover:-translate-y-1"
+                      aria-label={`Share on ${item.name}`}
+                    >
+                      <Image src={item.icon} alt={item.name} width={24} height={24} />
+                    </Link>
+                  ),
+                )}
               </div>
             </div>
           </div>

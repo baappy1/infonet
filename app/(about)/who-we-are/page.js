@@ -1,18 +1,22 @@
-import { BlockRenderer } from "@/components/blocks";
-import { client } from "@/lib/graphql/client";
+import IndustryBannerSkeleton from "@/components/industries/IndustryBannerSkeleton";
+import IndustryContentSkeleton from "@/components/industries/IndustryContentSkeleton";
+import { fetchGraphQL } from "@/lib/graphql";
 import {
     ABOUT_PAGE_ID,
     GET_ALL_TESTIMONIALS,
     GET_HOMEPAGE_ENTITIES,
     GET_PAGE_BLOCKS,
 } from "@/lib/graphql/queries";
+import { print } from "graphql";
+import { Suspense } from "react";
+import WhoWeArePageContent from "./WhoWeArePageContent";
+
+export const revalidate = 60;
 
 async function getAboutPageBlocks() {
   try {
-    const { data } = await client.query({
-      query: GET_PAGE_BLOCKS,
-      variables: { pageId: ABOUT_PAGE_ID },
-      fetchPolicy: "no-cache",
+    const data = await fetchGraphQL(print(GET_PAGE_BLOCKS), {
+      pageId: ABOUT_PAGE_ID,
     });
     if (data?.pageBy?.blocksJSON) {
       return JSON.parse(data.pageBy.blocksJSON);
@@ -26,7 +30,7 @@ async function getAboutPageBlocks() {
 
 function collectTestimonialIds(blocks) {
   const ids = new Set();
-  blocks.forEach((block) => {
+  (blocks || []).forEach((block) => {
     if (block?.name === "carbon-fields/home-testimonial-section") {
       const data = block?.attributes?.data || {};
       (data.selected_testimonials || []).forEach((item) => {
@@ -43,39 +47,46 @@ function collectTestimonialIds(blocks) {
 
 async function getAboutPageEntities(blocks) {
   const testimonialIds = collectTestimonialIds(blocks);
-  let testimonials = [];
+  const hasIds = testimonialIds.length > 0;
 
-  if (testimonialIds.length > 0) {
-    try {
-      const { data } = await client.query({
-        query: GET_HOMEPAGE_ENTITIES,
-        variables: { testimonialIds, clientIds: [], postIds: [] },
-        fetchPolicy: "no-cache",
-      });
-      testimonials = data?.testimonials?.nodes || [];
-    } catch (error) {
-      console.error("Error fetching about page testimonials:", error);
-    }
-  }
+  const [entitiesResult, fallbackResult] = await Promise.all([
+    hasIds
+      ? fetchGraphQL(print(GET_HOMEPAGE_ENTITIES), {
+          testimonialIds,
+          clientIds: [],
+          postIds: [],
+        })
+          .then((data) => data?.testimonials?.nodes || [])
+          .catch((err) => {
+            console.error("Error fetching about page testimonials:", err);
+            return [];
+          })
+      : Promise.resolve([]),
+    fetchGraphQL(print(GET_ALL_TESTIMONIALS))
+      .then((data) => data?.testimonials?.nodes || [])
+      .catch(() => []),
+  ]);
 
-  if (testimonials.length === 0) {
-    try {
-      const { data } = await client.query({
-        query: GET_ALL_TESTIMONIALS,
-        fetchPolicy: "no-cache",
-      });
-      testimonials = data?.testimonials?.nodes || [];
-    } catch (error) {
-      console.error("Error fetching fallback testimonials:", error);
-    }
-  }
+  const testimonials =
+    entitiesResult.length > 0 ? entitiesResult : fallbackResult;
 
   return { testimonials };
 }
 
 export default async function WhoWeArePage() {
-  const blocks = await getAboutPageBlocks();
-  const entities = await getAboutPageEntities(blocks);
-
-  return <BlockRenderer blocks={blocks} entities={entities} />;
+  return (
+    <Suspense
+      fallback={
+        <>
+          <IndustryBannerSkeleton />
+          <IndustryContentSkeleton />
+        </>
+      }
+    >
+      <WhoWeArePageContent
+        getAboutPageBlocks={getAboutPageBlocks}
+        getAboutPageEntities={getAboutPageEntities}
+      />
+    </Suspense>
+  );
 }

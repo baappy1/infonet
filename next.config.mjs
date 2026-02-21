@@ -30,6 +30,10 @@ const nextConfig = {
         destination: '/service',
       },
       {
+        source: '/solutions/:slug',
+        destination: '/solution/:slug',
+      },
+      {
         source: '/solutions',
         destination: '/service',
       },

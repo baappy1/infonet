@@ -138,13 +138,11 @@ export default function Banner({
       return <div className="absolute inset-0 w-full h-full bg-[#08090D]/80" />;
     }
     return (
-      <div
-        className="absolute inset-0 w-full h-full"
-        style={{
-          backgroundImage: `url(${bannerImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
+      <img
+        src={bannerImage}
+        alt=""
+        loading="lazy"
+        className="absolute inset-0 w-full h-full object-cover"
       />
     );
   };
@@ -188,7 +186,42 @@ export default function Banner({
 
                   {/* Buttons container - wraps both buttons */}
                   <div className="flex flex-wrap gap-5">
-                    {bannerButtonURL && (
+                    {bannerButtonURL && (bannerButtonURL.startsWith("#") ? (
+                      <a
+                        ref={buttonRef}
+                        href={bannerButtonURL}
+                        className="primary-button text-[14px] lg:text-[16px] leading-4.5 font-medium lg:leading-5.5 max-h-12.5"
+                      >
+                        <span>{bannerButtonTitle}</span>
+                        <svg
+                          className="w-[16px] h-[16px] lg:w-[20px] lg:h-[20px]"
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <g clipPath="url(#clip0_456_280)">
+                            <path
+                              d="M3.125 10H16.875"
+                              stroke="#08090D"
+                              strokeWidth="1.5"
+                              strokeLinecap="square"
+                              strokeLinejoin="round"
+                            />
+                            <path
+                              d="M12.25 4.375L17.875 10L12.25 15.625"
+                              stroke="#08090D"
+                              strokeWidth="1.5"
+                              strokeLinecap="square"
+                            />
+                          </g>
+                          <defs>
+                            <clipPath id="clip0_456_280">
+                              <rect width={20} height={20} fill="white" />
+                            </clipPath>
+                          </defs>
+                        </svg>
+                      </a>
+                    ) : (
                       <Link
                         ref={buttonRef}
                         href={bannerButtonURL}
@@ -223,10 +256,45 @@ export default function Banner({
                           </defs>
                         </svg>
                       </Link>
-                    )}
+                    ))}
 
                     {/* Second optional button */}
-                    {bannerButtonURL2 && (
+                    {bannerButtonURL2 && (bannerButtonURL2.startsWith("#") ? (
+                      <a
+                        ref={button2Ref}
+                        href={bannerButtonURL2}
+                        className="secondary-button text-[14px] lg:text-[16px] leading-4.5 font-medium lg:leading-5.5 max-h-12.5"
+                      >
+                        <span>{bannerButtonTitle2}</span>
+                        <svg
+                          className="w-[16px] h-[16px] lg:w-[20px] lg:h-[20px]"
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <g clipPath="url(#clip0_456_280)">
+                            <path
+                              d="M3.125 10H16.875"
+                              stroke="#08090D"
+                              strokeWidth="1.5"
+                              strokeLinecap="square"
+                              strokeLinejoin="round"
+                            />
+                            <path
+                              d="M12.25 4.375L17.875 10L12.25 15.625"
+                              stroke="#08090D"
+                              strokeWidth="1.5"
+                              strokeLinecap="square"
+                            />
+                          </g>
+                          <defs>
+                            <clipPath id="clip0_456_280">
+                              <rect width={20} height={20} fill="white" />
+                            </clipPath>
+                          </defs>
+                        </svg>
+                      </a>
+                    ) : (
                       <Link
                         ref={button2Ref}
                         href={bannerButtonURL2}
@@ -261,7 +329,7 @@ export default function Banner({
                           </defs>
                         </svg>
                       </Link>
-                    )}
+                    ))}
                   </div>
                   {/* {bannerButtonURL && (
                     <Link

@@ -7,7 +7,7 @@ import MobileHeaderPopup from "./MobileHeaderPopup";
 import TopHeader from "./TopHeader";
 
 // Routes that use the secondary (solid) header instead of the hero header
-const SECONDARY_HEADER_PATHS = ["/blog", "/career/career-details"];
+const SECONDARY_HEADER_PATHS = ["/blog", "/career"];
 
 function useSecondaryHeader() {
   const pathname = usePathname();

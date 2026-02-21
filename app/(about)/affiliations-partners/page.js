@@ -1,21 +1,21 @@
-import FeatureList from "@/components/Affiliations/FeatureList";
-import IntegrationList from "@/components/Affiliations/IntegrationList";
-import WhyMatters from "@/components/Affiliations/WhyMatters";
-import Banner from "@/components/Banner";
-import { BlockRenderer } from "@/components/blocks";
-import { client } from "@/lib/graphql/client";
+import IndustryBannerSkeleton from "@/components/industries/IndustryBannerSkeleton";
+import IndustryContentSkeleton from "@/components/industries/IndustryContentSkeleton";
+import { fetchGraphQL } from "@/lib/graphql";
 import {
-  AFFILIATIONS_PAGE_ID,
-  GET_HOMEPAGE_ENTITIES,
-  GET_PAGE_BLOCKS,
+    AFFILIATIONS_PAGE_ID,
+    GET_HOMEPAGE_ENTITIES,
+    GET_PAGE_BLOCKS,
 } from "@/lib/graphql/queries";
+import { print } from "graphql";
+import { Suspense } from "react";
+import AffiliationsPageContent from "./AffiliationsPageContent";
+
+export const revalidate = 60;
 
 async function getAffiliationsPageBlocks() {
   try {
-    const { data } = await client.query({
-      query: GET_PAGE_BLOCKS,
-      variables: { pageId: AFFILIATIONS_PAGE_ID },
-      fetchPolicy: "no-cache",
+    const data = await fetchGraphQL(print(GET_PAGE_BLOCKS), {
+      pageId: AFFILIATIONS_PAGE_ID,
     });
     if (data?.pageBy?.blocksJSON) {
       return JSON.parse(data.pageBy.blocksJSON);
@@ -29,11 +29,14 @@ async function getAffiliationsPageBlocks() {
 
 function collectClientIds(blocks) {
   const ids = new Set();
-  blocks.forEach((block) => {
+  (blocks || []).forEach((block) => {
     if (block?.name === "carbon-fields/affiliations-integrations-logos") {
       const data = block?.attributes?.data || {};
       (data.selected_clients || data.integration_ids || []).forEach((item) => {
-        const id = typeof item === "object" ? item?.id ?? item?.value ?? item?.ID : item;
+        const id =
+          typeof item === "object"
+            ? item?.id ?? item?.value ?? item?.ID
+            : item;
         if (id != null && id !== "") ids.add(Number(id));
       });
     }
@@ -43,22 +46,22 @@ function collectClientIds(blocks) {
 
 async function getAffiliationsPageEntities(blocks) {
   const clientIds = collectClientIds(blocks);
-  let clients = [];
 
-  if (clientIds.length > 0) {
-    try {
-      const { data } = await client.query({
-        query: GET_HOMEPAGE_ENTITIES,
-        variables: { clientIds, testimonialIds: [], postIds: [] },
-        fetchPolicy: "no-cache",
-      });
-      clients = data?.clients?.nodes || [];
-    } catch (error) {
-      console.error("Error fetching affiliations page clients:", error);
-    }
+  if (clientIds.length === 0) {
+    return { clients: [] };
   }
 
-  return { clients };
+  try {
+    const data = await fetchGraphQL(print(GET_HOMEPAGE_ENTITIES), {
+      clientIds,
+      testimonialIds: [],
+      postIds: [],
+    });
+    return { clients: data?.clients?.nodes || [] };
+  } catch (error) {
+    console.error("Error fetching affiliations page clients:", error);
+    return { clients: [] };
+  }
 }
 
 export async function generateMetadata() {
@@ -67,26 +70,19 @@ export async function generateMetadata() {
 }
 
 export default async function AffiliationsPartnersPage() {
-  const blocks = await getAffiliationsPageBlocks();
-  const entities = await getAffiliationsPageEntities(blocks);
-
-  if (!blocks || blocks.length === 0) {
-    return (
-      <>
-        <Banner
-          bannerTopTitle="[ Affiliations & Partners ]"
-          bannerImage="/assets/about-banner.webp"
-          bannerTitle="Connecting with Leaders to Shape the Future of Retail Fueling"
-          bannerDescription="InfoNet partners with the top associations and organizations that drive standards, innovation, and best practices across the convenience, petroleum, and retail-technology sectors."
-          bannerButtonTitle="explore our services"
-          bannerButtonURL="#"
-        />
-        <WhyMatters />
-        <FeatureList />
-        <IntegrationList />
-      </>
-    );
-  }
-
-  return <BlockRenderer blocks={blocks} entities={entities} />;
+  return (
+    <Suspense
+      fallback={
+        <>
+          <IndustryBannerSkeleton />
+          <IndustryContentSkeleton />
+        </>
+      }
+    >
+      <AffiliationsPageContent
+        getAffiliationsPageBlocks={getAffiliationsPageBlocks}
+        getAffiliationsPageEntities={getAffiliationsPageEntities}
+      />
+    </Suspense>
+  );
 }
