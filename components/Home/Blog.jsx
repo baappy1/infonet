@@ -5,10 +5,10 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 import Link from "next/link";
 import * as React from "react";
 import BlogCard from "./BlogCard";
-import Autoplay from "embla-carousel-autoplay";
 
 function formatDate(dateStr) {
   if (!dateStr) return "";
@@ -37,7 +37,7 @@ export default function Blog({
   );
 
   const slideCount =
-    items.length > 0 ? Math.max(1, Math.ceil(items.length / 2)) : 3;
+    items.length > 0 ? Math.max(1, Math.ceil(items.length / 3)) : 3;
   const slides = Array.from({ length: slideCount });
 
   // Update selectedIndex when carousel changes
@@ -136,8 +136,8 @@ export default function Blog({
             <CarouselContent className="flex gap-4">
               {items.length > 0
                 ? slides.map((_, index) => {
-                    const start = index * 2;
-                    const slideItems = items.slice(start, start + 2);
+                    const start = index * 3;
+                    const slideItems = items.slice(start, start + 3);
                     return (
                       <CarouselItem
                         key={index}
