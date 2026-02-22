@@ -3,7 +3,7 @@ import React from "react";
 
 const ExpertsCard = ({ member }) => {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col cursor-pointer">
       <div className="relative   w-full   aspect-square mb-8">
         <Image
           src={member.image}
