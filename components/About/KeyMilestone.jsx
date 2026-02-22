@@ -1,14 +1,36 @@
 import KeyMilestoneCard from "./KeyMilestoneCard";
 
 const FALLBACK_MILESTONES = [
-  { image: "/assets/about/01.png", title: "Early 2000s", description: "Launched first-generation POS and back-office solutions" },
-  { image: "/assets/about/milestone/01.png", title: "2005–2015", description: "Expanded to pump control, pricing management, and multi-site integration" },
-  { image: "/assets/about/milestone/02.png", title: "2016", description: "Introduced Fleet and First Nations exempt-sales modules" },
-  { image: "/assets/about/milestone/03.png", title: "2020–Present", description: "Full evolution into EMV, unattended retail, cloud reporting, and custom enterprise integrations" },
+  {
+    image: "/assets/about/01.png",
+    title: "Early 2000s",
+    description: "Launched first-generation POS and back-office solutions",
+  },
+  {
+    image: "/assets/about/milestone/01.png",
+    title: "2005–2015",
+    description:
+      "Expanded to pump control, pricing management, and multi-site integration",
+  },
+  {
+    image: "/assets/about/milestone/02.png",
+    title: "2016",
+    description: "Introduced Fleet and First Nations exempt-sales modules",
+  },
+  {
+    image: "/assets/about/milestone/03.png",
+    title: "2020–Present",
+    description:
+      "Full evolution into EMV, unattended retail, cloud reporting, and custom enterprise integrations",
+  },
 ];
 
-export default function KeyMilestone({ title = "Key Milestones", milestones = [] }) {
-  const displayMilestones = milestones?.length > 0 ? milestones : FALLBACK_MILESTONES;
+export default function KeyMilestone({
+  title = "Key Milestones",
+  milestones = [],
+}) {
+  const displayMilestones =
+    milestones?.length > 0 ? milestones : FALLBACK_MILESTONES;
 
   return (
     <>
@@ -20,7 +42,7 @@ export default function KeyMilestone({ title = "Key Milestones", milestones = []
               backgroundSize: "contain",
               backgroundPosition: "center",
             }}
-            className="absolute top-0 left-0 w-full h-full"
+            className="absolute top-0 left-0  w-full h-full"
           />
           <div className="container px-5 lg:px-0">
             {title && (
@@ -28,7 +50,7 @@ export default function KeyMilestone({ title = "Key Milestones", milestones = []
                 {title}
               </h2>
             )}
-            <div className="flex flex-wrap gap-[22px]">
+            <div className="flex flex-wrap gap-[22px] xl:px-5 2xl:px-0">
               {displayMilestones.map((m, i) => (
                 <KeyMilestoneCard
                   key={i}
