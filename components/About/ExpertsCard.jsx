@@ -4,12 +4,12 @@ import React from "react";
 const ExpertsCard = ({ member }) => {
   return (
     <div className="flex flex-col">
-      <div className={`relative   h-81.75   aspect-square mb-8`}>
+      <div className="relative   w-full   aspect-square mb-8">
         <Image
           src={member.image}
           alt={member.name}
           fill
-          className="w-full h-full object-cover rounded-lg"
+          className="object-center rounded-lg"
         />
       </div>
       <div className="w-full">
