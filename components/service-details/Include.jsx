@@ -51,26 +51,23 @@ export default function Include({
   const items =
     Array.isArray(coreValues) && coreValues.length > 0
       ? coreValues.map((v, i) => ({
-        id: v._id ?? i,
-        icon: v.icon || `/assets/service-details/includes/0${(i % 5) + 1}.svg`,
-        title: v.value_title || "",
-        description: v.value_description || "",
-      }))
+          id: v._id ?? i,
+          icon:
+            v.icon || `/assets/service-details/includes/0${(i % 5) + 1}.svg`,
+          title: v.value_title || "",
+          description: v.value_description || "",
+        }))
       : DEFAULT_ITEMS;
 
   return (
     <>
       <div className="pt-20 lg:pt-25 pb-20 lg:pb-30 bg-[#F8F8F3]">
-        <div className="container lg:pr-0 lg:pl-0 pr-5 pl-5">
+        <div className="container lg:px-0 xl:px-5 2xl:px-0 px-5">
           <div className="flex flex-wrap lg:flex-row flex-col justify-between">
             <div className="w-full lg:w-[40.7%] sm:mb-0 mb-10">
               <div className="top-title mb-5">{topTitle}</div>
-              <h2 className="heading-h2 mb-5">
-                {title}
-              </h2>
-              <p className="paragraph-text mb-5">
-                {shortDescription}
-              </p>
+              <h2 className="heading-h2 mb-5">{title}</h2>
+              <p className="paragraph-text mb-5">{shortDescription}</p>
               <a
                 className=" inline-flex lg:px-4 px-4 py-3 lg:py-4 text-[14px] leading-4.5 font-medium box-border rounded-sm bg-[#EBFF3A] transition duration-150 hover:bg-white hover:text-[#08090D] uppercase gap-[10px] sm:mb-10"
                 href={buttonUrl || "/contact"}

@@ -48,7 +48,7 @@ export default function Benefits({
   return (
     <>
       <div className="pt-20 lg:pt-25 pb-25 lg:pb-55 bg-[#F8F8F3]">
-        <div className="container lg:px-0 xl:px-5 px-5">
+        <div className="container lg:px-0 xl:px-5 2xl:px-0 px-5">
           <div className="w-full">
             <div className="w-full lg:w-[49.7%]">
               <div className="top-title mb-5">{topTitle}</div>

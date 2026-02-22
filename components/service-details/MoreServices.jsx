@@ -18,13 +18,17 @@ export default function MoreServices({
   const cardTitle = moreSolutionTitle || latest?.title || "Hardware Sourcing";
   const cardDescription =
     moreSolutionDes ||
-    (latest?.excerpt ? (latest.excerpt || "").replace(/<[^>]+>/g, "").trim() : "") ||
+    (latest?.excerpt
+      ? (latest.excerpt || "").replace(/<[^>]+>/g, "").trim()
+      : "") ||
     "We provide certified, fully compatible hardware for POS, pumps, scanners, and more, ensuring your systems run smoothly from day one.";
   const customImageUrl =
     moreFeatureImage &&
     (typeof moreFeatureImage === "string"
       ? moreFeatureImage
-      : moreFeatureImage?.url || moreFeatureImage?.sourceUrl || moreFeatureImage?.mediaItemUrl);
+      : moreFeatureImage?.url ||
+        moreFeatureImage?.sourceUrl ||
+        moreFeatureImage?.mediaItemUrl);
   const imageSrc =
     customImageUrl ||
     latest?.featuredImage?.node?.mediaItemUrl ||
@@ -36,7 +40,7 @@ export default function MoreServices({
   return (
     <>
       <div className="bg-[#F8F8F3] pb-30 lg:pb-62.5">
-        <div className="container lg:pr-[0] lg:pl-[0] pr-[20px] pl-[20px]">
+        <div className="container lg:px-0 px-5 xl:px-5 2xl:px-0">
           {/* Header */}
           <div className="flex flex-col">
             <div className="w-full  mb-20">
