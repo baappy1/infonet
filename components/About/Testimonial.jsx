@@ -29,7 +29,7 @@ export default function Testimonial({
         <div className="container px-5 lg:px-0 xl:px-5 2xl:px-0">
           <div className="top-title mb-5">{topTitle}</div>
 
-          <div className="font-manrope lg:mb-0 text-[28px] leading-7.5 lg:text-[40px] lg:leading-12.5 w-[60%] lg:w-162.25">
+          <div className="font-manrope lg:mb-0 text-[28px]  leading-7.5 lg:text-[40px] lg:leading-12.5 w-[60%] lg:w-162.25">
             {title}
           </div>
 
@@ -52,11 +52,11 @@ export default function Testimonial({
                 ))}
               </CarouselContent>
 
-              <div className="infonet-prev-btn absolute w-12 h-10 -top-24 left-[inherit] right-13 z-10">
+              <div className="infonet-prev-btn absolute w-12 h-10 top-62  lg:-top-24 left-[inherit] right-13 z-10">
                 <CarouselPrevious />
               </div>
 
-              <div className="infonet-next-btn absolute w-12 h-10 -top-24 right-0 z-10">
+              <div className="infonet-next-btn absolute w-12 h-10 top-62  lg:-top-24 right-0 z-10">
                 <CarouselNext />
               </div>
             </Carousel>
