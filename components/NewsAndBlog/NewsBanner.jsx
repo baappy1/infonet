@@ -51,7 +51,7 @@ const NewsBanner = ({
 
           <div className="relative mt-10 lg:mt-25">
             <Carousel opts={{}} setApi={setApi} className="w-full">
-              <CarouselContent className="w-full flex gap-4">
+              <CarouselContent className=" flex gap-4">
                 {cards.map((post, index) => (
                   <CarouselItem key={post?.id ?? index} className="w-full">
                     <motion.div

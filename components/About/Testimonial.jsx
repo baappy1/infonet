@@ -52,11 +52,11 @@ export default function Testimonial({
                 ))}
               </CarouselContent>
 
-              <div className="infonet-prev-btn absolute w-12 h-10 top-62  lg:-top-24 left-[inherit] right-13 z-10">
+              <div className="infonet-prev-btn absolute w-12 h-10 top-64 md:top-54  lg:-top-24 left-[inherit] right-13 z-10">
                 <CarouselPrevious />
               </div>
 
-              <div className="infonet-next-btn absolute w-12 h-10 top-62  lg:-top-24 right-0 z-10">
+              <div className="infonet-next-btn absolute w-12 h-10 top-64 md:top-54 lg:-top-24 right-0 z-10">
                 <CarouselNext />
               </div>
             </Carousel>
