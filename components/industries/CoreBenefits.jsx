@@ -42,6 +42,8 @@ const CoreBenefits = ({ title = DEFAULT_TITLE, milestones }) => {
         }))
       : coreBenefits;
 
+  console.log(milestones);
+
   return (
     <section className="px-2.5">
       <div className="bg-[#083630] rounded-lg">

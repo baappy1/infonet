@@ -83,7 +83,7 @@ const MoreIndustries = ({
         ? industries
         : industriesData;
 
-  console.log(list);
+  // console.log(list);
 
   return (
     <section className="bg-[#f8f8f3]">
