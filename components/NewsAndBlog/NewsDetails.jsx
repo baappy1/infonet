@@ -7,11 +7,13 @@ import GridBlogCard from "./GridBlogCard";
 function formatDate(dateStr) {
   if (!dateStr) return "";
   const d = new Date(dateStr);
-  return d.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  }).toUpperCase();
+  return d
+    .toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    })
+    .toUpperCase();
 }
 
 const NewsDetails = ({ items = [], categories = [] }) => {
@@ -58,13 +60,11 @@ const NewsDetails = ({ items = [], categories = [] }) => {
 
   const formattedItems = currentItems.map((post) => ({
     id: post.id ?? post.databaseId,
-    category:
-      post.categories?.edges?.[0]?.node?.name || "News & Blog",
+    category: post.categories?.edges?.[0]?.node?.name || "News & Blog",
     date: formatDate(post.date),
     title: post.title || "",
     image:
-      post.featuredImage?.node?.mediaItemUrl ||
-      "/assets/newsandblog/blog1.png",
+      post.featuredImage?.node?.mediaItemUrl || "/assets/newsandblog/blog1.png",
     slug: post.slug,
   }));
 
@@ -76,7 +76,7 @@ const NewsDetails = ({ items = [], categories = [] }) => {
             <button
               key={tab.id}
               onClick={() => handleCategoryChange(tab.slug)}
-              className={`flex px-3 py-1.5 text-base font-jetbrains leading-5.5 uppercase rounded-full transition-colors items-center ${
+              className={`flex px-3 py-1.5 text-base font-jetbrains leading-5.5 uppercase rounded-full transition-colors items-center h-8.5 ${
                 selectedCategorySlug === tab.slug
                   ? "bg-[#EBFF3A] text-[#020617]"
                   : "bg-white text-[#020617] border border-[#08090D1A]"
@@ -108,21 +108,19 @@ const NewsDetails = ({ items = [], categories = [] }) => {
               />
             </button>
 
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-              (page) => (
-                <button
-                  key={page}
-                  onClick={() => handlePageChange(page)}
-                  className={`px-3 py-1.5 w-12 h-9 flex justify-center items-center rounded-[999px] font-jetbrains text-base leading-4.5 uppercase tracking-[0px] transition-colors ${
-                    currentPage === page
-                      ? "bg-[#EBFF3A] text-[#08090d]"
-                      : "bg-white text-[#08090d]/60"
-                  }`}
-                >
-                  {page}
-                </button>
-              ),
-            )}
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                onClick={() => handlePageChange(page)}
+                className={`px-3 py-1.5 w-12 h-9 flex justify-center items-center rounded-[999px] font-jetbrains text-base leading-4.5 uppercase tracking-[0px] transition-colors ${
+                  currentPage === page
+                    ? "bg-[#EBFF3A] text-[#08090d]"
+                    : "bg-white text-[#08090d]/60"
+                }`}
+              >
+                {page}
+              </button>
+            ))}
 
             <button
               className="px-3 py-1.5 disabled:opacity-40 disabled:cursor-not-allowed bg-white rounded-full flex justify-center items-center"

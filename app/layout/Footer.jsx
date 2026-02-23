@@ -210,7 +210,7 @@ export default function Footer({ footerMenus = {}, themeOptions = {} }) {
 
           <div className="px-[10px] sm:px-[40px] pb-2.5  lg:pb-12.5  pt-[90px] sm:pt-[150px]">
             <div className="bg-white p-[20px] sm:p-[70px] sm:pb-[48px] pb-[20px] rounded-[8px]">
-              <div className="pb-[0] sm:pb-[30px] sm:pb-[78px] border-dashed sm:border-b-[1px] border-[#08090D]/10 flex flex-wrap  md:gap-20 lg:gap-12.5  2xl:flex-nowrap gap-[0] sm:gap-12.5 2xl:gap-0 2xl:justify-between">
+              <div className="pb-[0] sm:pb-[30px] sm:pb-[78px] border-dashed sm:border-b-[1px] border-[#08090D]/10 flex flex-wrap   lg:gap-12.5  2xl:flex-nowrap gap-0 sm:gap-12.5 2xl:gap-0 2xl:justify-between">
                 <div className="flex flex-col hidden sm:flex">
                   <h4 className="mb-[30px] leading-[22px] uppercase">
                     Industries
