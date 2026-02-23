@@ -76,7 +76,7 @@ const NewsDetails = ({ items = [], categories = [] }) => {
             <button
               key={tab.id}
               onClick={() => handleCategoryChange(tab.slug)}
-              className={`flex px-3 py-1.5 text-base font-jetbrains leading-5.5 uppercase rounded-full transition-colors items-center h-8.5 ${
+              className={`flex px-3 py-1.5 text-base font-jetbrains leading-5.5 uppercase rounded-full transition-colors items-center md:h-8.5 ${
                 selectedCategorySlug === tab.slug
                   ? "bg-[#EBFF3A] text-[#020617]"
                   : "bg-white text-[#020617] border border-[#08090D1A]"
