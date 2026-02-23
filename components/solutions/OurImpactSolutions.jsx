@@ -73,7 +73,7 @@ export default function OurImpactSolutions({
 
   return (
     <div className="bg-[#F8F8F3]">
-      <div className="container lg:pr-[0] lg:pl-[0] pr-[20px] pl-[20px] pt-22.5 lg:pt-55">
+      <div className="container lg:px-0 px-5 pt-22.5 lg:pt-55">
         {/* Header Section */}
         <motion.div
           className="text-center"
