@@ -37,22 +37,22 @@ export default function Benefits({
   const items =
     Array.isArray(benefits) && benefits.length > 0
       ? benefits.map((b, i) => ({
-        id: b._id ?? i,
-        icon: b.feature_image || `/assets/service-details/benefit/0${(i % 5) + 1}.svg`,
-        title: b.benefit_title || "",
-      }))
+          id: b._id ?? i,
+          icon:
+            b.feature_image ||
+            `/assets/service-details/benefit/0${(i % 5) + 1}.svg`,
+          title: b.benefit_title || "",
+        }))
       : DEFAULT_BENEFITS;
 
   return (
     <>
       <div className="pt-20 lg:pt-25 pb-25 lg:pb-55 bg-[#F8F8F3]">
-        <div className="container lg:pr-0 lg:pl-0 pr-5 pl-5">
+        <div className="container lg:px-0 xl:px-5 2xl:px-0 px-5">
           <div className="w-full">
             <div className="w-full lg:w-[49.7%]">
               <div className="top-title mb-5">{topTitle}</div>
-              <h2 className="heading-h2 mb-5">
-                {title}
-              </h2>
+              <h2 className="heading-h2 mb-5">{title}</h2>
               <p className="paragraph-text mb-10 lg:mb-20">
                 {shortDescription}
               </p>

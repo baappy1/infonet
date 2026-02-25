@@ -30,7 +30,11 @@ const ChevronIcon = ({ isOpen }) => (
   </svg>
 );
 
-export default function TopHeader({ setActive, themeOptions = {}, menuItems = [] }) {
+export default function TopHeader({
+  setActive,
+  themeOptions = {},
+  menuItems = [],
+}) {
   const [openDropdownIndex, setOpenDropdownIndex] = useState(null);
   const dropdownRef = useRef(null);
 
@@ -97,11 +101,20 @@ export default function TopHeader({ setActive, themeOptions = {}, menuItems = []
                         aria-controls={`menu-dropdown-${i}`}
                         id={`menu-trigger-${i}`}
                         className="relative cursor-pointer flex text-white items-center gap-[4px] uppercase border-transparent group transition-colors duration-200 font-medium leading-5.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EBFF3A] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent rounded"
-                        onClick={() => setOpenDropdownIndex(openDropdownIndex === i ? null : i)}
+                        onClick={() =>
+                          setOpenDropdownIndex(
+                            openDropdownIndex === i ? null : i,
+                          )
+                        }
                       >
                         <span>{item.label}</span>
                         <ChevronIcon isOpen={openDropdownIndex === i} />
-                        <span className="absolute bottom-[-3px] left-0 w-0 h-[2px] bg-[#EBFF3A] transition-all duration-300 group-hover:w-full group-focus-within:w-full" style={{ width: openDropdownIndex === i ? "100%" : undefined }}></span>
+                        <span
+                          className="absolute bottom-[-3px] left-0 w-0 h-[2px] bg-[#EBFF3A] transition-all duration-300 group-hover:w-full group-focus-within:w-full"
+                          style={{
+                            width: openDropdownIndex === i ? "100%" : undefined,
+                          }}
+                        ></span>
                       </button>
                       <div
                         id={`menu-dropdown-${i}`}
@@ -134,30 +147,42 @@ export default function TopHeader({ setActive, themeOptions = {}, menuItems = []
                         <span className="absolute bottom-[-3px] left-0 w-0 h-[2px] bg-[#EBFF3A] group-hover:w-full transition-all duration-300"></span>
                       </Link>
                     </div>
-                  )
+                  ),
                 )
               ) : (
                 <>
                   <div className="relative group">
-                    <Link href="/" className="text-white uppercase font-medium leading-5.5 relative transition-colors duration-200">
+                    <Link
+                      href="/"
+                      className="text-white uppercase font-medium leading-5.5 relative transition-colors duration-200"
+                    >
                       Home
                       <span className="absolute bottom-[-3px] left-0 w-0 h-[2px] bg-[#EBFF3A] group-hover:w-full transition-all duration-300"></span>
                     </Link>
                   </div>
                   <div className="relative group">
-                    <Link href="/Industries" className="text-white uppercase font-medium leading-5.5 relative transition-colors duration-200">
+                    <Link
+                      href="/Industries"
+                      className="text-white uppercase font-medium leading-5.5 relative transition-colors duration-200"
+                    >
                       Industries
                       <span className="absolute bottom-[-3px] left-0 w-0 h-[2px] bg-[#EBFF3A] group-hover:w-full transition-all duration-300"></span>
                     </Link>
                   </div>
                   <div className="relative group">
-                    <Link href="/solutions" className="text-white uppercase font-medium leading-5.5 relative transition-colors duration-200">
+                    <Link
+                      href="/solutions"
+                      className="text-white uppercase font-medium leading-5.5 relative transition-colors duration-200"
+                    >
                       Solutions
                       <span className="absolute bottom-[-3px] left-0 w-0 h-[2px] bg-[#EBFF3A] group-hover:w-full transition-all duration-300"></span>
                     </Link>
                   </div>
                   <div className="relative group">
-                    <Link href="/service" className="text-white uppercase font-medium leading-5.5 relative transition-colors duration-200">
+                    <Link
+                      href="/service"
+                      className="text-white uppercase font-medium leading-5.5 relative transition-colors duration-200"
+                    >
                       Services
                       <span className="absolute bottom-[-3px] left-0 w-0 h-[2px] bg-[#EBFF3A] group-hover:w-full transition-all duration-300"></span>
                     </Link>
@@ -204,7 +229,10 @@ export default function TopHeader({ setActive, themeOptions = {}, menuItems = []
             <div
               className="mobile-menu-expand tablet-show"
               onClick={handleMobileMenuClick}
-              onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), handleMobileMenuClick())}
+              onKeyDown={(e) =>
+                (e.key === "Enter" || e.key === " ") &&
+                (e.preventDefault(), handleMobileMenuClick())
+              }
               role="button"
               tabIndex={0}
               aria-label="Open menu"

@@ -73,11 +73,12 @@ export default function IndustryServe({ header, items }) {
   // Use items from WP when available; fallback to static Services when empty
   const fromWp = items && items.length ? items : [];
   // Pad to 6 when we have fewer than 6 (avoid duplicates by title)
-  const existingTitles = new Set(fromWp.map((i) => (i?.title || "").toLowerCase()));
-  const toAdd = Services.filter((s) => !existingTitles.has((s?.title || "").toLowerCase())).slice(
-    0,
-    Math.max(0, TARGET_COUNT - fromWp.length)
+  const existingTitles = new Set(
+    fromWp.map((i) => (i?.title || "").toLowerCase()),
   );
+  const toAdd = Services.filter(
+    (s) => !existingTitles.has((s?.title || "").toLowerCase()),
+  ).slice(0, Math.max(0, TARGET_COUNT - fromWp.length));
   const services = fromWp.length > 0 ? [...fromWp, ...toAdd] : Services;
 
   return (

@@ -210,7 +210,13 @@ export default function Footer({ footerMenus = {}, themeOptions = {} }) {
 
           <div className="px-[10px] sm:px-[40px] pb-2.5  lg:pb-12.5  pt-[90px] sm:pt-[150px]">
             <div className="bg-white p-[20px] sm:p-[70px] sm:pb-[48px] pb-[20px] rounded-[8px]">
-              <div className="pb-[0] sm:pb-[30px] sm:pb-[78px] border-dashed sm:border-b-[1px] border-[#08090D]/10 flex flex-wrap  md:gap-20 lg:gap-12.5  2xl:flex-nowrap gap-[0] sm:gap-12.5 2xl:gap-0 2xl:justify-between">
+              <div
+                // className="pb-[0] sm:pb-[30px] sm:pb-[78px] border-dashed sm:border-b-[1px] border-[#08090D]/10 flex flex-wrap lg:gap-12.5 lg:gap-y-12.5    2xl:flex-nowrap gap-0 sm:gap-12.5 2xl:gap-0 2xl:justify-between"
+
+                // className="pb-[0] sm:pb-[30px] sm:pb-[78px] border-dashed sm:border-b-[1px] border-[#08090D]/10 flex flex-wrap gap-0 sm:gap-12.5 lg:grid lg:grid-cols-3 lg:gap-10 2xl:flex 2xl:flex-nowrap 2xl:gap-0 2xl:justify-between"
+
+                className="pb-[0] sm:pb-[30px] sm:pb-[78px] border-dashed sm:border-b-[1px] border-[#08090D]/10  sm:grid sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-10 2xl:gap-0 2xl:justify-between w-full"
+              >
                 <div className="flex flex-col hidden sm:flex">
                   <h4 className="mb-[30px] leading-[22px] uppercase">
                     Industries

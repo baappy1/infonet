@@ -5,12 +5,31 @@ import Image from "next/image";
 import OurValuesCard from "./OurValuesCard";
 
 const FALLBACK_VALUES = [
-  { icon: "/assets/about/why-choose-icon.svg", title: "Innovation", description: "We push boundaries to create smarter, more efficient, and future-ready technologies for all operations." },
-  { icon: "/assets/about/icon/01.svg", title: "Transparency", description: "We communicate openly, offer honest guidance, and ensure pricing and processes are always clear." },
-  { icon: "/assets/about/icon/02.svg", title: "Trust", description: "Our systems and service inspire confidence delivering accuracy, uptime, and reliability when it matters most." },
-  { icon: "/assets/about/icon/03.svg", title: "Growth", description: "Our solutions are built to scale, helping businesses expand seamlessly while we evolve with their needs." },
+  {
+    icon: "/assets/about/why-choose-icon.svg",
+    title: "Innovation",
+    description:
+      "We push boundaries to create smarter, more efficient, and future-ready technologies for all operations.",
+  },
+  {
+    icon: "/assets/about/icon/01.svg",
+    title: "Transparency",
+    description:
+      "We communicate openly, offer honest guidance, and ensure pricing and processes are always clear.",
+  },
+  {
+    icon: "/assets/about/icon/02.svg",
+    title: "Trust",
+    description:
+      "Our systems and service inspire confidence delivering accuracy, uptime, and reliability when it matters most.",
+  },
+  {
+    icon: "/assets/about/icon/03.svg",
+    title: "Growth",
+    description:
+      "Our solutions are built to scale, helping businesses expand seamlessly while we evolve with their needs.",
+  },
 ];
-
 
 const containerVariants = {
   hidden: {},
@@ -49,7 +68,7 @@ export default function OurValues({
 
   return (
     <div className="2xl:pt-55 2xl:pb-27 lg:pt-30 lg:pb-30 pt-22.5 pb-11.5 bg-[#F8F8F3]">
-      <div className="container lg:pr-0 lg:pl-0 pr-5 pl-5">
+      <div className="container lg:px-0 xl:px-5 2xl:px-0  px-5 ">
         {/* Header Section */}
         <motion.div
           className="w-162.2"
@@ -60,7 +79,10 @@ export default function OurValues({
           viewport={{ once: true, amount: 0.1 }}
         >
           {topTitle && (
-            <motion.div variants={shouldReduce ? {} : itemVariants} className="top-title mb-5">
+            <motion.div
+              variants={shouldReduce ? {} : itemVariants}
+              className="top-title mb-5"
+            >
               {topTitle}
             </motion.div>
           )}
@@ -111,7 +133,9 @@ export default function OurValues({
           <div
             className="relative p-7.5 bg-white h-127 w-full  lg:w-[34.5%] rounded-lg"
             style={{
-              backgroundImage: backgroundImage ? `url('${backgroundImage}')` : undefined,
+              backgroundImage: backgroundImage
+                ? `url('${backgroundImage}')`
+                : undefined,
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}

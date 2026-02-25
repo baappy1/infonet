@@ -5,7 +5,7 @@ const TeamCard = ({ team }) => {
   const { name, title, image } = team;
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col cursor-pointer">
       {/* <Image src={imageSrc} alt={title} fill /> */}
       <div className="relative w-full  aspect-3/4 ">
         <Image

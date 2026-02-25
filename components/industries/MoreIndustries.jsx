@@ -61,19 +61,19 @@ const MoreIndustries = ({
   const fromBlock =
     Array.isArray(moreFeatures) && moreFeatures.length > 0
       ? moreFeatures.map((f, i) => {
-        const title = f.feature_title ?? f.title ?? "";
-        const matched = industryMap.get(title.toLowerCase().trim());
-        return {
-          id: f._id ?? f.id ?? i + 1,
-          title,
-          description: f.feature_description ?? f.description ?? "",
-          image:
-            f.feature_image ??
-            f.image ??
-            "/assets/industries/convenience.png",
-          slug: f.slug ?? matched?.slug ?? slugFromTitle(title),
-        };
-      })
+          const title = f.feature_title ?? f.title ?? "";
+          const matched = industryMap.get(title.toLowerCase().trim());
+          return {
+            id: f._id ?? f.id ?? i + 1,
+            title,
+            description: f.feature_description ?? f.description ?? "",
+            image:
+              f.feature_image ??
+              f.image ??
+              "/assets/industries/convenience.png",
+            slug: f.slug ?? matched?.slug ?? slugFromTitle(title),
+          };
+        })
       : [];
 
   const list =
@@ -82,6 +82,8 @@ const MoreIndustries = ({
       : Array.isArray(industries) && industries.length > 0
         ? industries
         : industriesData;
+
+  // console.log(list);
 
   return (
     <section className="bg-[#f8f8f3]">

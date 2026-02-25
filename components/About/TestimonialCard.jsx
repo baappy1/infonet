@@ -13,15 +13,17 @@ export default function TestimonialCard({
   designation = DEFAULT_DESIGNATION,
   item,
 }) {
-  const resolvedContent = item?.testimonialDescription ?? item?.content ?? content;
+  const resolvedContent =
+    item?.testimonialDescription ?? item?.content ?? content;
   const resolvedImage = item?.testimonialImage ?? item?.image ?? image;
   const resolvedName = item?.title ?? item?.name ?? name;
-  const resolvedDesignation = item?.testimonialDesignation ?? item?.designation ?? designation;
+  const resolvedDesignation =
+    item?.testimonialDesignation ?? item?.designation ?? designation;
 
   return (
     <>
-      <div className="border-l-[#08090D33] border-l border-dashed pl-[20px]">
-        <p className="font-medium text-[16px] leading-[22px] font-manrope">
+      <div className="border-l-[#08090D33] border-l border-dashed pl-5">
+        <p className="font-medium text-[16px] leading-5.5 font-manrope">
           {typeof resolvedContent === "string"
             ? resolvedContent.replace(/<[^>]+>/g, "").trim()
             : resolvedContent}
@@ -35,7 +37,7 @@ export default function TestimonialCard({
             alt="Testimonial author"
           />
           <div>
-            <h3 className="font-bold text-[16px] leading-[22px] uppercase mb-[8px]">
+            <h3 className="font-bold text-[16px] leading-5.5 uppercase mb-2">
               {resolvedName}
             </h3>
             <p className="uppercase text-[12px] leading-[100%]">

@@ -67,11 +67,13 @@ const ProcessSection = ({
   const steps =
     Array.isArray(processSteps) && processSteps.length > 0
       ? processSteps.map((s, i) => ({
-        step: i + 1,
-        title: s.step_title || "",
-        description: (s.step_description || "").trim(),
-        image: s.feature_image || `/assets/service-details/thumbnail-0${(i % 6) + 1}.png`,
-      }))
+          step: i + 1,
+          title: s.step_title || "",
+          description: (s.step_description || "").trim(),
+          image:
+            s.feature_image ||
+            `/assets/service-details/thumbnail-0${(i % 6) + 1}.png`,
+        }))
       : DEFAULT_STEPS;
 
   useEffect(() => {
@@ -225,15 +227,11 @@ const ProcessSection = ({
 
   return (
     <div className="pt-20 lg:pt-55 pb-20 lg:pb-55">
-      <div className="container lg:pr-0 lg:pl-0 pr-5 pl-5">
+      <div className="container lg:px-0 px-5 xl:px-5 2xl:px-0">
         <div className="w-full lg:w-[40.7%] sm:mb-0 mb-20">
           <div className="top-title mb-5">{topTitle}</div>
-          <h2 className="heading-h2 mb-5">
-            {title}
-          </h2>
-          <p className="paragraph-text mb-5">
-            {shortDescription}
-          </p>
+          <h2 className="heading-h2 mb-5">{title}</h2>
+          <p className="paragraph-text mb-5">{shortDescription}</p>
         </div>
 
         <div

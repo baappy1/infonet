@@ -24,11 +24,36 @@ function getShareUrl(platform, url, text) {
 }
 
 const socialLinks = [
-  { id: 1, platform: "twitter", name: "Twitter", icon: "/assets/newsandblog/twitter.svg" },
-  { id: 2, platform: "copy", name: "Copy link", icon: "/assets/newsandblog/medium.svg" },
-  { id: 3, platform: "facebook", name: "Facebook", icon: "/assets/newsandblog/facebook-circle-fill.svg" },
-  { id: 4, platform: "linkedin", name: "LinkedIn", icon: "/assets/newsandblog/linkedin-box-fill.svg" },
-  { id: 5, platform: "telegram", name: "Telegram", icon: "/assets/newsandblog/send-plane-line.svg" },
+  {
+    id: 1,
+    platform: "twitter",
+    name: "Twitter",
+    icon: "/assets/newsandblog/twitter.svg",
+  },
+  {
+    id: 2,
+    platform: "copy",
+    name: "Copy link",
+    icon: "/assets/newsandblog/medium.svg",
+  },
+  {
+    id: 3,
+    platform: "facebook",
+    name: "Facebook",
+    icon: "/assets/newsandblog/facebook-circle-fill.svg",
+  },
+  {
+    id: 4,
+    platform: "linkedin",
+    name: "LinkedIn",
+    icon: "/assets/newsandblog/linkedin-box-fill.svg",
+  },
+  {
+    id: 5,
+    platform: "telegram",
+    name: "Telegram",
+    icon: "/assets/newsandblog/send-plane-line.svg",
+  },
 ];
 
 function formatDate(isoDate) {
@@ -54,7 +79,10 @@ const BlogDetails = ({ post, slug, shareUrl = "", shareTitle = "" }) => {
   const date = formatDate(post?.date) || "—";
   const title = post?.title || "";
   const fullShareUrl =
-    shareUrl || (typeof window !== "undefined" ? `${window.location.origin}/blog/${slug}` : "");
+    shareUrl ||
+    (typeof window !== "undefined"
+      ? `${window.location.origin}/blog/${slug}`
+      : "");
 
   const handleCopyLink = useCallback(() => {
     if (!fullShareUrl) return;
@@ -70,7 +98,7 @@ const BlogDetails = ({ post, slug, shareUrl = "", shareTitle = "" }) => {
 
   return (
     <section className="pt-15 lg:pt-17.5 pb-8.5 bg-[#f8f8f3]">
-      <div className="max-w-247.5 mx-auto px-2.5">
+      <div className="max-w-247.5 mx-auto px-4 lg:px-0">
         <Link
           href="/blog"
           className="flex items-center px-3 py-1.5 justify-center border border-[#08090d]/10 gap-2 rounded-[999px] w-fit"
@@ -122,18 +150,32 @@ const BlogDetails = ({ post, slug, shareUrl = "", shareTitle = "" }) => {
                       aria-label={item.name}
                       title={copied ? "Copied!" : item.name}
                     >
-                      <Image src={item.icon} alt={item.name} width={24} height={24} />
+                      <Image
+                        src={item.icon}
+                        alt={item.name}
+                        width={24}
+                        height={24}
+                      />
                     </button>
                   ) : (
                     <Link
-                      href={getShareUrl(item.platform, fullShareUrl, shareTitle || title)}
+                      href={getShareUrl(
+                        item.platform,
+                        fullShareUrl,
+                        shareTitle || title,
+                      )}
                       key={item.id}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="transition-all duration-200 hover:scale-110 hover:-translate-y-1"
                       aria-label={`Share on ${item.name}`}
                     >
-                      <Image src={item.icon} alt={item.name} width={24} height={24} />
+                      <Image
+                        src={item.icon}
+                        alt={item.name}
+                        width={24}
+                        height={24}
+                      />
                     </Link>
                   ),
                 )}

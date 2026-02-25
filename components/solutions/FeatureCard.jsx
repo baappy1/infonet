@@ -1,20 +1,24 @@
 "use client";
 import Image from "next/image";
-import React from "react";
-import { motion } from "motion/react";
+import React, { useRef } from "react";
+import { motion, useInView } from "motion/react";
+
 const FeatureCard = ({ item, i }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: false, amount: 0.3 });
   return (
     <motion.div
+      ref={ref}
       initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
       transition={{
-        duration: 0.5,
+        duration: 0.55,
         delay: i * 0.08,
-        ease: [0.25, 0.1, 0.25, 1],
+        ease: [0.16, 1, 0.3, 1],
       }}
       whileHover={{
         y: -8,
-        transition: { duration: 0.2 },
+        transition: { duration: 0.25, ease: [0.16, 1, 0.3, 1] },
       }}
       className="flex flex-col p-5 sm:p-7.5 bg-white rounded-lg cursor-pointer hover:shadow-lg transition-shadow"
     >

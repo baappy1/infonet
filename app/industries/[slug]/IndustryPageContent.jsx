@@ -2,13 +2,13 @@ import Banner from "@/components/Banner";
 import { BlockRenderer } from "@/components/blocks";
 import { fetchGraphQL } from "@/lib/graphql";
 import {
-    GET_ALL_CLIENTS,
-    GET_ALL_INDUSTRIES,
-    GET_ALL_TESTIMONIALS,
-    GET_HOMEPAGE_ENTITIES,
-    GET_INDUSTRIE_BY_ID,
-    GET_PAGE_BLOCKS,
-    GET_SERVICE_BY_SLUG
+  GET_ALL_CLIENTS,
+  GET_ALL_INDUSTRIES,
+  GET_ALL_TESTIMONIALS,
+  GET_HOMEPAGE_ENTITIES,
+  GET_INDUSTRIE_BY_ID,
+  GET_PAGE_BLOCKS,
+  GET_SERVICE_BY_SLUG,
 } from "@/lib/graphql/queries";
 import { print } from "graphql";
 import Link from "next/link";
@@ -49,14 +49,18 @@ function collectIdsFromBlocks(blocks) {
     if (block?.name === "carbon-fields/client-list") {
       (data.selected_clients || []).forEach((item) => {
         const id =
-          typeof item === "object" ? item?.id ?? item?.value ?? item?.ID : item;
+          typeof item === "object"
+            ? (item?.id ?? item?.value ?? item?.ID)
+            : item;
         if (id != null && id !== "") clientIds.add(Number(id));
       });
     }
     if (block?.name === "carbon-fields/home-testimonial-section") {
       (data.selected_testimonials || []).forEach((item) => {
         const id =
-          typeof item === "object" ? item?.id ?? item?.value ?? item?.ID : item;
+          typeof item === "object"
+            ? (item?.id ?? item?.value ?? item?.ID)
+            : item;
         if (id != null && id !== "") testimonialIds.add(Number(id));
       });
     }
@@ -70,63 +74,70 @@ function collectIdsFromBlocks(blocks) {
 async function getIndustryEntities(blocks) {
   const { clientIds, testimonialIds } = collectIdsFromBlocks(blocks);
   const hasClientBlock = (blocks || []).some(
-    (b) => b?.name === "carbon-fields/client-list"
+    (b) => b?.name === "carbon-fields/client-list",
   );
   const hasTestimonialBlock = (blocks || []).some(
-    (b) => b?.name === "carbon-fields/home-testimonial-section"
+    (b) => b?.name === "carbon-fields/home-testimonial-section",
   );
 
   const hasEntityIds = clientIds.length > 0 || testimonialIds.length > 0;
 
-  const [entitiesResult, industriesResult, clientsFallback, testimonialsFallback] =
-    await Promise.all([
-      hasEntityIds
-        ? fetchGraphQL(print(GET_HOMEPAGE_ENTITIES), {
-            clientIds,
-            testimonialIds,
-            postIds: [],
-          })
-            .then((data) => ({
-              clients: data?.clients?.nodes || [],
-              testimonials: data?.testimonials?.nodes || [],
-            }))
-            .catch((err) => {
-              console.error("Error fetching industry entities:", err);
-              return { clients: [], testimonials: [] };
-            })
-        : Promise.resolve({ clients: [], testimonials: [] }),
-      fetchGraphQL(print(GET_ALL_INDUSTRIES))
-        .then((data) =>
-          (data?.industries?.nodes || []).map((item) => ({
-            id: item.id ?? item.databaseId,
-            title: item.title,
-            description:
-              item.excerpt?.replace(/<[^>]+>/g, "")?.trim() || "",
-            image:
-              item.featuredImage?.node?.mediaItemUrl ||
-              "/assets/industries/convenience.png",
-            slug: item.slug,
+  const [
+    entitiesResult,
+    industriesResult,
+    clientsFallback,
+    testimonialsFallback,
+  ] = await Promise.all([
+    hasEntityIds
+      ? fetchGraphQL(print(GET_HOMEPAGE_ENTITIES), {
+          clientIds,
+          testimonialIds,
+          postIds: [],
+        })
+          .then((data) => ({
+            clients: data?.clients?.nodes || [],
+            testimonials: data?.testimonials?.nodes || [],
           }))
-        )
-        .catch(() => []),
-      hasClientBlock
-        ? fetchGraphQL(print(GET_ALL_CLIENTS))
-            .then((data) => data?.clients?.nodes || [])
-            .catch(() => [])
-        : Promise.resolve(null),
-      hasTestimonialBlock
-        ? fetchGraphQL(print(GET_ALL_TESTIMONIALS))
-            .then((data) => data?.testimonials?.nodes || [])
-            .catch(() => [])
-        : Promise.resolve(null),
-    ]);
+          .catch((err) => {
+            console.error("Error fetching industry entities:", err);
+            return { clients: [], testimonials: [] };
+          })
+      : Promise.resolve({ clients: [], testimonials: [] }),
+    fetchGraphQL(print(GET_ALL_INDUSTRIES))
+      .then((data) =>
+        (data?.industries?.nodes || []).map((item) => ({
+          id: item.id ?? item.databaseId,
+          title: item.title,
+          description: item.excerpt?.replace(/<[^>]+>/g, "")?.trim() || "",
+          image:
+            item.featuredImage?.node?.mediaItemUrl ||
+            "/assets/industries/convenience.png",
+          slug: item.slug,
+        })),
+      )
+      .catch(() => []),
+    hasClientBlock
+      ? fetchGraphQL(print(GET_ALL_CLIENTS))
+          .then((data) => data?.clients?.nodes || [])
+          .catch(() => [])
+      : Promise.resolve(null),
+    hasTestimonialBlock
+      ? fetchGraphQL(print(GET_ALL_TESTIMONIALS))
+          .then((data) => data?.testimonials?.nodes || [])
+          .catch(() => [])
+      : Promise.resolve(null),
+  ]);
 
   let clients = entitiesResult.clients;
   let testimonials = entitiesResult.testimonials;
   if (hasClientBlock && clients.length === 0 && clientsFallback) {
     clients = clientsFallback;
   }
-  if (hasTestimonialBlock && testimonials.length === 0 && testimonialsFallback) {
+  if (
+    hasTestimonialBlock &&
+    testimonials.length === 0 &&
+    testimonialsFallback
+  ) {
     testimonials = testimonialsFallback;
   }
 
@@ -157,6 +168,7 @@ export default async function IndustryPageContent({ slug }) {
       featuredImage: page.featuredImage,
     };
     blocks = await getPageBlocks(page.databaseId);
+    console.log(blocks);
   }
 
   if (!industry) {
@@ -165,8 +177,7 @@ export default async function IndustryPageContent({ slug }) {
       const service = data?.services?.nodes?.[0];
       if (!service) notFound();
       const imageUrl = service.featuredImage?.node?.mediaItemUrl || "";
-      const description =
-        service.excerpt?.replace(/<[^>]+>/g, "").trim() || "";
+      const description = service.excerpt?.replace(/<[^>]+>/g, "").trim() || "";
       return (
         <>
           <Banner
@@ -219,6 +230,8 @@ export default async function IndustryPageContent({ slug }) {
   }
 
   const entities = await getIndustryEntities(blocks);
+
+  // console.log(entities);
 
   return (
     <BlockRenderer blocks={blocks} entities={entities} pageType="industry" />
