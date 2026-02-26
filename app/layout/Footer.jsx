@@ -639,7 +639,6 @@ export default function Footer({ footerMenus = {}, themeOptions = {} }) {
                     src={footerLogo}
                     className="w-[127px] sm:max-w-[158px]"
                     alt="Infonet Logo"
-                    style={{ width: "auto", height: "auto" }}
                   />
                 </Link>
               </div>
