@@ -109,25 +109,51 @@ const ProcessSection = ({
         borderRef.current.style.borderLeftStyle = "dashed";
       }
 
-      // Dynamic top positions for variable step count (11px to 66px spread)
-      const topPositions = Array.from(
-        { length: totalSteps },
-        (_, i) =>
-          11 + (i * (55 / Math.max(1, totalSteps - 1))),
-      );
+      // Fixed sequence: front=66px/scale 1, back: 11px/0.86, 24.75px/0.9, 38.5px/0.93, 52.25px/0.96, 59.125px/0.98
+      const CARD_POSITIONS = [
+        { top: 11, scale: 0.86 },
+        { top: 24.75, scale: 0.9 },
+        { top: 38.5, scale: 0.93 },
+        { top: 52.25, scale: 0.96 },
+        { top: 59.125, scale: 0.98 },
+        { top: 66, scale: 1 },
+      ];
+      const topPositions = [];
+      const scalePositions = [];
+      for (let i = 0; i < totalSteps; i++) {
+        if (i === totalSteps - 1) {
+          topPositions.push(66);
+          scalePositions.push(1);
+        } else {
+          const p = CARD_POSITIONS[Math.min(i, CARD_POSITIONS.length - 2)];
+          topPositions.push(p.top);
+          scalePositions.push(p.scale);
+        }
+      }
 
       // QuickSetters for scroll-synced card positions (no gsap.to duration)
       const cardTopSetters = cardEls.map((card) =>
         gsap.quickSetter(card, "top", "px"),
       );
+      const cardScaleSetters = cardEls.map((card) =>
+        gsap.quickSetter(card, "scale"),
+      );
 
-      // Initialize: step 1 at front (66px), steps 2-6 cascade at 11, 22, 33, 44, 55
+      const applyCardPosition = (card, idx, topVal, scaleVal) => {
+        cardTopSetters[idx](topVal);
+        cardScaleSetters[idx](scaleVal);
+      };
+
+      // Initialize: step 1 at front (66px, scale 1), others cascade per sequence
       let initBackIdx = 0;
       cardEls.forEach((card, index) => {
         const step = Number(card.getAttribute("data-step") ?? index + 1);
         const isActive = step === 1;
         const posIdx = isActive ? totalSteps - 1 : initBackIdx++;
-        card.style.top = `${topPositions[Math.min(posIdx, totalSteps - 1)]}px`;
+        const pos = Math.min(posIdx, totalSteps - 1);
+        const topVal = topPositions[pos] ?? 66;
+        const scaleVal = scalePositions[pos] ?? 1;
+        applyCardPosition(card, index, topVal, scaleVal);
         card.style.zIndex = String(isActive ? totalSteps + 1 : step);
         card.classList.toggle("is-active-card", isActive);
         card.style.opacity = "1";
@@ -141,6 +167,7 @@ const ProcessSection = ({
         : null;
 
       let activeStep = 1;
+      let prevActiveStep = 1;
 
       const setActiveStep = (nextStep) => {
         if (nextStep === activeStep) return;
@@ -153,26 +180,58 @@ const ProcessSection = ({
         if (currentDot) gsap.set(currentDot, { backgroundColor: "#EBFF3A" });
       };
 
-      const updateCardsFromProgress = (p) => {
-        const rawIndex = p * (totalSteps - 1);
-        const activeStep = Math.min(
-          totalSteps,
-          Math.max(1, Math.round(rawIndex + 1)),
-        );
-
-        // Active card at front (66px); others cascade in step order: 11px, 22px, etc.
+      // Full assignment: used for init and onRefresh (e.g. when resizing or mid-scroll)
+      const assignAllCardsFromStep = (step) => {
         let backPosIdx = 0;
         cardEls.forEach((card, idx) => {
-          const step = Number(card.getAttribute("data-step") ?? 0);
-          if (!step) return;
-          const isActive = step === activeStep;
+          const s = Number(card.getAttribute("data-step") ?? 0);
+          if (!s) return;
+          const isActive = s === step;
           const posIdx = isActive ? totalSteps - 1 : backPosIdx++;
-          const topVal = topPositions[Math.min(posIdx, totalSteps - 1)];
-          cardTopSetters[idx](topVal);
-          card.style.zIndex = isActive ? String(totalSteps + 1) : String(step);
+          const pos = Math.min(posIdx, totalSteps - 1);
+          const topVal = topPositions[pos] ?? 66;
+          const scaleVal = scalePositions[pos] ?? 1;
+          applyCardPosition(card, idx, topVal, scaleVal);
+          card.style.zIndex = isActive ? String(totalSteps + 1) : String(s);
           card.classList.toggle("is-active-card", isActive);
           card.style.pointerEvents = isActive ? "auto" : "none";
         });
+      };
+
+      // Swap-only: when step changes, swap prev front card with new active card
+      const swapCardsOnStepChange = (nextStep) => {
+        if (nextStep === prevActiveStep) return;
+
+        const prevCardIdx = prevActiveStep - 1;
+        const nextCardIdx = nextStep - 1;
+        const prevCard = cardEls[prevCardIdx];
+        const nextCard = cardEls[nextCardIdx];
+        if (!prevCard || !nextCard) return;
+
+        // Back list when prevActiveStep was front: [1..prev-1, prev+1..n]
+        // nextStep's index = nextStep > prevActiveStep ? nextStep - 2 : nextStep - 1
+        const newActiveBackPosIdx =
+          nextStep > prevActiveStep ? nextStep - 2 : nextStep - 1;
+        const backPos = Math.min(newActiveBackPosIdx, totalSteps - 2);
+        const frontPos = totalSteps - 1;
+
+        // Swap: prev front -> back position, new active -> front
+        const backTop = topPositions[backPos] ?? 11;
+        const backScale = scalePositions[backPos] ?? 0.86;
+        const frontTop = topPositions[frontPos] ?? 66;
+        const frontScale = scalePositions[frontPos] ?? 1;
+
+        applyCardPosition(prevCard, prevCardIdx, backTop, backScale);
+        applyCardPosition(nextCard, nextCardIdx, frontTop, frontScale);
+
+        prevCard.style.zIndex = String(prevActiveStep);
+        nextCard.style.zIndex = String(totalSteps + 1);
+        prevCard.classList.remove("is-active-card");
+        nextCard.classList.add("is-active-card");
+        prevCard.style.pointerEvents = "none";
+        nextCard.style.pointerEvents = "auto";
+
+        prevActiveStep = nextStep;
       };
 
       ScrollTrigger.create({
@@ -195,7 +254,7 @@ const ProcessSection = ({
             Math.max(1, Math.round(p * (totalSteps - 1) + 1)),
           );
           setActiveStep(nextStep);
-          updateCardsFromProgress(p);
+          swapCardsOnStepChange(nextStep);
         },
         onRefresh: (self) => {
           const p = self.progress;
@@ -204,7 +263,8 @@ const ProcessSection = ({
             Math.max(1, Math.round(p * (totalSteps - 1) + 1)),
           );
           setActiveStep(nextStep);
-          updateCardsFromProgress(p);
+          prevActiveStep = nextStep;
+          assignAllCardsFromStep(nextStep);
         },
       });
     }, sectionRef);
@@ -271,12 +331,11 @@ const ProcessSection = ({
 
           {/* Right Column - Images (centered when sticky) */}
           <div className="md:flex hidden w-[49.2%] sticky top-[50%] -translate-y-1/2 self-start items-center min-h-0">
-            <div className="relative h-[600px] isolate w-full">
+            <div className="relative h-[478px] isolate w-full">
               {steps.map((s) => (
                 <div
                   key={s.step}
-                  className="absolute stacked-image left-0 w-full transition-all duration-500 ease-out"
-                  style={{ top: "11px" }}
+                  className="absolute stacked-image left-0 w-full transition-all duration-500 ease-out origin-top"
                   data-card
                   data-step={s.step}
                 >
@@ -285,7 +344,7 @@ const ProcessSection = ({
                     alt={s.title}
                     width={600}
                     height={600}
-                    className="w-full h-auto"
+                    className="w-full h-[365px] object-cover rounded-[8px]"
                   />
                 </div>
               ))}
