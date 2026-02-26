@@ -16,7 +16,7 @@ export default function TestimonialCard({
 }) {
     return(
         <>
-            <div className="flex flex-col lg:flex-row gap-[8px] mr-[0] md:mr-[-8px] w-full ">
+            <div className="flex flex-col lg:flex-row gap-[8px] mr-[0] md:mr-[-8px] w-full relative after:content-[''] after:z-[-1] after:bg-white after:w-full after:h-1/2 after:absolute after:-bottom-[50px] after:left-0 after:rounded-[8px] lg:after:content-none">
                 {image && (
                 <Image 
                     src={image}

@@ -36,8 +36,7 @@ export default function Blog({
     Autoplay({ delay: 3000, stopOnInteraction: true }),
   );
 
-  const slideCount =
-    items.length > 0 ? Math.max(1, Math.ceil(items.length / 3)) : 3;
+  const slideCount = items.length > 0 ? items.length : 3;
   const slides = Array.from({ length: slideCount });
 
   // Update selectedIndex when carousel changes
@@ -135,57 +134,62 @@ export default function Blog({
           >
             <CarouselContent className="flex gap-4">
               {items.length > 0
-                ? slides.map((_, index) => {
-                    const start = index * 3;
-                    const slideItems = items.slice(start, start + 3);
+                ? items.map((post) => (
+                    <CarouselItem
+                      key={post.id}
+                      className="flex-[0_0_100%]"
+                    >
+                      <BlogCard
+                        Title={post.title}
+                        FeatureImage={post.image || "/assets/blog/01.png"}
+                        Date={formatDate(post.date)}
+                        Category={post.category || "News & Blog"}
+                        ReadMoreLink={
+                          post.slug ? `/blog/${post.slug}` : "/blog"
+                        }
+                      />
+                    </CarouselItem>
+                  ))
+                : slides.map((_, index) => {
+                    const fallbackData = [
+                      {
+                        title: "Amid Macro Pressures, C‑Stores Have an Opportunity to Innovate",
+                        image: "/assets/blog/01.png",
+                        date: "July 15, 2023",
+                        category: "News & Blog",
+                        slug: "/blog/amid-macro-pressures-c-stores-have-an-opportunity-to-innovate",
+                      },
+                      {
+                        title: "Nawgati Partners with Seed Group to Modernise the UAE's Fuel Retail",
+                        image: "/assets/blog/02.png",
+                        date: "December 1, 2022",
+                        category: "event",
+                        slug: "/blog/amid-macro-pressures-c-stores-have-an-opportunity-to-innovate",
+                      },
+                      {
+                        title: "Infonet Technology launches next-gen EMV Pay-at-the-Pump module",
+                        image: "/assets/blog/03.png",
+                        date: "Nov 03, 2025",
+                        category: "News & Blog",
+                        slug: "/blog/amid-macro-pressures-c-stores-have-an-opportunity-to-innovate",
+                      },
+                    ];
+                    const post = fallbackData[index];
                     return (
                       <CarouselItem
                         key={index}
-                        className="flex-[0_0_100%] space-y-4"
+                        className="flex-[0_0_100%]"
                       >
-                        {slideItems.map((post) => (
-                          <BlogCard
-                            key={post.id}
-                            Title={post.title}
-                            FeatureImage={post.image || "/assets/blog/01.png"}
-                            Date={formatDate(post.date)}
-                            Category={post.category || "News & Blog"}
-                            ReadMoreLink={
-                              post.slug ? `/blog/${post.slug}` : "/blog"
-                            }
-                          />
-                        ))}
+                        <BlogCard
+                          Title={post.title}
+                          FeatureImage={post.image}
+                          Date={post.date}
+                          Category={post.category}
+                          ReadMoreLink={post.slug}
+                        />
                       </CarouselItem>
                     );
-                  })
-                : slides.map((_, index) => (
-                    <CarouselItem
-                      key={index}
-                      className="flex-[0_0_100%] space-y-4"
-                    >
-                      <BlogCard
-                        Title="Amid Macro Pressures, C‑Stores Have an Opportunity to Innovate"
-                        FeatureImage="/assets/blog/01.png"
-                        Date="July 15, 2023"
-                        Category="News & Blog"
-                        ReadMoreLink="/blog/amid-macro-pressures-c-stores-have-an-opportunity-to-innovate"
-                      />
-                      <BlogCard
-                        Title="Nawgati Partners with Seed Group to Modernise the UAE’s Fuel Retail"
-                        FeatureImage="/assets/blog/02.png"
-                        Date="December 1, 2022"
-                        Category="event"
-                        ReadMoreLink="/blog/amid-macro-pressures-c-stores-have-an-opportunity-to-innovate"
-                      />
-                      <BlogCard
-                        Title="Infonet Technology launches next-gen EMV Pay-at-the-Pump module"
-                        FeatureImage="/assets/blog/03.png"
-                        Date="Nov 03, 2025"
-                        Category="News & Blog"
-                        ReadMoreLink="/blog/amid-macro-pressures-c-stores-have-an-opportunity-to-innovate"
-                      />
-                    </CarouselItem>
-                  ))}
+                  })}
             </CarouselContent>
           </Carousel>
 

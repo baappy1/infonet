@@ -44,6 +44,12 @@ function slugFromTitle(title) {
     .replace(/^-|-$/g, "");
 }
 
+function slugFromUrl(url) {
+  if (!url || typeof url !== "string") return null;
+  const cleaned = url.replace(/^\/industries\/?/i, "").replace(/\/$/, "").trim();
+  return cleaned || null;
+}
+
 const MoreIndustries = ({
   topTitle = DEFAULT_TOP_TITLE,
   title = DEFAULT_TITLE,
@@ -63,6 +69,7 @@ const MoreIndustries = ({
       ? moreFeatures.map((f, i) => {
           const title = f.feature_title ?? f.title ?? "";
           const matched = industryMap.get(title.toLowerCase().trim());
+          const slug = f.slug ?? slugFromUrl(f.feature_url) ?? matched?.slug ?? slugFromTitle(title);
           return {
             id: f._id ?? f.id ?? i + 1,
             title,
@@ -71,7 +78,9 @@ const MoreIndustries = ({
               f.feature_image ??
               f.image ??
               "/assets/industries/convenience.png",
-            slug: f.slug ?? matched?.slug ?? slugFromTitle(title),
+            slug,
+            // Use feature_url directly when provided (CMS link); fallback to slug for industries list
+            href: f.feature_url ?? (slug ? `/industries/${slug}` : null),
           };
         })
       : [];
@@ -97,15 +106,16 @@ const MoreIndustries = ({
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4  gap-2 mt-10 lg:mt-20 w-full">
-          {list.map((item) =>
-            item.slug ? (
-              <Link key={item.id} href={`/industries/${item.slug}`}>
+          {list.map((item) => {
+            const linkHref = item.href ?? (item.slug ? `/industries/${item.slug}` : null);
+            return linkHref ? (
+              <Link key={item.id} href={linkHref}>
                 <IndustryCard item={item} />
               </Link>
             ) : (
               <IndustryCard key={item.id} item={item} />
-            ),
-          )}
+            );
+          })}
         </div>
       </div>
     </section>

@@ -112,7 +112,7 @@ export default function InfiniteSlider({ logos, title }) {
 
         {/* Left fade gradient - Mobile */}
         <div
-          className="z-[99] absolute left-[-2px] rotate-[-180deg] top-[-3px] transform w-[48px] h-[40px] flex sm:hidden"
+          className="z-[99] absolute left-[-2px] rotate-[-180deg] top-0 bottom-0 transform w-[48px] h-full flex sm:hidden"
           style={{
             background:
               "linear-gradient(270deg, #F8F8F3 67.97%, rgba(248, 248, 243, 0) 100%)",
@@ -121,7 +121,7 @@ export default function InfiniteSlider({ logos, title }) {
 
         {/* Right fade gradient - Mobile */}
         <div
-          className="z-[99] absolute right-[-2px] top-[-3px] transform w-[48px] h-[40px] flex sm:hidden"
+          className="z-[99] absolute right-[-2px] top-0 bottom-0 transform w-[48px] h-full flex sm:hidden"
           style={{
             background:
               "linear-gradient(270deg, #F8F8F3 67.97%, rgba(248, 248, 243, 0) 100%)",

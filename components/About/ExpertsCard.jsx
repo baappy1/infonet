@@ -9,7 +9,7 @@ const ExpertsCard = ({ member }) => {
           src={member.image}
           alt={member.name}
           fill
-          className="object-center rounded-lg"
+          className="object-top object-cover rounded-lg"
         />
       </div>
       <div className="w-full">
