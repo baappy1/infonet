@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
 import Lenis from "lenis";
 
@@ -20,8 +21,24 @@ function getAnchorTarget(hash) {
 }
 
 export default function LenisProvider({ children }) {
+  const pathname = usePathname();
   const lenisRef = useRef(null);
   const rafIdRef = useRef(0);
+  const isFirstPathnameEffect = useRef(true);
+
+  useEffect(() => {
+    if (isFirstPathnameEffect.current) {
+      isFirstPathnameEffect.current = false;
+      return;
+    }
+
+    const lenis = lenisRef.current;
+    if (lenis) {
+      lenis.scrollTo(0, { immediate: true });
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname]);
 
   useEffect(() => {
     if (prefersReducedMotion()) return;

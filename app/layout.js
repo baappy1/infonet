@@ -5,6 +5,7 @@ import {
     processMenuItems,
     toLocalPath,
 } from "@/lib/graphql/queries";
+import { getHomepageSeoMetadata } from "@/lib/seo";
 import { print } from "graphql";
 import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
@@ -16,26 +17,14 @@ import LenisProvider from "./LenisProvider";
 const googleFontsHref =
   "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap";
 
-export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
-  title: "InfoNet Technology Corporation",
-  description:
-    "From 2 gas stations to convenience stores, InfoNet delivers integrated POS and fuel management systems that keep your business running smarter, faster, and more profitably.",
-  openGraph: {
-    title: "InfoNet Technology Corporation",
-    description:
-      "From 2 gas stations to convenience stores, InfoNet delivers integrated POS and fuel management systems that keep your business running smarter, faster, and more profitably.",
-    images: [{ url: "/default-og.jpg" }],
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "InfoNet Technology Corporation",
-    description:
-      "From gas 2 stations to convenience stores, InfoNet delivers integrated POS and fuel management systems that keep your business running smarter, faster, and more profitably.",
-    images: ["/default-og.jpg"],
-  },
-};
+export async function generateMetadata() {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const wp = await getHomepageSeoMetadata();
+  return {
+    metadataBase: new URL(siteUrl),
+    ...wp,
+  };
+}
 
 async function getThemeOptions() {
   try {
