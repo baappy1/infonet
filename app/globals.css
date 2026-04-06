@@ -222,6 +222,12 @@ body {
   }
 }
 
+/* Shown behind banner/hero media until image or video paints */
+.banner-media-placeholder {
+  background-color: #08090d1a;
+  background-color: lab(2.47737% 0.170298 -1.7179 / 0.1);
+}
+
 /* -------------------- */
 /* Banner Slide Animations */
 /* -------------------- */

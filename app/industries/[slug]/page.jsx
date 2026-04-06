@@ -1,5 +1,6 @@
 import IndustryBannerSkeleton from "@/components/industries/IndustryBannerSkeleton";
 import IndustryContentSkeleton from "@/components/industries/IndustryContentSkeleton";
+import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { getIndustryBySlug, getPageBySlug } from "./data";
 import IndustryPageContent from "./IndustryPageContent";
@@ -18,7 +19,8 @@ import { print } from "graphql";
 export const revalidate = 60;
 
 export async function generateMetadata({ params }) {
-  const { slug } = params;
+  const { slug } = await params;
+  if (!slug) return { title: "Industry | InfoNet" };
   const [industryFromSlug, page] = await Promise.all([
     getIndustryBySlug(slug),
     getPageBySlug(slug),
@@ -36,7 +38,8 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function IndustryDetailPage({ params }) {
-  const { slug } = params;
+  const { slug } = await params;
+  if (!slug) notFound();
   const [industryFromSlug, page] = await Promise.all([
     getIndustryBySlug(slug),
     getPageBySlug(slug),

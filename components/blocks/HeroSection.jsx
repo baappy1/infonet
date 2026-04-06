@@ -11,6 +11,15 @@ export default function HeroSection({ data }) {
   const buttonRef = useRef(null);
   const videoRef = useRef(null);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const [bannerImageReady, setBannerImageReady] = useState(false);
+
+  useEffect(() => {
+    setBannerImageReady(false);
+  }, [banner_image]);
+
+  useEffect(() => {
+    setIsVideoLoaded(false);
+  }, [video_file]);
 
   const {
     top_title = "",
@@ -57,7 +66,9 @@ export default function HeroSection({ data }) {
             playsInline
             preload="metadata"
             onLoadedData={handleVideoLoad}
-            className="w-full h-full object-cover"
+            className={`w-full h-full object-cover transition-opacity duration-500 ease-out ${
+              isVideoLoaded ? "opacity-100" : "opacity-0"
+            }`}
             poster={banner_image || undefined}
           >
             <source src={video_file} type="video/mp4" />
@@ -69,14 +80,23 @@ export default function HeroSection({ data }) {
 
     if (banner_image) {
       return (
-        <div
-          className="absolute inset-0 w-full h-full"
-          style={{
-            backgroundImage: `url(${banner_image})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
+        <>
+          <img
+            src={banner_image}
+            alt=""
+            aria-hidden
+            className="pointer-events-none absolute h-0 w-0 opacity-0"
+            onLoad={() => setBannerImageReady(true)}
+          />
+          <div
+            className={`absolute inset-0 w-full h-full bg-cover bg-center transition-opacity duration-500 ease-out ${
+              bannerImageReady ? "opacity-100" : "opacity-0"
+            }`}
+            style={{
+              backgroundImage: `url(${banner_image})`,
+            }}
+          />
+        </>
       );
     }
 
@@ -85,7 +105,7 @@ export default function HeroSection({ data }) {
 
   return (
     <div className="banner pt-[10px] pl-[10px] pr-[10px] h-screen lg:min-h-[720px]">
-      <div className="h-full rounded-[8px] relative overflow-hidden">
+      <div className="banner-media-placeholder h-full rounded-[8px] relative overflow-hidden">
         {renderBackground()}
 
         <div className="container h-full mx-auto py-[20px] lg:py-[30px] pl-[10px] pr-[10px] 2xl:pl-[0] 2xl:pr-[0] relative z-10">

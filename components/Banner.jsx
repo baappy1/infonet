@@ -25,6 +25,11 @@ export default function Banner({
   const videoRef = useRef(null);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
+  const [bannerImageReady, setBannerImageReady] = useState(false);
+
+  useEffect(() => {
+    setBannerImageReady(false);
+  }, [bannerImage]);
 
   // Auto-detect media type if not explicitly provided
   const getMediaType = () => {
@@ -51,6 +56,10 @@ export default function Banner({
     (bannerImage && bannerImage.toLowerCase().endsWith(".mp4")
       ? bannerImage
       : null);
+
+  useEffect(() => {
+    setIsVideoLoaded(false);
+  }, [videoSrc]);
 
   useEffect(() => {
     const tl = gsap.timeline();
@@ -124,7 +133,9 @@ export default function Banner({
             preload="metadata"
             onLoadedData={handleVideoLoad}
             onError={() => setVideoError(true)}
-            className="w-full h-full object-cover"
+            className={`w-full h-full object-cover transition-opacity duration-500 ease-out ${
+              isVideoLoaded ? "opacity-100" : "opacity-0"
+            }`}
             poster={bannerImage || undefined}
           >
             <source src={videoSrc} type="video/mp4" />
@@ -146,7 +157,10 @@ export default function Banner({
         fill
         priority={imagePriority}
         sizes="100vw"
-        className="absolute inset-0 object-cover"
+        onLoadingComplete={() => setBannerImageReady(true)}
+        className={`absolute inset-0 object-cover transition-opacity duration-500 ease-out ${
+          bannerImageReady ? "opacity-100" : "opacity-0"
+        }`}
       />
     );
   };
@@ -154,7 +168,7 @@ export default function Banner({
   return (
     <>
       <div className="banner pt-[10px] pl-[10px] pr-[10px] h-screen lg:min-h-[720px]">
-        <div className="h-full rounded-[8px] relative overflow-hidden">
+        <div className="banner-media-placeholder h-full rounded-[8px] relative overflow-hidden">
           {/* Background media (image or video) */}
           {renderBackground()}
 

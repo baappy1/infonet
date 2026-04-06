@@ -6,26 +6,15 @@ import {
     toLocalPath,
 } from "@/lib/graphql/queries";
 import { print } from "graphql";
-import { JetBrains_Mono, Manrope } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import LenisProvider from "./LenisProvider";
 
-// JetBrains Mono font
-const jetBrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
-  subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
-});
-
-// Manrope font
-const manrope = Manrope({
-  variable: "--font-manrope",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
+/** Runtime Google Fonts via <link> — avoids next/font build-time fetch (fails offline / blocked networks). */
+const googleFontsHref =
+  "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap";
 
 export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
@@ -136,10 +125,16 @@ export default async function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <head></head>
-      <body
-        className={`${jetBrainsMono.variable} ${manrope.variable} antialiased bg-[#F8F8F3]`}
-      >
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link href={googleFontsHref} rel="stylesheet" />
+      </head>
+      <body className="antialiased bg-[#F8F8F3]">
         <NextTopLoader height={4} color="#ebff3a" showSpinner={false} />
         <Header themeOptions={themeOptions} menuItems={menuItems} />
         <LenisProvider>{children}</LenisProvider>
