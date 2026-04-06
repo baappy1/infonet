@@ -168,7 +168,6 @@ export default async function IndustryPageContent({ slug }) {
       featuredImage: page.featuredImage,
     };
     blocks = await getPageBlocks(page.databaseId);
-    console.log(blocks);
   }
 
   if (!industry) {
@@ -185,12 +184,13 @@ export default async function IndustryPageContent({ slug }) {
             bannerTitle={service.title}
             bannerDescription={description}
             bannerImage={imageUrl}
+            imagePriority
             bannerButtonTitle="Contact Us"
             bannerButtonURL="/contact"
           />
           <div className="container mx-auto py-16 px-5">
             <Link
-              href="/Industries"
+              href="/industries"
               className="inline-flex items-center gap-2 text-sm font-medium text-[#08090D]/80 hover:text-[#08090D]"
             >
               ← Back to Industries
@@ -214,6 +214,7 @@ export default async function IndustryPageContent({ slug }) {
           bannerTitle={industry.title}
           bannerDescription={description}
           bannerImage={imageUrl}
+          imagePriority
           bannerButtonTitle="Contact Us"
           bannerButtonURL="/contact"
         />

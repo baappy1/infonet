@@ -11,6 +11,7 @@ import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
+import LenisProvider from "./LenisProvider";
 
 // JetBrains Mono font
 const jetBrainsMono = JetBrains_Mono({
@@ -141,7 +142,7 @@ export default async function RootLayout({ children }) {
       >
         <NextTopLoader height={4} color="#ebff3a" showSpinner={false} />
         <Header themeOptions={themeOptions} menuItems={menuItems} />
-        {children}
+        <LenisProvider>{children}</LenisProvider>
         <Footer footerMenus={footerMenus} themeOptions={themeOptions} />
       </body>
     </html>

@@ -29,6 +29,12 @@ git push origin main
 3. Click **Save**
 4. **Redeploy** (or wait for next deployment)
 
+### 3.1 Also configure WordPress (wp-config.php)
+Set these in WordPress `wp-config.php` (staging/prod):
+
+- `NOTIONHIVE_REVALIDATE_SECRET` must match Vercel `REVALIDATE_SECRET`
+- `NOTIONHIVE_NEXTJS_URL` should be `https://infonet-three.vercel.app` (or your production domain)
+
 ### 4. Verify Route is Deployed
 After deployment, test the route directly:
 
@@ -37,6 +43,15 @@ After deployment, test the route directly:
 # Your WordPress: https://staging.hellonotionhive.com/wordpress/infonet/
 
 curl -X POST "https://infonet-three.vercel.app/api/revalidate?secret=12345678&path=/blog&tag=cms"
+```
+
+Also test the CMS webhook route (the one WordPress calls):
+
+```bash
+curl -X POST "https://infonet-three.vercel.app/webhooks/cms-event?secret=12345678" ^
+  -H "Content-Type: application/json" ^
+  -H "x-revalidate-secret: 12345678" ^
+  -d "{\"postType\":\"page\",\"slug\":\"home\"}"
 ```
 
 **Expected Response** (if working):

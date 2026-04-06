@@ -4,8 +4,8 @@ import BlogContent from "@/components/NewsAndBlog/BlogContent";
 import BlogDetails from "@/components/NewsAndBlog/BlogDetails";
 import SimilarInsights from "@/components/NewsAndBlog/SimilarInsights";
 import { fetchGraphQL } from "@/lib/graphql";
-import { GET_ALL_POSTS, GET_POST_BY_SLUG } from "@/lib/graphql/queries";
-import { getPostSeoMetadata } from "@/lib/seo";
+import { GET_ALL_POSTS, GET_POST_BY_SLUG, GET_POST_SEO_BY_ID } from "@/lib/graphql/queries";
+import { extractYoastSchemaRaw, getPostSeoMetadata, getPostSeoMetadataById } from "@/lib/seo";
 import { print } from "graphql";
 import { cache, Suspense } from "react";
 
@@ -60,15 +60,30 @@ export async function generateMetadata({ params }) {
   const { slug } = await params;
   if (!slug) return {};
   const post = await getPostBySlug(slug);
-  return getPostSeoMetadata(post);
+  const databaseId = post?.databaseId;
+  if (!databaseId) return getPostSeoMetadata(post);
+  return getPostSeoMetadataById(databaseId, `/blog/${slug}`);
 }
 
 export default async function BlogDetailsPage({ params }) {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
+  const databaseId = post?.databaseId;
+  const seoData = databaseId
+    ? await fetchGraphQL(print(GET_POST_SEO_BY_ID), { postId: Number(databaseId) }).catch(
+        () => null,
+      )
+    : null;
+  const schemaRaw = extractYoastSchemaRaw(seoData?.postBy?.seo);
 
   return (
     <>
+      {schemaRaw ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: schemaRaw }}
+        />
+      ) : null}
       <BlogDetails
         post={post}
         slug={slug}

@@ -1,6 +1,7 @@
 "use client";
 import { gsap } from "gsap";
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 export default function Banner({
@@ -14,6 +15,7 @@ export default function Banner({
   bannerButtonTitle2, // Add these new props
   bannerButtonURL2,
   mediaType, // optional: 'image' or 'video'
+  imagePriority = false,
 }) {
   const topTitleRef = useRef(null);
   const titleRef = useRef(null);
@@ -138,11 +140,13 @@ export default function Banner({
       return <div className="absolute inset-0 w-full h-full bg-[#08090D]/80" />;
     }
     return (
-      <img
+      <Image
         src={bannerImage}
         alt=""
-        loading="lazy"
-        className="absolute inset-0 w-full h-full object-cover"
+        fill
+        priority={imagePriority}
+        sizes="100vw"
+        className="absolute inset-0 object-cover"
       />
     );
   };
@@ -154,10 +158,10 @@ export default function Banner({
           {/* Background media (image or video) */}
           {renderBackground()}
 
-          <div className="container h-full mx-auto pb-[10px] lg:pb-[120px] pl-[10px] pr-[10px] 2xl:pl-[0] 2xl:pr-[0] relative z-10">
-            <div className="flex flex-wrap items-end h-full">
-              <div className="w-full flex flex-col">
-                <div className="p-[20px] lg:p-[30px] rounded-[8px] bg-[#08090D]/10 backdrop-blur-[30px] w-full xl:w-[620px]">
+          <div className="container h-full mx-auto py-[20px] lg:py-[30px] pl-[10px] pr-[10px] 2xl:pl-[0] 2xl:pr-[0] relative z-10">
+            <div className="flex flex-wrap items-center h-full">
+              <div className="w-full flex flex-col items-start">
+                <div className="p-[20px] lg:p-[30px] rounded-[8px] bg-[#08090D]/10 backdrop-blur-[30px] w-full xl:w-[620px] text-left">
                   {bannerTopTitle && (
                     <div
                       ref={topTitleRef}
@@ -185,7 +189,7 @@ export default function Banner({
                   )}
 
                   {/* Buttons container - wraps both buttons */}
-                  <div className="flex flex-wrap gap-5">
+                  <div className="flex flex-wrap gap-5 justify-start">
                     {bannerButtonURL && (bannerButtonURL.startsWith("#") ? (
                       <a
                         ref={buttonRef}

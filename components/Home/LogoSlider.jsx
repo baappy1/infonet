@@ -1,8 +1,7 @@
 "use client";
 
-import gsap from "gsap";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import LogoLoop from "../ui/logo-loop";
 
 const FALLBACK_LOGOS = [
   {
@@ -32,57 +31,7 @@ const FALLBACK_LOGOS = [
 ];
 
 export default function InfiniteSlider({ logos, title }) {
-  const wrapperRef = useRef(null);
-  const trackRef = useRef(null);
-  const animationRef = useRef(null);
-
-  useEffect(() => {
-    const track = trackRef.current;
-    const wrapper = wrapperRef.current;
-
-    if (!track || !wrapper) return;
-
-    const items = Array.from(track.children);
-    let trackWidth = track.scrollWidth;
-    const wrapperWidth = wrapper.offsetWidth;
-
-    // Clear any existing clones first
-    const clones = track.querySelectorAll('[data-clone="true"]');
-    clones.forEach((clone) => clone.remove());
-
-    // Duplicate items for seamless infinite scroll
-    // We need enough clones to fill at least 2x the wrapper width
-    const neededClones = Math.ceil((wrapperWidth * 2) / trackWidth) + 1;
-
-    for (let i = 0; i < neededClones; i++) {
-      items.forEach((item, index) => {
-        const clone = item.cloneNode(true);
-        clone.setAttribute("data-clone", "true");
-        clone.setAttribute("data-index", `${i}-${index}`);
-        track.appendChild(clone);
-      });
-    }
-
-    trackWidth = track.scrollWidth;
-
-    // Create GSAP animation
-    animationRef.current = gsap.to(track, {
-      x: `-=${trackWidth / 2}`,
-      duration: 140,
-      ease: "linear",
-      repeat: -1,
-      modifiers: {
-        x: gsap.utils.unitize((x) => parseFloat(x) % (trackWidth / 2)),
-      },
-    });
-
-    // Cleanup function
-    return () => {
-      if (animationRef.current) {
-        animationRef.current.kill();
-      }
-    };
-  }, [logos?.length]);
+  const items = logos && logos.length ? logos : FALLBACK_LOGOS;
 
   return (
     <div className="pt-[50px] lg:pt-[100px] pb:[45px] lg:pb-[120px] bg-[#F8F8F3] overflow-hidden">
@@ -129,26 +78,30 @@ export default function InfiniteSlider({ logos, title }) {
         ></div>
 
         <div
-          ref={wrapperRef}
           className="w-full overflow-hidden pb-[20px] lg:pb-[50px] border-b border-dashed border-b-[#08090D33]"
         >
-          <div ref={trackRef} className="flex gap-[34px] lg:gap-[54px] w-max">
-            {(logos && logos.length ? logos : FALLBACK_LOGOS).map((item) => (
+          <LogoLoop
+            className="infonet-logoloop"
+            logos={items}
+            speed={40}
+            pauseOnHover
+            scaleOnHover={false}
+            fadeOut={false}
+            renderItem={(item) => (
               <div
-                key={item.id}
-                className="w-auto h-[48px] flex items-center justify-center flex-shrink-0"
+                className="w-auto h-[48px] lg:h-[50px] flex items-center justify-center flex-shrink-0"
                 data-original="true"
               >
                 <Image
-                  width={400}
-                  height={48}
-                  className="w-auto h-full object-contain"
+                  width={280}
+                  height={60}
+                  className="w-auto max-h-full h-full object-contain"
                   src={item.icon}
                   alt={item.title || `Partner logo ${item.id}`}
                 />
               </div>
-            ))}
-          </div>
+            )}
+          />
         </div>
       </div>
     </div>

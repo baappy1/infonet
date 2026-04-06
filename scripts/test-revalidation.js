@@ -61,6 +61,59 @@ async function testRevalidation(path = '/', tag = 'cms') {
   }
 }
 
+async function testCmsWebhook(postType = 'page', slug = 'home') {
+  const url = `${FRONTEND_URL}/webhooks/cms-event?secret=${REVALIDATE_SECRET}&postType=${encodeURIComponent(postType)}&slug=${encodeURIComponent(slug)}`;
+
+  console.log('\n🧪 Testing CMS Webhook Endpoint...');
+  console.log(`📍 URL: ${url}`);
+  console.log(`🔑 Secret: ${REVALIDATE_SECRET}`);
+  console.log(`🧩 postType: ${postType}`);
+  console.log(`🏷️  slug: ${slug}\n`);
+
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        // Match WordPress behavior: secret also in header
+        'x-revalidate-secret': REVALIDATE_SECRET,
+      },
+      body: JSON.stringify({ postType, slug }),
+    });
+
+    const responseText = await response.text();
+    let data;
+
+    try {
+      data = JSON.parse(responseText);
+    } catch (parseError) {
+      console.log('❌ ERROR! Response is not valid JSON.');
+      console.log('📊 Response Status:', response.status);
+      console.log('📊 Response Headers:', Object.fromEntries(response.headers.entries()));
+      console.log('📊 Response Text (first 500 chars):', responseText.substring(0, 500));
+      return false;
+    }
+
+    if (response.ok) {
+      console.log('✅ SUCCESS! CMS webhook endpoint is working.');
+      console.log('📊 Response:', JSON.stringify(data, null, 2));
+      return true;
+    } else {
+      console.log('❌ FAILED! CMS webhook endpoint returned an error.');
+      console.log('📊 Response:', JSON.stringify(data, null, 2));
+      console.log(`🔢 Status: ${response.status}`);
+      if (response.status === 401) {
+        console.log('\n💡 Status 401 means: REVALIDATE_SECRET doesn\'t match or is missing on Vercel');
+      }
+      return false;
+    }
+  } catch (error) {
+    console.log('❌ ERROR! Could not reach CMS webhook endpoint.');
+    console.log('📊 Error:', error.message);
+    return false;
+  }
+}
+
 async function testGraphQL() {
   const GRAPHQL_URL = process.env.NEXT_PUBLIC_WORDPRESS_API_URL 
     ? `${process.env.NEXT_PUBLIC_WORDPRESS_API_URL}/graphql`
@@ -116,14 +169,16 @@ async function runTests() {
   console.log('='.repeat(60));
 
   const revalidateResult = await testRevalidation('/blog', 'cms');
+  const cmsWebhookResult = await testCmsWebhook('page', 'home');
   const graphqlResult = await testGraphQL();
 
   console.log('\n' + '='.repeat(60));
   console.log('\n📋 Test Summary:');
   console.log(`   Revalidation Endpoint: ${revalidateResult ? '✅ PASS' : '❌ FAIL'}`);
+  console.log(`   CMS Webhook Endpoint: ${cmsWebhookResult ? '✅ PASS' : '❌ FAIL'}`);
   console.log(`   GraphQL Endpoint: ${graphqlResult ? '✅ PASS' : '❌ FAIL'}`);
 
-  if (revalidateResult && graphqlResult) {
+  if (revalidateResult && cmsWebhookResult && graphqlResult) {
     console.log('\n🎉 All tests passed! Your setup looks good.');
     console.log('\n💡 Next Steps:');
     console.log('   1. Make sure REVALIDATE_SECRET is set in Vercel environment variables');

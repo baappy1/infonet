@@ -4,9 +4,10 @@ import { fetchGraphQL } from "@/lib/graphql";
 import {
   GET_HOMEPAGE_ENTITIES,
   GET_SOLUTION_BY_SLUG,
+  GET_SOLUTION_SEO_BY_ID,
   GET_SOLUTIONS_BY_SLUG,
 } from "@/lib/graphql/queries";
-import { getSolutionSeoMetadata } from "@/lib/seo";
+import { extractYoastSchemaRaw, getSolutionSeoMetadataById } from "@/lib/seo";
 import { print } from "graphql";
 import { Suspense } from "react";
 import SolutionPageContent from "./SolutionPageContent";
@@ -79,27 +80,59 @@ async function getSolutionEntities(blocks) {
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   if (!slug) return {};
-  return getSolutionSeoMetadata(slug);
+  const [slugResult, solutionsResult] = await Promise.all([
+    fetchGraphQL(print(GET_SOLUTION_BY_SLUG), { slug }).catch(() => null),
+    fetchGraphQL(print(GET_SOLUTIONS_BY_SLUG), { slug }).catch(() => null),
+  ]);
+  const databaseId =
+    slugResult?.solutionBy?.databaseId ??
+    solutionsResult?.solutions?.nodes?.[0]?.databaseId ??
+    null;
+  if (!databaseId) return {};
+  return getSolutionSeoMetadataById(databaseId, `/solution/${slug}`);
 }
 
 export default async function SolutionDetailsPage({ params }) {
   const { slug } = await params;
   if (!slug) return null;
 
+  const [slugResult, solutionsResult] = await Promise.all([
+    fetchGraphQL(print(GET_SOLUTION_BY_SLUG), { slug }).catch(() => null),
+    fetchGraphQL(print(GET_SOLUTIONS_BY_SLUG), { slug }).catch(() => null),
+  ]);
+  const databaseId =
+    slugResult?.solutionBy?.databaseId ??
+    solutionsResult?.solutions?.nodes?.[0]?.databaseId ??
+    null;
+  const seoData = databaseId
+    ? await fetchGraphQL(print(GET_SOLUTION_SEO_BY_ID), {
+        solutionId: Number(databaseId),
+      }).catch(() => null)
+    : null;
+  const schemaRaw = extractYoastSchemaRaw(seoData?.solutionBy?.seo);
+
   return (
-    <Suspense
-      fallback={
-        <>
-          <IndustryBannerSkeleton />
-          <IndustryContentSkeleton />
-        </>
-      }
-    >
-      <SolutionPageContent
-        slug={slug}
-        getSolutionBlocks={getSolutionBlocks}
-        getSolutionEntities={getSolutionEntities}
-      />
-    </Suspense>
+    <>
+      {schemaRaw ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: schemaRaw }}
+        />
+      ) : null}
+      <Suspense
+        fallback={
+          <>
+            <IndustryBannerSkeleton />
+            <IndustryContentSkeleton />
+          </>
+        }
+      >
+        <SolutionPageContent
+          slug={slug}
+          getSolutionBlocks={getSolutionBlocks}
+          getSolutionEntities={getSolutionEntities}
+        />
+      </Suspense>
+    </>
   );
 }

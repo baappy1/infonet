@@ -3,44 +3,78 @@ import IndustryContentSkeleton from "@/components/industries/IndustryContentSkel
 import { Suspense } from "react";
 import { getIndustryBySlug, getPageBySlug } from "./data";
 import IndustryPageContent from "./IndustryPageContent";
+import { fetchGraphQL } from "@/lib/graphql";
+import {
+  GET_INDUSTRIE_SEO_BY_ID,
+  GET_PAGE_SEO_BY_ID,
+} from "@/lib/graphql/queries";
+import {
+  extractYoastSchemaRaw,
+  getIndustrieSeoMetadataById,
+  getPageSeoMetadataById,
+} from "@/lib/seo";
+import { print } from "graphql";
 
 export const revalidate = 60;
 
 export async function generateMetadata({ params }) {
-  const { slug } = await params;
+  const { slug } = params;
   const [industryFromSlug, page] = await Promise.all([
     getIndustryBySlug(slug),
     getPageBySlug(slug),
   ]);
-  const industry =
-    industryFromSlug ||
-    (page ? { title: page.title, excerpt: page.excerpt } : null);
-  if (!industry) return { title: "Industry | InfoNet" };
-  const rawDesc = industry.excerpt || "";
-  const description = (
-    typeof rawDesc === "string"
-      ? rawDesc.replace(/<[^>]+>/g, "").trim()
-      : ""
-  ).slice(0, 160);
-  return {
-    title: `${industry.title} | InfoNet`,
-    description,
-  };
+  if (industryFromSlug?.databaseId) {
+    return getIndustrieSeoMetadataById(
+      industryFromSlug.databaseId,
+      `/industries/${slug}`,
+    );
+  }
+  if (page?.databaseId) {
+    return getPageSeoMetadataById(page.databaseId, `/industries/${slug}`);
+  }
+  return { title: "Industry | InfoNet" };
 }
 
 export default async function IndustryDetailPage({ params }) {
-  const { slug } = await params;
+  const { slug } = params;
+  const [industryFromSlug, page] = await Promise.all([
+    getIndustryBySlug(slug),
+    getPageBySlug(slug),
+  ]);
+
+  const industrieId = industryFromSlug?.databaseId ?? null;
+  const pageId = page?.databaseId ?? null;
+  const seoData = industrieId
+    ? await fetchGraphQL(print(GET_INDUSTRIE_SEO_BY_ID), {
+        industrieId: Number(industrieId),
+      }).catch(() => null)
+    : pageId
+      ? await fetchGraphQL(print(GET_PAGE_SEO_BY_ID), {
+          pageId: Number(pageId),
+        }).catch(() => null)
+      : null;
+  const schemaRaw = extractYoastSchemaRaw(
+    seoData?.industrieBy?.seo ?? seoData?.pageBy?.seo,
+  );
 
   return (
-    <Suspense
-      fallback={
-        <>
-          <IndustryBannerSkeleton />
-          <IndustryContentSkeleton />
-        </>
-      }
-    >
-      <IndustryPageContent slug={slug} />
-    </Suspense>
+    <>
+      {schemaRaw ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: schemaRaw }}
+        />
+      ) : null}
+      <Suspense
+        fallback={
+          <>
+            <IndustryBannerSkeleton />
+            <IndustryContentSkeleton />
+          </>
+        }
+      >
+        <IndustryPageContent slug={slug} />
+      </Suspense>
+    </>
   );
 }

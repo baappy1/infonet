@@ -119,7 +119,7 @@ export default function IndustryServe({ header, items }) {
                 FeatureImage={item.image}
                 title={item.title}
                 description={item.description}
-                slug={item.slug}
+                slug={item?.slug ?? item?.uri ?? item?.link ?? item?.url}
               />
             </motion.div>
           ))}
@@ -144,7 +144,7 @@ export default function IndustryServe({ header, items }) {
                 FeatureImage={item.image}
                 title={item.title}
                 description={item.description}
-                slug={item.slug}
+                slug={item?.slug ?? item?.uri ?? item?.link ?? item?.url}
               />
             </motion.div>
           ))}

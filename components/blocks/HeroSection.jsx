@@ -88,10 +88,10 @@ export default function HeroSection({ data }) {
       <div className="h-full rounded-[8px] relative overflow-hidden">
         {renderBackground()}
 
-        <div className="container h-full mx-auto pb-[10px] lg:pb-[120px] pl-[10px] pr-[10px] 2xl:pl-[0] 2xl:pr-[0] relative z-10">
-          <div className="flex flex-wrap items-end h-full">
-            <div className="w-full flex flex-col">
-              <div className="p-[20px] lg:p-[30px] rounded-[8px] bg-[#08090D]/10 backdrop-blur-[30px] w-full xl:w-[620px]">
+        <div className="container h-full mx-auto py-[20px] lg:py-[30px] pl-[10px] pr-[10px] 2xl:pl-[0] 2xl:pr-[0] relative z-10">
+          <div className="flex flex-wrap items-center h-full">
+            <div className="w-full flex flex-col items-start">
+              <div className="p-[20px] lg:p-[30px] rounded-[8px] bg-[#08090D]/10 backdrop-blur-[30px] w-full xl:w-[620px] text-left">
                 {top_title && (
                   <div
                     ref={topTitleRef}
@@ -119,7 +119,7 @@ export default function HeroSection({ data }) {
                 )}
 
                 {hero_buttons && hero_buttons.length > 0 && (
-                  <div ref={buttonRef} className="flex flex-wrap gap-3">
+                  <div ref={buttonRef} className="flex flex-wrap gap-3 justify-start">
                     {hero_buttons.map((btn, index) => (
                       <Link
                         key={btn._id || index}
