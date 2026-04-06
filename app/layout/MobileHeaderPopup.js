@@ -1,21 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 export default function MobileHeaderPopup({ setActive, activeMenu, themeOptions = {}, menuItems = [] }) {
   const logo = themeOptions?.companyLogo;
   const letsTalkTitle = themeOptions?.letstalkTitle || "get in touch";
   const letsTalkUrl = themeOptions?.letstalkUrl || "/contact";
   const [openMenu, setOpenMenu] = useState(null);
-  const dropdownRefs = useRef([]);
 
   const handleClick = (index) => {
     setOpenMenu(openMenu === index ? null : index);
-  };
-
-  const getHeight = (index) => {
-    return dropdownRefs.current[index]?.scrollHeight ?? 0;
   };
 
   const hidePopupMenu = () => setActive(false);
@@ -64,9 +59,8 @@ export default function MobileHeaderPopup({ setActive, activeMenu, themeOptions 
                     <span className="absolute bottom-[-3px] left-0 w-0 h-[2px] bg-[#EBFF3A] group-hover:w-full transition-all duration-300"></span>
                   </button>
                   <div
-                    ref={(el) => (dropdownRefs.current[i] = el)}
                     style={{
-                      maxHeight: openMenu === i ? getHeight(i) + "px" : "0px",
+                      maxHeight: openMenu === i ? "600px" : "0px",
                       overflow: "hidden",
                       transition: "max-height 0.3s ease",
                     }}
