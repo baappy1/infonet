@@ -83,29 +83,31 @@ export default function About({
                 <p className="font-medium font-manrope text-sm leading-5 lg:text-base  lg:leading-5.5">
                   {resolvedClientSays}
                 </p>
-                <div className="flex mt-[30px] lg:mt-[40px] gap-[16px] items-center">
-                  {clientImage ? (
-                    <Image
-                      width={60}
-                      height={80}
-                      className="h-[70px] lg:h-[80px] object-cover rounded-[30px]"
-                      src={clientImage}
-                      alt="Testimonial author"
-                    />
-                  ) : null}
-                  <div>
-                    {clientName ? (
-                      <h3 className="mb-[8px] text-[14px] lg:text-[16px] font-bold leading-[18px] lg:leading-[22px] uppercase">
-                        {clientName}
-                      </h3>
+                {(clientImage || clientName || clientDesignation) && (
+                  <div className="flex mt-[30px] lg:mt-[40px] gap-[16px] items-center">
+                    {clientImage ? (
+                      <Image
+                        width={60}
+                        height={80}
+                        className="h-[70px] lg:h-[80px] object-cover rounded-[30px]"
+                        src={clientImage}
+                        alt="Testimonial author"
+                      />
                     ) : null}
-                    {clientDesignation ? (
-                      <p className="text-[12px] uppercase leading-[12px]">
-                        {clientDesignation}
-                      </p>
-                    ) : null}
+                    <div>
+                      {clientName ? (
+                        <h3 className="mb-[8px] text-[14px] lg:text-[16px] font-bold leading-[18px] lg:leading-[22px] uppercase">
+                          {clientName}
+                        </h3>
+                      ) : null}
+                      {clientDesignation ? (
+                        <p className="text-[12px] uppercase leading-[12px]">
+                          {clientDesignation}
+                        </p>
+                      ) : null}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
             <div className="w-full aspect-671/536 relative  ">
