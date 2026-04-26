@@ -25,11 +25,6 @@ export default function About({
   const resolvedClientSays =
     clientSays ||
     "“The integration between our POS and fuel systems is seamless now. InfoNet helped us eliminate downtime and keep our customers happy even during high-traffic hours.”";
-  const resolvedClientImage =
-    clientImage ||
-    "https://staging.hellonotionhive.com/wordpress/infonet/wp-content/uploads/2026/01/6eb5238afae3694f2a7851f6cbbc1ed0566b53e0.jpg";
-  const resolvedClientName = clientName || "Lisa R.";
-  const resolvedClientDesignation = clientDesignation || "Operations Manager";
   const resolvedFeatureImage =
     featureImage ||
     "https://staging.hellonotionhive.com/wordpress/infonet/wp-content/uploads/2026/01/about.png";
@@ -89,20 +84,26 @@ export default function About({
                   {resolvedClientSays}
                 </p>
                 <div className="flex mt-[30px] lg:mt-[40px] gap-[16px] items-center">
-                  <Image
-                    width={60}
-                    height={80}
-                    className="h-[70px] lg:h-[80px] object-cover rounded-[30px]"
-                    src={resolvedClientImage}
-                    alt="Testimonial author"
-                  />
+                  {clientImage ? (
+                    <Image
+                      width={60}
+                      height={80}
+                      className="h-[70px] lg:h-[80px] object-cover rounded-[30px]"
+                      src={clientImage}
+                      alt="Testimonial author"
+                    />
+                  ) : null}
                   <div>
-                    <h3 className="mb-[8px] text-[14px] lg:text-[16px] font-bold leading-[18px] lg:leading-[22px] uppercase">
-                      {resolvedClientName}
-                    </h3>
-                    <p className="text-[12px] uppercase leading-[12px]">
-                      {resolvedClientDesignation}
-                    </p>
+                    {clientName ? (
+                      <h3 className="mb-[8px] text-[14px] lg:text-[16px] font-bold leading-[18px] lg:leading-[22px] uppercase">
+                        {clientName}
+                      </h3>
+                    ) : null}
+                    {clientDesignation ? (
+                      <p className="text-[12px] uppercase leading-[12px]">
+                        {clientDesignation}
+                      </p>
+                    ) : null}
                   </div>
                 </div>
               </div>

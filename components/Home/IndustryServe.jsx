@@ -3,51 +3,6 @@
 import { motion, useReducedMotion } from "motion/react";
 import ServeCard from "./ServeCard";
 
-const Services = [
-  {
-    id: 1,
-    image: "/assets/service/01.png",
-    title: "Retail Gas Stations",
-    description:
-      "Optimize every pump and every transaction with InfoNet’s integrated solutions. Reduce transaction times, increase pricing accuracy, and simplify inventory tracking.",
-  },
-  {
-    id: 2,
-    image: "/assets/service/02.png",
-    title: "Convenience Stores",
-    description:
-      "Take control of your store operations from inventory to checkout. Enhance sales, reduce shrink, streamline staff workflows, and deliver a faster, smoother experience.",
-  },
-  {
-    id: 3,
-    image: "/assets/service/03.png",
-    title: "Unattended Retail Fuel Sites",
-    description:
-      "Manage self-serve fueling operations reliably and securely 24/7. Monitor transactions in real-time, ensure EMV compliance, and handle unattended sites with ease.",
-  },
-  {
-    id: 4,
-    image: "/assets/service/04.png",
-    title: "Fleet Fueling",
-    description:
-      "Seamlessly manage fleet card transactions for your company or customers. Accept all major fleet cards, track fuel usage, control spending, and generate accurate reporting.",
-  },
-  {
-    id: 5,
-    image: "/assets/service/05.png",
-    title: "Private Fleet",
-    description:
-      "Seamlessly manage fleet card transactions for your company or customers. Accept all major fleet cards, track fuel usage, control spending, and generate accurate reporting.",
-  },
-  {
-    id: 6,
-    image: "/assets/service/06.png",
-    title: "First Nations Retail",
-    description:
-      "Simplify the management of First Nation tax-exempt sales for fuel and tobacco. Track exemptions accurately, ensure compliance, and generate reports effortlessly.",
-  },
-];
-
 const containerVariants = {
   hidden: {},
   visible: (isMobile) => ({
@@ -66,31 +21,20 @@ const itemVariants = {
   },
 };
 
-const TARGET_COUNT = 6;
-
 export default function IndustryServe({ header, items }) {
   const shouldReduce = useReducedMotion();
-  // Use items from WP when available; fallback to static Services when empty
-  const fromWp = items && items.length ? items : [];
-  // Pad to 6 when we have fewer than 6 (avoid duplicates by title)
-  const existingTitles = new Set(
-    fromWp.map((i) => (i?.title || "").toLowerCase()),
-  );
-  const toAdd = Services.filter(
-    (s) => !existingTitles.has((s?.title || "").toLowerCase()),
-  ).slice(0, Math.max(0, TARGET_COUNT - fromWp.length));
-  const services = fromWp.length > 0 ? [...fromWp, ...toAdd] : Services;
+  const services = Array.isArray(items) ? items : [];
 
   return (
     <div className="2xl:pt-[24.15vh] 2xl:pb-[24vh] lg:pt-[120px] lg:pb-[120px] pt-[90px] pb-[90px] bg-white">
-      <div className="container lg:pr-[0] lg:pl-[0] pr-[20px] pl-[20px]">
+      <div className="container lg:pr-0 lg:pl-0 pr-[20px] pl-[20px]">
         {/* Header */}
         <div className="flex flex-col lg:flex-row justify-between items-end">
           <div className="w-full lg:w-[41.7%]">
             <div className="top-title mb-[20px]">
               {header?.topTitle || "[ industries we serve ]"}
             </div>
-            <div className="font-manrope mb-[20px] lg:mb-[0px] text-[28px] leading-[30px] lg:text-[40px] lg:leading-[50px]">
+            <div className="font-manrope mb-[20px] lg:mb-0 text-[28px] leading-[30px] lg:text-[40px] lg:leading-[50px]">
               {header?.title || "Industry-Specific Solutions You Can Trust"}
             </div>
           </div>
@@ -109,9 +53,9 @@ export default function IndustryServe({ header, items }) {
           custom={false} // desktop = not mobile
           viewport={{ once: true, amount: 0.4 }}
         >
-          {services.map((item) => (
+          {services.map((item, index) => (
             <motion.div
-              key={item.id}
+              key={String(item?.id ?? item?.slug ?? index)}
               variants={shouldReduce ? {} : itemVariants}
               className="w-[calc((100%-132px)/3)] flex flex-col"
             >
@@ -134,9 +78,9 @@ export default function IndustryServe({ header, items }) {
           custom={true} // mobile
           viewport={{ once: true, amount: 0.05 }} // triggers early
         >
-          {services.map((item) => (
+          {services.map((item, index) => (
             <motion.div
-              key={item.id}
+              key={String(item?.id ?? item?.slug ?? index)}
               variants={shouldReduce ? {} : itemVariants}
               className="w-full sm:w-[calc((100%-88px)/2)] flex flex-col"
             >

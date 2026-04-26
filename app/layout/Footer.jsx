@@ -46,50 +46,8 @@ const AccordionArrow = () => (
   </svg>
 );
 
-const FOOTER_FALLBACKS = {
-  industries: [
-    { label: "Retail Gas Stations", url: "#" },
-    { label: "Convenience Stores", url: "#" },
-    { label: "Unattended Fuel Sites", url: "#" },
-    { label: "Fleet Fueling", url: "#" },
-    { label: "First Nations Retail", url: "#" },
-  ],
-  solutions: [
-    { label: "C-Store Commander", url: "#" },
-    { label: "Fuel Commander", url: "#" },
-    { label: "Custom Software", url: "#" },
-  ],
-  services: [
-    { label: "Installation & Training", url: "#" },
-    { label: "Hardware Sourcing", url: "#" },
-  ],
-  insights: [
-    { label: "News & Blog", url: "#" },
-    { label: "Events", url: "#" },
-    { label: "Resources", url: "#" },
-  ],
-  company: [
-    { label: "About Us", url: "#" },
-    { label: "Leadership Team", url: "#" },
-    { label: "Affiliations & Partners", url: "#" },
-    { label: "Careers", url: "#" },
-  ],
-  contact: [
-    { label: "Contact", url: "#" },
-    { label: "Book a Demo", url: "#" },
-    { label: "Faq", url: "#" },
-  ],
-  social: [
-    { label: "X (Twitter)", url: "#" },
-    { label: "LinkedIn", url: "#" },
-    { label: "Facebook", url: "#" },
-    { label: "Instagram", url: "#" },
-    { label: "YouTube", url: "#" },
-  ],
-};
-
-function useItems(items, key) {
-  return items?.length > 0 ? items : FOOTER_FALLBACKS[key] || [];
+function footerMenuItems(items) {
+  return Array.isArray(items) && items.length > 0 ? items : [];
 }
 
 export default function Footer({ footerMenus = {}, themeOptions = {} }) {
@@ -108,13 +66,13 @@ export default function Footer({ footerMenus = {}, themeOptions = {} }) {
     themeOptions?.footerButtonTitleTwo || "get in touch";
   const footerButtonUrlTwo = themeOptions?.footerButtonUrlTwo || "/contact";
 
-  const industriesItems = useItems(footerMenus.industries, "industries");
-  const solutionsItems = useItems(footerMenus.solutions, "solutions");
-  const servicesItems = useItems(footerMenus.services, "services");
-  const insightsItems = useItems(footerMenus.insights, "insights");
-  const companyItems = useItems(footerMenus.company, "company");
-  const contactItems = useItems(footerMenus.contact, "contact");
-  const socialItems = useItems(footerMenus.social, "social");
+  const industriesItems = footerMenuItems(footerMenus.industries);
+  const solutionsItems = footerMenuItems(footerMenus.solutions);
+  const servicesItems = footerMenuItems(footerMenus.services);
+  const insightsItems = footerMenuItems(footerMenus.insights);
+  const companyItems = footerMenuItems(footerMenus.company);
+  const contactItems = footerMenuItems(footerMenus.contact);
+  const socialItems = footerMenuItems(footerMenus.social);
 
   return (
     <>
