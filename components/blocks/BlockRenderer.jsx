@@ -65,6 +65,25 @@ function getBlockName(block, data) {
   return null;
 }
 
+function getImageUrl(img) {
+  if (!img) return null;
+  if (typeof img === "string") return img;
+
+  // Common WPGraphQL / Carbon Fields / WP media shapes
+  return (
+    img.url ||
+    img.sourceUrl ||
+    img.mediaItemUrl ||
+    img?.node?.mediaItemUrl ||
+    img?.node?.sourceUrl ||
+    img?.image?.url ||
+    img?.image?.sourceUrl ||
+    img?.value?.url ||
+    img?.value?.sourceUrl ||
+    null
+  );
+}
+
 export default function BlockRenderer({ blocks, entities = {}, pageType }) {
   if (!blocks || !Array.isArray(blocks)) {
     return null;
@@ -755,10 +774,7 @@ export default function BlockRenderer({ blocks, entities = {}, pageType }) {
         if (name === "carbon-fields/service-more-industries") {
           const serviceIndustries = entities.serviceIndustries || [];
           const moreFeatureImage = data.more_feature_image;
-          const imageUrl =
-            typeof moreFeatureImage === "string"
-              ? moreFeatureImage
-              : moreFeatureImage?.url || moreFeatureImage?.sourceUrl || moreFeatureImage?.mediaItemUrl;
+          const imageUrl = getImageUrl(moreFeatureImage);
           return (
             <ServiceMoreServices
               key={`service-more-industries-${index}`}
@@ -767,7 +783,7 @@ export default function BlockRenderer({ blocks, entities = {}, pageType }) {
               shortDescription={data.short_description}
               moreSolutionTitle={data.more_solution_title}
               moreSolutionDes={data.more_solution_des}
-              moreFeatureImage={imageUrl || moreFeatureImage}
+              moreFeatureImage={imageUrl}
               moreSolutionUrl={data.more_solution_url}
               industries={serviceIndustries}
             />

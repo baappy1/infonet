@@ -16,6 +16,10 @@ export default function TestimonialCard({
   const resolvedContent =
     item?.testimonialDescription ?? item?.content ?? content;
   const resolvedImage = item?.testimonialImage ?? item?.image ?? image;
+  const imageSrc =
+    typeof resolvedImage === "string" && resolvedImage.trim().length > 0
+      ? resolvedImage
+      : null;
   const resolvedName = item?.title ?? item?.name ?? name;
   const resolvedDesignation =
     item?.testimonialDesignation ?? item?.designation ?? designation;
@@ -29,13 +33,15 @@ export default function TestimonialCard({
             : resolvedContent}
         </p>
         <div className="flex gap-4 items-center mt-10">
-          <Image
-            className="rounded-[30px]"
-            src={resolvedImage}
-            width={60}
-            height={80}
-            alt="Testimonial author"
-          />
+          {imageSrc ? (
+            <Image
+              className="rounded-[30px]"
+              src={imageSrc}
+              width={60}
+              height={80}
+              alt="Testimonial author"
+            />
+          ) : null}
           <div>
             <h3 className="font-bold text-[16px] leading-5.5 uppercase mb-2">
               {resolvedName}
